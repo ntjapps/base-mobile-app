@@ -1,0 +1,68 @@
+name: Build App Container Image for Staging
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  build-android-apps:
+    name: Build Android Apps
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '16'
+      
+      # NPM Cache
+      - name: Set NodeJS Version # Set NodeJS Version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+          echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            ${{ steps.npm-cache-dir.outputs.dir }}
+            /var/cache/Cypress
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Cypress prepare cache dir
+      - name: Prepare Cypress cache dir
+        run: |
+          mkdir -p /var/cache/Cypress
+          chmod a+rw /var/cache/Cypress
+          echo "CYPRESS_CACHE_FOLDER=/var/cache/Cypress" >> $GITHUB_ENV
+          echo "CYPRESS_CACHE_FOLDER=/var/cache/Cypress" >> $GITHUB_OUTPUT
+      # NPM Global Install
+      - name: Install NPM Packages
+        env:
+          CYPRESS_CACHE_FOLDER=/var/cache/Cypress
+        run: npm install -g @ionic/cli native-run cordova-res @capacitor/core
+      # NPM CI Install
+      - name: NPM CI Install
+        run: npm ci
+      # Ionic Build
+      - name: Ionic Build
+        run: ionic build --prod --release
+      # Ionic Capacitor Sync
+      - name: Ionic Capacitor Copy
+        run: ionic cap copy
