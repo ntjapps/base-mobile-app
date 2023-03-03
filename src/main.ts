@@ -1,6 +1,8 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
+import "@/ts/bootstrap";
+import { createApp, App } from "vue";
+import { createPinia, Pinia } from "pinia";
+const pinia: Pinia = createPinia();
+import PrimeVue from "primevue/config";
 
 import { IonicVue } from "@ionic/vue";
 
@@ -12,19 +14,28 @@ import "@ionic/vue/css/normalize.css";
 import "@ionic/vue/css/structure.css";
 import "@ionic/vue/css/typography.css";
 
-/* Optional CSS utils that can be commented out */
-import "@ionic/vue/css/padding.css";
-import "@ionic/vue/css/float-elements.css";
-import "@ionic/vue/css/text-alignment.css";
-import "@ionic/vue/css/text-transformation.css";
-import "@ionic/vue/css/flex-utils.css";
-import "@ionic/vue/css/display.css";
+/** Application spec css */
+import "@/css/app.scss";
 
-/* Theme variables */
-import "./theme/variables.css";
+/** Vue router needed for navigation menu */
+import router from "./router";
+import BaseApp from "./BaseApp.vue";
 
-const app = createApp(App).use(IonicVue).use(router);
+/** Primevue Globals */
+import DialogService from "primevue/dialogservice";
+
+// Mount Application Instances
+const MainApp: App<Element> = createApp(BaseApp)
+    .use(IonicVue)
+    .use(router)
+    .use(pinia)
+    .use(PrimeVue)
+    .use(DialogService);
+
+/** Global Composenent / Page Registration */
+import CmpAppSet from "@/views/Components/CmpAppSet.vue";
+MainApp.component("CmpAppSet", CmpAppSet);
 
 router.isReady().then(() => {
-  app.mount("#app");
+    MainApp.mount("#app");
 });

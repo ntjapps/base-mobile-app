@@ -1,2 +1,4 @@
 **/*.scss
 **/*.css
+**/*.html
+*.html
