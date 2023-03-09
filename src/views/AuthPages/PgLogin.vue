@@ -46,7 +46,9 @@ const clearData = () => {
 <template>
     <IonPage>
         <IonContent :fullscreen="true">
-            <div class="grid content-center w-screen h-screen bg-picture">
+            <div
+                class="grid content-center w-screen h-screen bg-login object-fill bg-no-repeat bg-cover bg-center"
+            >
                 <div class="flex justify-center">
                     <div class="bg-white rounded-lg drop-shadow-lg">
                         <div class="m-auto p-5">
@@ -117,7 +119,3 @@ const clearData = () => {
         </IonContent>
     </IonPage>
 </template>
-
-<style scoped lang="scss">
-@import "@/css/app.scss";
-</style>
