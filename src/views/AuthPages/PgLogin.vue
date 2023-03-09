@@ -117,3 +117,7 @@ const clearData = () => {
         </IonContent>
     </IonPage>
 </template>
+
+<style scoped lang="scss">
+@import "@/css/app.scss";
+</style>
