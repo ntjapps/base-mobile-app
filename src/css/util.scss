@@ -13,3 +13,7 @@
 .scale-40 {
     transform: scale(0.4);
 }
+
+.min-h-content {
+    min-height: calc(100vh - 6.219rem);
+}

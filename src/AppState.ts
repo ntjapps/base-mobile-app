@@ -1,55 +1,112 @@
+import axios from "axios";
 import { defineStore } from "pinia";
+import { supportedBrowsers } from "@/ts/browser";
+import { MenuItem } from "primevue/menuitem";
+import { useLocalStorage } from "@vueuse/core";
 
-type webRoute = {
-    landingPage: string;
-};
-
-export const landingPage = "/";
-
-export const useWebStore = defineStore<string, webRoute>("web", {
-    state: () => ({
-        /** Define route here because if not defined and get from XHR it will be race condition */
-        /** WEB requests */
-        landingPage: landingPage,
-    }),
-});
-
-type apiRoute = {
-    postTokenLogin: string;
-    postTokeonLogout: string;
-    postProfile: string;
-    appConst: string;
-    getAllUserPermission: string;
-    logAgent: string;
-    getServerLogs: string;
-    getUserList: string;
-};
-
-export const useApiStore = defineStore<string, apiRoute>("api", {
+export const useApiStore = defineStore("api", {
     state: () => ({
         /** API request */
-        postTokenLogin: "/api/post-token",
-        postTokeonLogout: "/api/post-token-revoke",
-        postProfile: "/api/post-update-profile",
-        appConst: "/api/post-app-const",
-        getAllUserPermission: "/api/get-all-user-permission",
-        logAgent: "/api/post-log-agent",
-        getServerLogs: "/api/get-server-logs",
-        getUserList: "/api/get-user-list",
+        postTokenLogin: import.meta.env.VITE_API_ENDPOINT + "/api/post-token",
+        postTokeonLogout:
+            import.meta.env.VITE_API_ENDPOINT + "/api/post-token-revoke",
+        postProfile:
+            import.meta.env.VITE_API_ENDPOINT + "/api/post-update-profile",
+        appConst: import.meta.env.VITE_API_ENDPOINT + "/api/post-app-const",
+        getAllUserPermission:
+            import.meta.env.VITE_API_ENDPOINT + "/api/get-all-user-permission",
+        logAgent: import.meta.env.VITE_API_ENDPOINT + "/api/post-log-agent",
+        getServerLogs:
+            import.meta.env.VITE_API_ENDPOINT + "/api/get-server-logs",
+        getUserList: import.meta.env.VITE_API_ENDPOINT + "/api/get-user-list",
     }),
 });
 
-type permissionsDataTypes = string;
+interface MenuItemExtended extends MenuItem {
+    key: string;
+    label: string;
+    icon?: string;
+    url?: string;
+    command?: () => void;
+    items?: Array<MenuItemExtended>;
+}
 
-type mainStore = {
-    browserSuppport: boolean;
-    permissionsData: Array<permissionsDataTypes>;
-};
-
-export const useMainStore = defineStore<string, mainStore>("main", {
+export const useMainStore = defineStore("main", {
     state: () => ({
         /** Additional data */
         browserSuppport: true,
-        permissionsData: Array<permissionsDataTypes>(),
+        menuItems: Array<MenuItemExtended>(),
+        appName: import.meta.env.VITE_APP_NAME,
+        deviceName: "Frontend Base App",
+        turnstileToken: "",
     }),
+
+    actions: {
+        /** Get Constant */
+        init() {
+            const api = useApiStore();
+            axios
+                .post(api.appConst)
+                .then((response) => {
+                    this.$patch({
+                        appName: response.data.appName,
+                    });
+                    this.$patch({
+                        menuItems: JSON.parse(response.data.menuItems),
+                    });
+                })
+                .catch((error) => {
+                    console.error(error.response.data);
+                });
+        },
+
+        browserSuppportCheck() {
+            const api = useApiStore();
+            /**
+             * Test if browser is compatible
+             */
+            if (!supportedBrowsers.test(navigator.userAgent)) {
+                this.$patch({ browserSuppport: false });
+                axios.post(api.logAgent);
+            } else {
+                this.$patch({ browserSuppport: true });
+            }
+        },
+
+        spaCsrfToken() {
+            /**
+             * Get new CSRF Token set everytime app is created
+             */
+            axios.get("/sanctum/csrf-cookie").then(() => {
+                console.log("csrf cookie init");
+            });
+        },
+    },
+});
+
+export const useSecureStore = defineStore("secure", {
+    state: () => {
+        return {
+            apiToken: useLocalStorage("apiToken", ""),
+        };
+    },
+
+    getters: {
+        isAuth: async (state) => {
+            const api = useApiStore();
+            let result = false;
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${state.apiToken}`;
+            await axios
+                .post(api.appConst)
+                .then((response) => {
+                    result = response.data.isAuth;
+                })
+                .catch(() => {
+                    result = false;
+                });
+            return result;
+        },
+    },
 });

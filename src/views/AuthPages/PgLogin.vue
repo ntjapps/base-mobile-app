@@ -1,43 +1,80 @@
 <script setup lang="ts">
-import { ref, defineProps } from "vue";
-import { IonContent, IonPage } from "@ionic/vue";
-import { useMainStore, useApiStore } from "@/AppState";
 import axios from "axios";
-import { useResponse, useError } from "@/AppAxiosResp";
+
+import { ref, defineProps } from "vue";
+import { Capacitor } from "@capacitor/core";
+
+import { IonContent, IonPage } from "@ionic/vue";
+import { useRouter } from "vue-router";
+import { useApiStore, useMainStore, useSecureStore } from "@/AppState";
+import { useWebStore } from "@/AppRouter";
+import { useError } from "@/AppAxiosResp";
+
+import CmpTurnstile from "../Components/CmpTurnstile.vue";
 
 import ButtonVue from "primevue/button";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
+import ProgressSpinner from "primevue/progressspinner";
 
+const web = useWebStore();
 const api = useApiStore();
 const main = useMainStore();
+const secure = useSecureStore();
+const router = useRouter();
 
 const props = defineProps({
     appName: {
         type: String,
-        required: true,
+        required: false,
+        default: import.meta.env.VITE_APP_NAME,
     },
 });
 
 const username = ref("");
 const password = ref("");
+const loading = ref(false);
+const turnchild = ref<typeof CmpTurnstile>();
 
 const postLogindata = () => {
+    loading.value = true;
+    const tokenData = Capacitor.isNativePlatform()
+        ? window.btoa(
+              JSON.stringify({
+                  mobileKey: import.meta.env.VITE_CHALLENGE_MOBILE_KEY,
+              })
+          )
+        : main.turnstileToken;
     axios
         .post(api.postTokenLogin, {
             username: username.value,
             password: password.value,
+            token: tokenData,
+            device_name: main.deviceName,
         })
         .then((response) => {
             clearData();
-            useResponse(response);
+            if (response.data.status === "success") {
+                secure.$patch({
+                    apiToken: response.data.access_token,
+                });
+            }
+        })
+        .then(() => {
+            router.push(web.dashboardPage);
         })
         .catch((error) => {
+            loading.value = false;
             useError(error);
+            secure.$patch({
+                apiToken: "",
+            });
+            turnchild.value?.resetTurnstile();
         });
 };
 
 const clearData = () => {
+    turnchild.value?.resetTurnstile();
     username.value = "";
     password.value = "";
 };
@@ -46,9 +83,14 @@ const clearData = () => {
 <template>
     <IonPage>
         <IonContent :fullscreen="true">
-            <div class="grid content-center w-screen h-screen bg-picture">
+            <div
+                class="grid content-center w-full min-h-full max-h-full bg-slate-200 object-fill bg-no-repeat bg-cover bg-center"
+            >
                 <div class="flex justify-center">
-                    <div class="bg-white rounded-lg drop-shadow-lg">
+                    <div
+                        v-show="!loading"
+                        class="bg-white rounded-lg drop-shadow-lg"
+                    >
                         <div class="m-auto p-5">
                             <div class="text-center font-bold my-2.5">
                                 {{ props.appName }}
@@ -93,7 +135,7 @@ const clearData = () => {
                                             v-model="password"
                                             type="text"
                                             class="w-full"
-                                            input-class="text-center"
+                                            input-class="w-full text-center"
                                             :feedback="false"
                                             @keyup.enter="postLogindata"
                                         />
@@ -104,11 +146,27 @@ const clearData = () => {
                                 </div>
                             </div>
                             <div class="flex justify-center py-2.5">
+                                <CmpTurnstile ref="turnchild" />
+                            </div>
+                            <div class="flex justify-center py-2.5">
                                 <ButtonVue
                                     class="p-button-primary p-button-sm"
                                     label="Login"
                                     @click="postLogindata"
                                 />
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        v-show="loading"
+                        class="bg-white rounded-lg drop-shadow-lg"
+                    >
+                        <div class="m-auto p-5">
+                            <div class="text-center font-bold my-2.5">
+                                <ProgressSpinner />
+                            </div>
+                            <div class="text-center font-bold my-2.5">
+                                Loading
                             </div>
                         </div>
                     </div>

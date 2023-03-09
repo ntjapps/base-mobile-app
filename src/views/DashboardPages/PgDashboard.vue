@@ -9,11 +9,8 @@ const timeGreet = timeGreetings();
 const props = defineProps({
     appName: {
         type: String,
-        required: true,
-    },
-    greetings: {
-        type: String,
-        required: true,
+        required: false,
+        default: import.meta.env.VITE_APP_NAME,
     },
 });
 
@@ -31,7 +28,7 @@ onBeforeMount(() => {
     <CmpLayout>
         <div class="my-3 mx-5 p-5 bg-white rounded-lg drop-shadow-lg">
             <h2 class="title-font font-bold">
-                {{ timeGreet + props.greetings }}
+                {{ timeGreet }}
             </h2>
             <h3 class="title-font">Welcome to {{ props.appName }}</h3>
         </div>
