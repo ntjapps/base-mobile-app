@@ -16,6 +16,7 @@ const props = defineProps({
     appName: {
         type: String,
         required: true,
+        default: import.meta.env.VITE_APP_NAME,
     },
 });
 
