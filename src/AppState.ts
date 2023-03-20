@@ -44,6 +44,8 @@ type permissionsDataTypes = string;
 type mainStore = {
     browserSuppport: boolean;
     permissionsData: Array<permissionsDataTypes>;
+    appName: string;
+    turnstileToken: string;
 };
 
 export const useMainStore = defineStore<string, mainStore>("main", {
@@ -51,5 +53,7 @@ export const useMainStore = defineStore<string, mainStore>("main", {
         /** Additional data */
         browserSuppport: true,
         permissionsData: Array<permissionsDataTypes>(),
+        appName: "Base App",
+        turnstileToken: "",
     }),
 });

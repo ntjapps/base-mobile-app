@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import axios from "axios";
+
 import { ref, defineProps } from "vue";
 import { IonContent, IonPage } from "@ionic/vue";
 import { useMainStore, useApiStore } from "@/AppState";
-import axios from "axios";
 import { useResponse, useError } from "@/AppAxiosResp";
+
+import CmpTurnstile from "../Components/CmpTurnstile.vue";
 
 import ButtonVue from "primevue/button";
 import InputText from "primevue/inputtext";
@@ -96,7 +99,7 @@ const clearData = () => {
                                             v-model="password"
                                             type="text"
                                             class="w-full"
-                                            input-class="text-center"
+                                            input-class="text-center w-full"
                                             :feedback="false"
                                             @keyup.enter="postLogindata"
                                         />
@@ -105,6 +108,9 @@ const clearData = () => {
                                         >
                                     </span>
                                 </div>
+                            </div>
+                            <div class="flex justify-center py-2.5">
+                                <CmpTurnstile />
                             </div>
                             <div class="flex justify-center py-2.5">
                                 <ButtonVue
