@@ -1,13 +1,20 @@
 const landingPage = "/";
+const dashboardPage = "/dashboard";
 
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory } from "@ionic/vue-router";
+import { RouteRecordRaw } from "vue-router";
 import { defineStore } from "pinia";
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: landingPage,
         name: "Landing Page",
-        component: () => import("@/views/AuthPages/LandingPg.vue"),
+        component: () => import("@/views/AuthPages/PgLogin.vue"),
+    },
+    {
+        path: dashboardPage,
+        name: "Dashboard",
+        component: () => import("@/views/DashboardPages/PgDashboard.vue"),
     },
 ];
 
@@ -18,6 +25,7 @@ const router = createRouter({
 
 type webRoute = {
     landingPage: string;
+    dashboardPage: string;
 };
 
 export const useWebStore = defineStore<string, webRoute>("web", {
@@ -25,6 +33,7 @@ export const useWebStore = defineStore<string, webRoute>("web", {
         /** Define route here because if not defined and get from XHR it will be race condition */
         /** WEB requests */
         landingPage: landingPage,
+        dashboardPage: dashboardPage,
     }),
 });
 

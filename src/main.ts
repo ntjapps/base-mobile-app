@@ -1,13 +1,14 @@
 import "@/ts/bootstrap";
-import { createApp, App } from "vue";
+import { createApp, App, watch } from "vue";
 import { createPinia, Pinia } from "pinia";
 const pinia: Pinia = createPinia();
 import PrimeVue from "primevue/config";
 
 import { IonicVue } from "@ionic/vue";
+import { Preferences } from "@capacitor/preferences";
 
 /** Vue router needed for navigation menu */
-import router from "./router";
+import router from "./AppRouter";
 import BaseApp from "./BaseApp.vue";
 
 /** Primevue Globals */
@@ -20,6 +21,17 @@ const MainApp: App<Element> = createApp(BaseApp)
     .use(pinia)
     .use(PrimeVue)
     .use(DialogService);
+
+watch(
+    pinia.state,
+    (state) => {
+        Preferences.set({
+            key: "secureStore",
+            value: JSON.stringify(state.secure),
+        });
+    },
+    { deep: true }
+);
 
 /** Global Composenent / Page Registration */
 import CmpAppSet from "@/views/Components/CmpAppSet.vue";

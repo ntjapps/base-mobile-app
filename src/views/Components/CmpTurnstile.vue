@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useMainStore } from "../../AppState";
+import { useMainStore } from "@/AppState";
 
 const main = useMainStore();
 
 window.onTurnstileLoad = () => {
     window.turnstile.render("#cf-container", {
-        sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
+        sitekey: import.meta.env.VITE_CHALLENGE_SITE_KEY,
         callback: (token: string) => {
             main.$patch({
                 turnstileToken: token,

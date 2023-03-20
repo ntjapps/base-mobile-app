@@ -3,40 +3,54 @@ import axios from "axios";
 
 import { ref, defineProps } from "vue";
 import { IonContent, IonPage } from "@ionic/vue";
-import { useMainStore, useApiStore } from "@/AppState";
-import { useResponse, useError } from "@/AppAxiosResp";
+import { useApiStore, useMainStore, useSecureStore } from "@/AppState";
+import { useWebStore } from "@/AppRouter";
+import { useError } from "@/AppAxiosResp";
 
 import CmpTurnstile from "../Components/CmpTurnstile.vue";
 
 import ButtonVue from "primevue/button";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
+import ProgressSpinner from "primevue/progressspinner";
 
+const web = useWebStore();
 const api = useApiStore();
 const main = useMainStore();
+const secure = useSecureStore();
 
 const props = defineProps({
     appName: {
         type: String,
-        required: true,
+        required: false,
         default: import.meta.env.VITE_APP_NAME,
     },
 });
 
 const username = ref("");
 const password = ref("");
+const loading = ref(false);
 
 const postLogindata = () => {
+    loading.value = true;
     axios
         .post(api.postTokenLogin, {
             username: username.value,
             password: password.value,
+            token: main.turnstileToken,
+            device_name: main.deviceName,
         })
         .then((response) => {
             clearData();
-            useResponse(response);
+            if (response.data.status === "success") {
+                secure.$patch({
+                    apiToken: response.data.access_token,
+                });
+                window.location.href = web.dashboardPage;
+            }
         })
         .catch((error) => {
+            loading.value = false;
             useError(error);
         });
 };
@@ -54,7 +68,10 @@ const clearData = () => {
                 class="grid content-center w-screen h-screen bg-slate-200 object-fill bg-no-repeat bg-cover bg-center"
             >
                 <div class="flex justify-center">
-                    <div class="bg-white rounded-lg drop-shadow-lg">
+                    <div
+                        v-show="!loading"
+                        class="bg-white rounded-lg drop-shadow-lg"
+                    >
                         <div class="m-auto p-5">
                             <div class="text-center font-bold my-2.5">
                                 {{ props.appName }}
@@ -99,7 +116,7 @@ const clearData = () => {
                                             v-model="password"
                                             type="text"
                                             class="w-full"
-                                            input-class="text-center w-full"
+                                            input-class="w-full text-center"
                                             :feedback="false"
                                             @keyup.enter="postLogindata"
                                         />
@@ -118,6 +135,19 @@ const clearData = () => {
                                     label="Login"
                                     @click="postLogindata"
                                 />
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        v-show="loading"
+                        class="bg-white rounded-lg drop-shadow-lg"
+                    >
+                        <div class="m-auto p-5">
+                            <div class="text-center font-bold my-2.5">
+                                <ProgressSpinner />
+                            </div>
+                            <div class="text-center font-bold my-2.5">
+                                Loading
                             </div>
                         </div>
                     </div>

@@ -1,18 +1,5 @@
+import { Preferences } from "@capacitor/preferences";
 import { defineStore } from "pinia";
-
-type webRoute = {
-    landingPage: string;
-};
-
-export const landingPage = "/";
-
-export const useWebStore = defineStore<string, webRoute>("web", {
-    state: () => ({
-        /** Define route here because if not defined and get from XHR it will be race condition */
-        /** WEB requests */
-        landingPage: landingPage,
-    }),
-});
 
 type apiRoute = {
     postTokenLogin: string;
@@ -28,14 +15,18 @@ type apiRoute = {
 export const useApiStore = defineStore<string, apiRoute>("api", {
     state: () => ({
         /** API request */
-        postTokenLogin: "/api/post-token",
-        postTokeonLogout: "/api/post-token-revoke",
-        postProfile: "/api/post-update-profile",
-        appConst: "/api/post-app-const",
-        getAllUserPermission: "/api/get-all-user-permission",
-        logAgent: "/api/post-log-agent",
-        getServerLogs: "/api/get-server-logs",
-        getUserList: "/api/get-user-list",
+        postTokenLogin: import.meta.env.VITE_API_ENDPOINT + "/api/post-token",
+        postTokeonLogout:
+            import.meta.env.VITE_API_ENDPOINT + "/api/post-token-revoke",
+        postProfile:
+            import.meta.env.VITE_API_ENDPOINT + "/api/post-update-profile",
+        appConst: import.meta.env.VITE_API_ENDPOINT + "/api/post-app-const",
+        getAllUserPermission:
+            import.meta.env.VITE_API_ENDPOINT + "/api/get-all-user-permission",
+        logAgent: import.meta.env.VITE_API_ENDPOINT + "/api/post-log-agent",
+        getServerLogs:
+            import.meta.env.VITE_API_ENDPOINT + "/api/get-server-logs",
+        getUserList: import.meta.env.VITE_API_ENDPOINT + "/api/get-user-list",
     }),
 });
 
@@ -45,6 +36,7 @@ type mainStore = {
     browserSuppport: boolean;
     permissionsData: Array<permissionsDataTypes>;
     appName: string;
+    deviceName: string;
     turnstileToken: string;
 };
 
@@ -54,6 +46,19 @@ export const useMainStore = defineStore<string, mainStore>("main", {
         browserSuppport: true,
         permissionsData: Array<permissionsDataTypes>(),
         appName: "Base App",
+        deviceName: "Frontend Base App",
         turnstileToken: "",
     }),
+});
+
+type secureStore = {
+    apiToken: string;
+};
+
+export const useSecureStore = defineStore<string, secureStore>("secure", {
+    state: () => {
+        return {
+            apiToken: "",
+        };
+    },
 });

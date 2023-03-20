@@ -7,6 +7,8 @@ import {
 } from "@ionic/vue";
 import { App } from "@capacitor/app";
 
+import CmpAppSet from "./views/Components/CmpAppSet.vue";
+
 const ionRouter = useIonRouter();
 
 useBackButton(-1, () => {
@@ -18,6 +20,7 @@ useBackButton(-1, () => {
 
 <template>
     <IonApp>
+        <CmpAppSet />
         <IonRouterOutlet />
     </IonApp>
 </template>

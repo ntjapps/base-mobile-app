@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onBeforeMount } from "vue";
 import axios from "axios";
-import { useMainStore, useApiStore } from "@/AppState";
+import { useMainStore, useApiStore, useSecureStore } from "@/AppState";
+import { Preferences } from "@capacitor/preferences";
 
 import { supportedBrowsers } from "@/browser";
 
@@ -9,6 +10,7 @@ import DynamicDialog from "primevue/dynamicdialog";
 
 const main = useMainStore();
 const api = useApiStore();
+const secure = useSecureStore();
 
 const init = () => {
     /** Get Constant */
@@ -40,9 +42,15 @@ const logAgent = () => {
     axios.post(api.logAgent);
 };
 
+const functionSecure = async () => {
+    const secureData = await Preferences.get({ key: "apiToken" });
+    secure.$patch({ apiToken: secureData.value as string });
+};
+
 onBeforeMount(() => {
     /** Init all constant */
     init();
+    functionSecure();
 
     /**
      * Test if browser is compatible
