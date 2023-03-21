@@ -89,7 +89,25 @@ export const useSecureStore = defineStore("secure", {
     state: () => {
         return {
             apiToken: useLocalStorage("apiToken", ""),
-            isAuth: useLocalStorage("isAuth", false),
         };
+    },
+
+    getters: {
+        isAuth: async (state) => {
+            const api = useApiStore();
+            let result = false;
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${state.apiToken}`;
+            await axios
+                .post(api.appConst)
+                .then((response) => {
+                    result = response.data.isAuth;
+                })
+                .catch(() => {
+                    result = false;
+                });
+            return result;
+        },
     },
 });
