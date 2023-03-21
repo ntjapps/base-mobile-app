@@ -1,20 +1,23 @@
-const landingPage = "/";
-const dashboardPage = "/dashboard";
+export const landingPage = "/";
+export const dashboardPage = "/dashboard";
 
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 import { defineStore } from "pinia";
+import { authGuard, guestGuard } from "./AppGuard";
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: landingPage,
         name: "Landing Page",
         component: () => import("@/views/AuthPages/PgLogin.vue"),
+        meta: { requiresGuest: true },
     },
     {
         path: dashboardPage,
         name: "Dashboard",
         component: () => import("@/views/DashboardPages/PgDashboard.vue"),
+        meta: { requiresAuth: true },
     },
 ];
 
@@ -23,12 +26,17 @@ const router = createRouter({
     routes,
 });
 
-type webRoute = {
-    landingPage: string;
-    dashboardPage: string;
-};
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        authGuard(to, from, next);
+    } else if (to.matched.some((record) => record.meta.requiresGuest)) {
+        guestGuard(to, from, next);
+    } else {
+        next();
+    }
+});
 
-export const useWebStore = defineStore<string, webRoute>("web", {
+export const useWebStore = defineStore("web", {
     state: () => ({
         /** Define route here because if not defined and get from XHR it will be race condition */
         /** WEB requests */

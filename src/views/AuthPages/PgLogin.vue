@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { ref, defineProps } from "vue";
 import { IonContent, IonPage } from "@ionic/vue";
+import { useRouter } from "vue-router";
 import { useApiStore, useMainStore, useSecureStore } from "@/AppState";
 import { useWebStore } from "@/AppRouter";
 import { useError } from "@/AppAxiosResp";
@@ -18,6 +19,7 @@ const web = useWebStore();
 const api = useApiStore();
 const main = useMainStore();
 const secure = useSecureStore();
+const router = useRouter();
 
 const props = defineProps({
     appName: {
@@ -30,6 +32,7 @@ const props = defineProps({
 const username = ref("");
 const password = ref("");
 const loading = ref(false);
+const turnchild = ref<typeof CmpTurnstile>();
 
 const postLogindata = () => {
     loading.value = true;
@@ -46,16 +49,29 @@ const postLogindata = () => {
                 secure.$patch({
                     apiToken: response.data.access_token,
                 });
-                window.location.href = web.dashboardPage;
+                secure.$patch({
+                    isAuth: true,
+                });
             }
+        })
+        .then(() => {
+            router.push(web.dashboardPage);
         })
         .catch((error) => {
             loading.value = false;
             useError(error);
+            secure.$patch({
+                isAuth: false,
+            });
+            secure.$patch({
+                apiToken: "",
+            });
+            turnchild.value?.resetTurnstile();
         });
 };
 
 const clearData = () => {
+    turnchild.value?.resetTurnstile();
     username.value = "";
     password.value = "";
 };
@@ -127,7 +143,7 @@ const clearData = () => {
                                 </div>
                             </div>
                             <div class="flex justify-center py-2.5">
-                                <CmpTurnstile />
+                                <CmpTurnstile ref="turnchild" />
                             </div>
                             <div class="flex justify-center py-2.5">
                                 <ButtonVue

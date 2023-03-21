@@ -1,18 +1,9 @@
-import { Preferences } from "@capacitor/preferences";
+import axios from "axios";
 import { defineStore } from "pinia";
+import { supportedBrowsers } from "@/ts/browser";
+import { useLocalStorage } from "@vueuse/core";
 
-type apiRoute = {
-    postTokenLogin: string;
-    postTokeonLogout: string;
-    postProfile: string;
-    appConst: string;
-    getAllUserPermission: string;
-    logAgent: string;
-    getServerLogs: string;
-    getUserList: string;
-};
-
-export const useApiStore = defineStore<string, apiRoute>("api", {
+export const useApiStore = defineStore("api", {
     state: () => ({
         /** API request */
         postTokenLogin: import.meta.env.VITE_API_ENDPOINT + "/api/post-token",
@@ -30,35 +21,75 @@ export const useApiStore = defineStore<string, apiRoute>("api", {
     }),
 });
 
-type permissionsDataTypes = string;
-
-type mainStore = {
-    browserSuppport: boolean;
-    permissionsData: Array<permissionsDataTypes>;
-    appName: string;
-    deviceName: string;
-    turnstileToken: string;
-};
-
-export const useMainStore = defineStore<string, mainStore>("main", {
+export const useMainStore = defineStore("main", {
     state: () => ({
         /** Additional data */
         browserSuppport: true,
-        permissionsData: Array<permissionsDataTypes>(),
+        permissionsData: Array<string>(),
         appName: "Base App",
         deviceName: "Frontend Base App",
         turnstileToken: "",
     }),
+
+    actions: {
+        /** Get Constant */
+        init() {
+            const api = useApiStore();
+            axios
+                .post(api.appConst)
+                .then((response) => {
+                    /** Send response data to after init function & if user authenticated */
+                    if (response.data.isAuth) {
+                        this.authInit();
+                    }
+                })
+                .catch((error) => {
+                    console.error(error.response.data);
+                });
+        },
+
+        authInit() {
+            const api = useApiStore();
+            const main = useMainStore();
+            axios
+                .post(api.getAllUserPermission)
+                .then((response) => {
+                    main.$patch({ permissionsData: response.data });
+                })
+                .catch((error) => {
+                    console.error(error.response.data);
+                });
+        },
+
+        browserSuppportCheck() {
+            const api = useApiStore();
+            /**
+             * Test if browser is compatible
+             */
+            if (!supportedBrowsers.test(navigator.userAgent)) {
+                this.$patch({ browserSuppport: false });
+                axios.post(api.logAgent);
+            } else {
+                this.$patch({ browserSuppport: true });
+            }
+        },
+
+        spaCsrfToken() {
+            /**
+             * Get new CSRF Token set everytime app is created
+             */
+            axios.get("/sanctum/csrf-cookie").then(() => {
+                console.log("csrf cookie init");
+            });
+        },
+    },
 });
 
-type secureStore = {
-    apiToken: string;
-};
-
-export const useSecureStore = defineStore<string, secureStore>("secure", {
+export const useSecureStore = defineStore("secure", {
     state: () => {
         return {
-            apiToken: "",
+            apiToken: useLocalStorage("apiToken", ""),
+            isAuth: useLocalStorage("isAuth", false),
         };
     },
 });
