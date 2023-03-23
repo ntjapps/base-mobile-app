@@ -8,7 +8,7 @@ import CmpFooter from "./CmpFooter.vue";
     <IonPage>
         <IonContent :fullscreen="true">
             <CmpHeader />
-            <div class="flex flex-col min-h-fit content-start">
+            <div class="flex flex-col min-h-content content-start bg-slate-200">
                 <slot />
             </div>
             <CmpFooter />

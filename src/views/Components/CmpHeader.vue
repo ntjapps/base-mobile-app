@@ -1,64 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeMount } from "vue";
-import axios from "axios";
-import { useResponse, useError } from "@/AppAxiosResp";
-
-import { useApiStore, useMainStore } from "@/AppState";
+import { ref, onBeforeMount } from "vue";
+import { useMainStore } from "@/AppState";
 
 import ButtonVue from "primevue/button";
 import TieredMenu from "primevue/tieredmenu";
 
-interface MenuItem {
-    label: string;
-    icon?: string;
-    url?: string;
-    command?: () => void;
-    items?: Array<MenuItem>;
-}
-
-const api = useApiStore();
 const main = useMainStore();
-
-const logoutSubmit = () => {
-    axios
-        .post(api.postTokeonLogout)
-        .then((response) => {
-            useResponse(response);
-        })
-        .catch((error) => {
-            useError(error);
-        });
-};
-
-const standardMenuItems = ref<Array<MenuItem>>([
-    /** Standard Responsibility */
-    {
-        label: "Logout",
-        icon: "pi pi-power-off",
-        command: () => {
-            logoutSubmit();
-        },
-    },
-]);
-
-const rootMenuItems = ref<Array<MenuItem>>([
-    /** Permission SU */
-    {
-        label: "Server Systems",
-        items: [],
-    },
-]);
-
-const showMenu = computed(() => {
-    let menu = standardMenuItems.value;
-
-    /** Use Concat not push because we create new array / merge 2 array, not pushing object of array into existing array */
-    if (main.permissionsData?.includes("root")) {
-        menu = menu.concat(rootMenuItems.value);
-    }
-
-    return menu;
-});
 
 const menu = ref<TieredMenu>();
 
@@ -115,7 +62,7 @@ onBeforeMount(() => {
                     class="p-button-sm"
                     @click.prevent="toggleMenu"
                 />
-                <TieredMenu ref="menu" :model="showMenu" :popup="true" />
+                <TieredMenu ref="menu" :model="main.menuItems" :popup="true" />
             </div>
 
             <div class="flex flex-row-reverse w-full">

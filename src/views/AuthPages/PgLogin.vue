@@ -49,9 +49,6 @@ const postLogindata = () => {
                 secure.$patch({
                     apiToken: response.data.access_token,
                 });
-                secure.$patch({
-                    isAuth: true,
-                });
             }
         })
         .then(() => {
@@ -60,9 +57,6 @@ const postLogindata = () => {
         .catch((error) => {
             loading.value = false;
             useError(error);
-            secure.$patch({
-                isAuth: false,
-            });
             secure.$patch({
                 apiToken: "",
             });
@@ -81,7 +75,7 @@ const clearData = () => {
     <IonPage>
         <IonContent :fullscreen="true">
             <div
-                class="grid content-center w-screen h-screen bg-slate-200 object-fill bg-no-repeat bg-cover bg-center"
+                class="grid content-center w-full min-h-full max-h-full bg-slate-200 object-fill bg-no-repeat bg-cover bg-center"
             >
                 <div class="flex justify-center">
                     <div

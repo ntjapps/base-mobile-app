@@ -1,5 +1,6 @@
 export const landingPage = "/";
 export const dashboardPage = "/dashboard";
+export const editProfilePage = "/edit-profile";
 
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
@@ -17,6 +18,12 @@ const routes: Array<RouteRecordRaw> = [
         path: dashboardPage,
         name: "Dashboard",
         component: () => import("@/views/DashboardPages/PgDashboard.vue"),
+        meta: { requiresAuth: true },
+    },
+    {
+        path: editProfilePage,
+        name: "Edit Profile",
+        component: () => import("@/views/DashboardPages/PgProfile.vue"),
         meta: { requiresAuth: true },
     },
 ];
@@ -42,6 +49,7 @@ export const useWebStore = defineStore("web", {
         /** WEB requests */
         landingPage: landingPage,
         dashboardPage: dashboardPage,
+        editProfilePage: editProfilePage,
     }),
 });
 

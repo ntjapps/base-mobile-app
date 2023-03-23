@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { supportedBrowsers } from "@/ts/browser";
+import { MenuItem } from "primevue/menuitem";
 import { useLocalStorage } from "@vueuse/core";
 
 export const useApiStore = defineStore("api", {
@@ -21,12 +22,22 @@ export const useApiStore = defineStore("api", {
     }),
 });
 
+interface MenuItemExtended extends MenuItem {
+    key: string;
+    label: string;
+    icon?: string;
+    url?: string;
+    command?: () => void;
+    items?: Array<MenuItemExtended>;
+}
+
 export const useMainStore = defineStore("main", {
     state: () => ({
         /** Additional data */
         browserSuppport: true,
         permissionsData: Array<string>(),
-        appName: "Base App",
+        menuItems: Array<MenuItemExtended>(),
+        appName: import.meta.env.VITE_APP_NAME,
         deviceName: "Frontend Base App",
         turnstileToken: "",
     }),
@@ -38,6 +49,12 @@ export const useMainStore = defineStore("main", {
             axios
                 .post(api.appConst)
                 .then((response) => {
+                    this.$patch({
+                        appName: response.data.appName,
+                    });
+                    this.$patch({
+                        menuItems: JSON.parse(response.data.menuItems),
+                    });
                     /** Send response data to after init function & if user authenticated */
                     if (response.data.isAuth) {
                         this.authInit();
