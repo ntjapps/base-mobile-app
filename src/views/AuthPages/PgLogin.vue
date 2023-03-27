@@ -64,6 +64,8 @@ const postLogindata = () => {
         });
 };
 
+const win = window;
+
 const clearData = () => {
     turnchild.value?.resetTurnstile();
     username.value = "";
@@ -96,7 +98,8 @@ const clearData = () => {
                                 />
                             </div>
                             <div class="text-center font-bold my-2.5">
-                                Login to your account
+                                Login to your account <br />
+                                (Current URL: {{ win.location.href }})
                             </div>
                             <div
                                 class="flex justify-center flex-col mt-8 my-2.5 p-float-label"
