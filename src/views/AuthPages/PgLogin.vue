@@ -2,6 +2,7 @@
 import axios from "axios";
 
 import { ref, defineProps } from "vue";
+import { Capacitor } from "@capacitor/core";
 import { IonContent, IonPage } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { useApiStore, useMainStore, useSecureStore } from "@/AppState";
@@ -36,11 +37,14 @@ const turnchild = ref<typeof CmpTurnstile>();
 
 const postLogindata = () => {
     loading.value = true;
+    let tokenData = Capacitor.isNativePlatform()
+        ? import.meta.env.VITE_CHALLENGE_MOBILE_KEY
+        : main.turnstileToken;
     axios
         .post(api.postTokenLogin, {
             username: username.value,
             password: password.value,
-            token: main.turnstileToken,
+            token: tokenData,
             device_name: main.deviceName,
         })
         .then((response) => {
