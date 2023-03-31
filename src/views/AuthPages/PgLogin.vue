@@ -37,7 +37,7 @@ const turnchild = ref<typeof CmpTurnstile>();
 
 const postLogindata = () => {
     loading.value = true;
-    let tokenData = Capacitor.isNativePlatform()
+    const tokenData = Capacitor.isNativePlatform()
         ? import.meta.env.VITE_CHALLENGE_MOBILE_KEY
         : main.turnstileToken;
     axios
