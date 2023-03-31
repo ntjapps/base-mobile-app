@@ -35,7 +35,6 @@ export const useMainStore = defineStore("main", {
     state: () => ({
         /** Additional data */
         browserSuppport: true,
-        permissionsData: Array<string>(),
         menuItems: Array<MenuItemExtended>(),
         appName: import.meta.env.VITE_APP_NAME,
         deviceName: "Frontend Base App",
@@ -55,23 +54,6 @@ export const useMainStore = defineStore("main", {
                     this.$patch({
                         menuItems: JSON.parse(response.data.menuItems),
                     });
-                    /** Send response data to after init function & if user authenticated */
-                    if (response.data.isAuth) {
-                        this.authInit();
-                    }
-                })
-                .catch((error) => {
-                    console.error(error.response.data);
-                });
-        },
-
-        authInit() {
-            const api = useApiStore();
-            const main = useMainStore();
-            axios
-                .post(api.getAllUserPermission)
-                .then((response) => {
-                    main.$patch({ permissionsData: response.data });
                 })
                 .catch((error) => {
                     console.error(error.response.data);

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onBeforeMount } from "vue";
 import { useMainStore } from "@/AppState";
 
 import DynamicDialog from "primevue/dynamicdialog";
 
 const main = useMainStore();
 
-onMounted(() => {
+onBeforeMount(() => {
     main.init();
 });
 </script>
