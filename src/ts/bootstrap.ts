@@ -38,7 +38,6 @@ window.Echo = new Echo({
     authEndpoint: import.meta.env.VITE_API_ENDPOINT + "/api/broadcasting/auth",
     auth: {
         headers: {
-            Authorization: "Bearer " + localStorage.getItem("apiToken"),
             Accept: "application/json",
         },
     },

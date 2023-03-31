@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
+import { useSecureStore } from "@/AppState";
 
 import ButtonVue from "primevue/button";
 
@@ -27,7 +28,11 @@ const showUnavailable = () => {
     unavailable.value = true;
 };
 
+const secure = useSecureStore();
+
 onBeforeMount(() => {
+    window.Echo.connector.options.auth.headers["Authorization"] =
+        "Bearer " + secure.apiToken;
     /** Ticking status for pusher */
     setInterval(() => {
         pusherState.value = window.Echo.connector.pusher.connection.state;
