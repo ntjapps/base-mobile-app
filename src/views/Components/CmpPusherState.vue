@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
-import { useSecureStore } from "@/AppState";
+import { useSecureStore, useEchoStore } from "@/AppState";
 
 import ButtonVue from "primevue/button";
 
@@ -8,12 +8,13 @@ const pusherState = ref<string>("connecting");
 const connected = ref<boolean>(false);
 const connecting = ref<boolean>(true);
 const unavailable = ref<boolean>(false);
+const echo = useEchoStore().laravelEcho;
 
 const showConnected = () => {
     connected.value = true;
     connecting.value = false;
     unavailable.value = false;
-    window.Echo.private("all");
+    echo.private("all");
 };
 
 const showConnecting = () => {
@@ -31,11 +32,11 @@ const showUnavailable = () => {
 const secure = useSecureStore();
 
 onBeforeMount(() => {
-    window.Echo.connector.options.auth.headers["Authorization"] =
+    echo.connector.options.auth.headers["Authorization"] =
         "Bearer " + secure.apiToken;
     /** Ticking status for pusher */
     setInterval(() => {
-        pusherState.value = window.Echo.connector.pusher.connection.state;
+        pusherState.value = echo.connector.pusher.connection.state;
         switch (pusherState.value) {
             case "connecting":
                 showConnecting();

@@ -8,7 +8,7 @@ jobs:
         name: Build iOS Apps
         runs-on: macos-latest
         env:
-            ENV_BASE64: ${{ secrets.ENV_BASE64 }}
+            ENV_BASE64: ${{ secrets.ENV_BASE64_DEV }}
             BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
             BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
         permissions:

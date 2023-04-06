@@ -41,7 +41,7 @@ const postLogindata = () => {
     const tokenData = Capacitor.isNativePlatform()
         ? window.btoa(
               JSON.stringify({
-                  mobileKey: import.meta.env.VITE_CHALLENGE_MOBILE_KEY,
+                  mobileKey: main.turnstileToken,
               })
           )
         : main.turnstileToken;

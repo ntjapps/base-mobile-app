@@ -13,6 +13,8 @@ jobs:
     build-android-apps:
         name: Build Android Apps
         runs-on: ubuntu-latest
+        env:
+            ENV_BASE64: ${{ secrets.ENV_BASE64_DEV }}
         permissions:
             contents: read
             packages: write
@@ -106,7 +108,7 @@ jobs:
         name: Build Web Apps
         runs-on: ubuntu-latest
         env:
-            ENV_BASE64: ${{ secrets.ENV_BASE64 }}
+            ENV_BASE64: ${{ secrets.ENV_BASE64_DEV }}
             REGISTRY: ghcr.io # GitHub Container Registry
             IMAGE_NAME: ${{ github.repository }} # github.repository as <account>/<repo>
         permissions:
