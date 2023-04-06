@@ -35,9 +35,10 @@ interface MenuItemExtended extends MenuItem {
 export const useMainStore = defineStore("main", {
     state: () => ({
         /** Additional data */
+        appName: import.meta.env.VITE_APP_NAME,
+        userName: "",
         browserSuppport: true,
         menuItems: Array<MenuItemExtended>(),
-        appName: import.meta.env.VITE_APP_NAME,
         deviceName: "Frontend Base App",
         turnstileToken: "",
     }),
@@ -51,6 +52,9 @@ export const useMainStore = defineStore("main", {
                 .then((response) => {
                     this.$patch({
                         appName: response.data.appName,
+                    });
+                    this.$patch({
+                        userName: response.data.userName,
                     });
                     this.$patch({
                         menuItems: JSON.parse(response.data.menuItems),
@@ -74,13 +78,15 @@ export const useMainStore = defineStore("main", {
             }
         },
 
-        spaCsrfToken() {
+        async spaCsrfToken() {
             /**
              * Get new CSRF Token set everytime app is created
              */
-            axios.get("/sanctum/csrf-cookie").then(() => {
-                console.log("csrf cookie init");
-            });
+            axios
+                .get(import.meta.env.VITE_API_ENDPOINT + "/sanctum/csrf-cookie")
+                .then(() => {
+                    console.log("csrf cookie init");
+                });
         },
     },
 });
@@ -123,10 +129,14 @@ export const useSecureStore = defineStore("secure", {
     getters: {
         isAuth: async (state) => {
             const api = useApiStore();
+            const main = useMainStore();
             let result = false;
-            axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${state.apiToken}`;
+            if (state.apiToken !== "") {
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${state.apiToken}`;
+            }
+            await main.spaCsrfToken();
             await axios
                 .post(api.appConst)
                 .then((response) => {

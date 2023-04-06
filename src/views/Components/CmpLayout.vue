@@ -7,13 +7,13 @@ import CmpFooter from "./CmpFooter.vue";
 <template>
     <IonPage>
         <IonContent :fullscreen="true">
-            <CmpHeader />
-            <div
-                class="flex flex-col min-h-content -my-0.5 content-start bg-slate-200"
-            >
-                <slot />
+            <div class="content-container bg-slate-200">
+                <CmpHeader />
+                <div class="content-child-container">
+                    <slot />
+                </div>
+                <CmpFooter />
             </div>
-            <CmpFooter />
         </IonContent>
     </IonPage>
 </template>

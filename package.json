@@ -29,7 +29,6 @@
         "@fortawesome/fontawesome-free": "^6.4.0",
         "@ionic/vue": "^6.7.2",
         "@ionic/vue-router": "^6.7.2",
-        "@nathanaelytj/sweetalert2": "^11.7.3",
         "@vueuse/core": "^9.13.0",
         "axios": "^1.3.4",
         "core-js": "^3.30.0",

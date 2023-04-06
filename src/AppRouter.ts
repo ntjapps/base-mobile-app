@@ -1,6 +1,8 @@
 export const landingPage = "/";
 export const dashboardPage = "/dashboard";
-export const editProfilePage = "/edit-profile";
+export const editProfilePage = "/profile";
+export const serverLogs = "/server-logs";
+export const userMan = "/user-man";
 
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
@@ -30,6 +32,18 @@ const routes: Array<RouteRecordRaw> = [
         path: editProfilePage,
         name: "Edit Profile",
         component: () => import("@/views/DashboardPages/PgProfile.vue"),
+        meta: { requiresAuth: true },
+    },
+    {
+        path: userMan,
+        name: "User Management",
+        component: () => import("@/views/SuperPages/PgUserMan.vue"),
+        meta: { requiresAuth: true },
+    },
+    {
+        path: serverLogs,
+        name: "Server Logs",
+        component: () => import("@/views/SuperPages/PgServerLog.vue"),
         meta: { requiresAuth: true },
     },
 ];

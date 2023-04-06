@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import axios from "axios";
 
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import { Capacitor } from "@capacitor/core";
-
+import { Device } from "@capacitor/device";
 import { IonContent, IonPage } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { useApiStore, useMainStore, useSecureStore } from "@/AppState";
 import { useWebStore } from "@/AppRouter";
-import { useError } from "@/AppAxiosResp";
 
 import CmpTurnstile from "../Components/CmpTurnstile.vue";
+import CmpToast from "../Components/CmpToast.vue";
 
-import ButtonVue from "primevue/button";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import ProgressSpinner from "primevue/progressspinner";
@@ -22,26 +21,27 @@ const api = useApiStore();
 const main = useMainStore();
 const secure = useSecureStore();
 const router = useRouter();
-
-const props = defineProps({
-    appName: {
-        type: String,
-        required: false,
-        default: import.meta.env.VITE_APP_NAME,
-    },
-});
+const toastchild = ref<typeof CmpToast>();
 
 const username = ref("");
 const password = ref("");
 const loading = ref(false);
 const turnchild = ref<typeof CmpTurnstile>();
 
-const postLogindata = () => {
+const postLogindata = async () => {
     loading.value = true;
+    const platformData = Capacitor.isNativePlatform()
+        ? (await Device.getInfo()).platform
+        : "web";
+    const isVirtual = Capacitor.isNativePlatform()
+        ? (await Device.getInfo()).isVirtual
+        : false;
     const tokenData = Capacitor.isNativePlatform()
         ? window.btoa(
               JSON.stringify({
                   mobileKey: main.turnstileToken,
+                  platform: platformData,
+                  isVirtual: isVirtual,
               })
           )
         : main.turnstileToken;
@@ -58,6 +58,7 @@ const postLogindata = () => {
                 secure.$patch({
                     apiToken: response.data.access_token,
                 });
+                toastchild.value?.toastSuccess("Login Successful");
             }
         })
         .then(() => {
@@ -65,16 +66,15 @@ const postLogindata = () => {
         })
         .catch((error) => {
             loading.value = false;
-            useError(error);
+            toastchild.value?.toastError(error);
             secure.$patch({
                 apiToken: "",
             });
-            turnchild.value?.resetTurnstile();
         });
+    turnchild.value?.resetTurnstile();
 };
 
 const clearData = () => {
-    turnchild.value?.resetTurnstile();
     username.value = "";
     password.value = "";
 };
@@ -83,6 +83,7 @@ const clearData = () => {
 <template>
     <IonPage>
         <IonContent :fullscreen="true">
+            <CmpToast ref="toastchild" />
             <div
                 class="grid content-center w-full min-h-full max-h-full bg-slate-200 object-fill bg-no-repeat bg-cover bg-center"
             >
@@ -93,16 +94,16 @@ const clearData = () => {
                     >
                         <div class="m-auto p-5">
                             <div class="text-center font-bold my-2.5">
-                                {{ props.appName }}
+                                {{ main.appName }}
                             </div>
                             <div
                                 v-if="!main.browserSuppport"
                                 class="text-center font-bold my-2.5"
                             >
-                                <ButtonVue
-                                    class="p-button-sm p-button-danger"
-                                    label="Browser Unsupported"
-                                />
+                                <button class="btn btn-sm btn-error">
+                                    <i class="pi pi-times m-1" />
+                                    <span class="m-1">Browser Unsupported</span>
+                                </button>
                             </div>
                             <div class="text-center font-bold my-2.5">
                                 Login to your account
@@ -149,11 +150,12 @@ const clearData = () => {
                                 <CmpTurnstile ref="turnchild" />
                             </div>
                             <div class="flex justify-center py-2.5">
-                                <ButtonVue
-                                    class="p-button-primary p-button-sm"
-                                    label="Login"
+                                <button
+                                    class="btn btn-primary"
                                     @click="postLogindata"
-                                />
+                                >
+                                    <span class="m-1">Login</span>
+                                </button>
                             </div>
                         </div>
                     </div>

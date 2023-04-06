@@ -20,10 +20,3 @@ window.axios.defaults.withCredentials = false;
 
 import Pusher from "pusher-js";
 window.Pusher = Pusher;
-
-/**
- * Sweetalert provide beautiful simpler alert support
- */
-
-import Swal from "@nathanaelytj/sweetalert2/dist/sweetalert2.all";
-window.Swal = Swal;

@@ -18,7 +18,7 @@ const appShow = ref(false);
 const showSplashScreen = async () => {
     await SplashScreen.show({
         autoHide: true,
-        showDuration: 2000,
+        showDuration: 1000,
         fadeInDuration: 0,
     });
 };

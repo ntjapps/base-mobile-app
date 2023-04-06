@@ -2,8 +2,6 @@
 import { ref, onBeforeMount } from "vue";
 import { useSecureStore, useEchoStore } from "@/AppState";
 
-import ButtonVue from "primevue/button";
-
 const pusherState = ref<string>("connecting");
 const connected = ref<boolean>(false);
 const connecting = ref<boolean>(true);
@@ -53,22 +51,15 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <ButtonVue
-        v-if="connected"
-        class="p-button-sm p-button-success text-xs"
-        label="Connected"
-        icon="pi pi-bell"
-    />
-    <ButtonVue
-        v-if="connecting"
-        class="p-button-sm p-button-warning text-xs"
-        label="Connecting"
-        icon="pi pi-spin pi-spinner"
-    />
-    <ButtonVue
-        v-if="unavailable"
-        class="p-button-sm p-button-danger text-xs"
-        label="Unavailable"
-        icon="pi pi-times"
-    />
+    <button v-if="connected" class="btn btn-success text-xs">
+        <i class="pi pi-bell mr-1" />
+        <span class="m-1">Connected</span>
+    </button>
+    <button v-if="connecting" class="btn btn-warning loading text-xs">
+        <span class="m-1">Connecting</span>
+    </button>
+    <button v-if="unavailable" class="btn btn-error text-xs">
+        <i class="pi pi-times mr-1" />
+        <span class="m-1">Unavailable</span>
+    </button>
 </template>

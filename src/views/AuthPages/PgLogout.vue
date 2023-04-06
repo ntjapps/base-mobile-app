@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import axios from "axios";
-import { onBeforeMount } from "vue";
-import { useError } from "@/AppAxiosResp";
+import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
+import { IonContent, IonPage } from "@ionic/vue";
 import { useWebStore } from "@/AppRouter";
 import { useSecureStore } from "@/AppState";
+import CmpToast from "../Components/CmpToast.vue";
 
 const web = useWebStore();
 const secure = useSecureStore();
 const router = useRouter();
+const toastchild = ref<typeof CmpToast>();
 
 const logoutFunction = async () => {
     await axios
@@ -20,7 +22,7 @@ const logoutFunction = async () => {
             });
         })
         .catch((error) => {
-            useError(error);
+            toastchild.value?.toastError(error);
         });
 };
 
@@ -30,5 +32,9 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <div></div>
+    <IonPage>
+        <IonContent :fullscreen="true">
+            <CmpToast ref="toastchild" />
+        </IonContent>
+    </IonPage>
 </template>

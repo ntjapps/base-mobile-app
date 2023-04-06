@@ -1,19 +1,12 @@
 <script setup lang="ts">
-import { ref, defineProps, onBeforeMount } from "vue";
+import { ref, onBeforeMount } from "vue";
+import { useMainStore } from "@/AppState";
 import { timeGreetings } from "@/AppCommon";
 
 import CmpLayout from "../Components/CmpLayout.vue";
 
 const timeGreet = timeGreetings();
-
-const props = defineProps({
-    appName: {
-        type: String,
-        required: false,
-        default: import.meta.env.VITE_APP_NAME,
-    },
-});
-
+const main = useMainStore();
 const clock = ref<string | null>(new Date().toLocaleString("en-UK"));
 
 onBeforeMount(() => {
@@ -28,9 +21,9 @@ onBeforeMount(() => {
     <CmpLayout>
         <div class="my-3 mx-5 p-5 bg-white rounded-lg drop-shadow-lg">
             <h2 class="title-font font-bold">
-                {{ timeGreet }}
+                {{ timeGreet + main.userName }}
             </h2>
-            <h3 class="title-font">Welcome to {{ props.appName }}</h3>
+            <h3 class="title-font">Welcome to {{ main.appName }}</h3>
         </div>
     </CmpLayout>
 </template>
