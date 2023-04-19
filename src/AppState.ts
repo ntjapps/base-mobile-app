@@ -166,9 +166,17 @@ export const useSecureStore = defineStore("secure", {
                 .post(api.appConst)
                 .then((response) => {
                     result = response.data.isAuth;
+                    if (!result) {
+                        this.$patch({
+                            apiToken: "",
+                        });
+                    }
                 })
                 .catch(() => {
                     result = false;
+                    this.$patch({
+                        apiToken: "",
+                    });
                 });
             return result;
         },
