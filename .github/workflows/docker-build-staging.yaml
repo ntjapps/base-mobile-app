@@ -4,9 +4,6 @@ on:
     push:
         branches:
             - "main"
-    pull_request:
-        branches:
-            - "main"
     workflow_dispatch:
 
 jobs:
@@ -41,8 +38,12 @@ jobs:
             # Decode Keystore
             - name: Decode keystore
               env:
+                  DEBUG_ENCODED_STRING: ${{ secrets.DEBUG_KEYSTORE }}
                   ENCODED_STRING: ${{ secrets.KEYSTORE }}
               run: |
+                  echo $DEBUG_ENCODED_STRING | base64 -d > ${{ github.workspace }}/debug.keystore ;
+                  sudo mkdir -p /home/runner/.android ; sudo chmod a+rw -R /home/runner/.android ;
+                  sudo ln -sf ${{ github.workspace }}/debug.keystore /home/runner/.android/debug.keystore ;
                   echo $ENCODED_STRING | base64 -d > ${{ github.workspace }}/main.jks
 
             # NPM Cache
@@ -73,9 +74,6 @@ jobs:
             # NPM Vite Build
             - name: NPM Vite Build
               run: npx vite build
-            # Capacitor Sync
-            - name: Capacitor Copy
-              run: npx cap copy android
 
             # Android Build
             - name: APK Ionic Build
@@ -89,6 +87,10 @@ jobs:
                   ./gradlew assembleDebug
                   ./gradlew signingReport
               env:
+                  DEBUG_STORE_FILE: ${{ github.workspace }}/debug.keystore
+                  DEBUG_STORE_PASSWORD: ${{ secrets.DEBUG_STORE_PASSWORD }}
+                  DEBUG_KEY_ALIAS: ${{ secrets.DEBUG_KEY_ALIAS }}
+                  DEBUG_KEY_PASSWORD: ${{ secrets.DEBUG_KEY_PASSWORD }}
                   SIGNING_STORE_FILE: ${{ github.workspace }}/main.jks
                   SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
                   SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}

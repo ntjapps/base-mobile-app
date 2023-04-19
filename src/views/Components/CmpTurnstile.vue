@@ -7,6 +7,7 @@ const main = useMainStore();
 window.onTurnstileLoad = () => {
     window.turnstile.render("#cf-container", {
         sitekey: import.meta.env.VITE_CHALLENGE_SITE_KEY,
+        size: "compact",
         callback: (token: string) => {
             main.$patch({
                 turnstileToken: token,

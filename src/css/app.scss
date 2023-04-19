@@ -4,13 +4,13 @@
 @import "tailwindcss/utilities";
 
 /** Load custom CSS */
-@import "./base";
-@import "./components";
-@import "./util";
-
 @import "./font";
 @import "./fontawesome";
 @import "./primevue";
+
+@import "./base";
+@import "./components";
+@import "./util";
 
 /** X-Cloak must be at the end of all CSS */
 @import "./xcloak";

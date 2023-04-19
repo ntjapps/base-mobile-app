@@ -2,8 +2,6 @@
 import axios from "axios";
 
 import { ref } from "vue";
-import { Capacitor } from "@capacitor/core";
-import { Device } from "@capacitor/device";
 import { IonContent, IonPage } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { useApiStore, useMainStore, useSecureStore } from "@/AppState";
@@ -30,27 +28,15 @@ const turnchild = ref<typeof CmpTurnstile>();
 
 const postLogindata = async () => {
     loading.value = true;
-    const platformData = Capacitor.isNativePlatform()
-        ? (await Device.getInfo()).platform
-        : "web";
-    const isVirtual = Capacitor.isNativePlatform()
-        ? (await Device.getInfo()).isVirtual
-        : false;
-    const tokenData = Capacitor.isNativePlatform()
-        ? window.btoa(
-              JSON.stringify({
-                  mobileKey: main.turnstileToken,
-                  platform: platformData,
-                  isVirtual: isVirtual,
-              })
-          )
-        : main.turnstileToken;
     axios
         .post(api.postTokenLogin, {
             username: username.value,
             password: password.value,
-            token: tokenData,
+            token: main.turnstileToken,
+            device_id: main.deviceId,
             device_name: main.deviceName,
+            device_model: main.deviceModel,
+            device_platform: main.devicePlatform,
         })
         .then((response) => {
             clearData();
@@ -84,9 +70,7 @@ const clearData = () => {
     <IonPage>
         <IonContent :fullscreen="true">
             <CmpToast ref="toastchild" />
-            <div
-                class="grid content-center w-full min-h-full max-h-full bg-slate-200 object-fill bg-no-repeat bg-cover bg-center"
-            >
+            <div class="grid content-center w-full min-h-full max-h-full">
                 <div class="flex justify-center">
                     <div
                         v-show="!loading"
@@ -116,13 +100,9 @@ const clearData = () => {
                                         <InputText
                                             id="username"
                                             v-model="username"
-                                            type="text"
-                                            class="text-center w-full"
                                             @keyup.enter="postLogindata"
                                         />
-                                        <label class="w-full" for="username"
-                                            >Username</label
-                                        >
+                                        <label for="username">Username</label>
                                     </span>
                                 </div>
                             </div>
@@ -134,15 +114,10 @@ const clearData = () => {
                                         <Password
                                             id="password"
                                             v-model="password"
-                                            type="text"
-                                            class="w-full"
-                                            input-class="w-full text-center"
                                             :feedback="false"
                                             @keyup.enter="postLogindata"
                                         />
-                                        <label class="w-full" for="password"
-                                            >Password</label
-                                        >
+                                        <label for="password">Password</label>
                                     </span>
                                 </div>
                             </div>

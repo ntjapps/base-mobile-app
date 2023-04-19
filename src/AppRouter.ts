@@ -1,4 +1,5 @@
 export const landingPage = "/";
+export const logoutPage = "/get-logout";
 export const dashboardPage = "/dashboard";
 export const editProfilePage = "/profile";
 export const serverLogs = "/server-logs";
@@ -17,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresGuest: true },
     },
     {
-        path: "/get-logout",
+        path: logoutPage,
         name: "Logout",
         component: () => import("@/views/AuthPages/PgLogout.vue"),
         meta: { requiresAuth: true },
@@ -68,6 +69,7 @@ export const useWebStore = defineStore("web", {
         /** Define route here because if not defined and get from XHR it will be race condition */
         /** WEB requests */
         landingPage: landingPage,
+        logoutPage: logoutPage,
         dashboardPage: dashboardPage,
         editProfilePage: editProfilePage,
     }),

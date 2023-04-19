@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 import { supportedBrowsers } from "@/ts/browser";
 import { MenuItem } from "primevue/menuitem";
 import { useLocalStorage } from "@vueuse/core";
+import { Device } from "@capacitor/device";
 
 export const useApiStore = defineStore("api", {
     state: () => ({
@@ -39,7 +40,10 @@ export const useMainStore = defineStore("main", {
         userName: "",
         browserSuppport: true,
         menuItems: Array<MenuItemExtended>(),
-        deviceName: "Frontend Base App",
+        deviceId: "",
+        deviceName: "",
+        deviceModel: "",
+        devicePlatform: "",
         turnstileToken: "",
     }),
 
@@ -88,6 +92,27 @@ export const useMainStore = defineStore("main", {
                     console.log("csrf cookie init");
                 });
         },
+
+        async deviceIdGet() {
+            /**
+             * Get device id
+             */
+            const info = await Device.getId();
+            this.$patch({ deviceId: info.uuid });
+        },
+
+        async deviceNameGet() {
+            /**
+             * Get device name
+             */
+            const info = await Device.getInfo();
+            if (typeof info.name === "undefined") {
+                info.name = "Frontend Base App";
+            }
+            this.$patch({ deviceName: info.name });
+            this.$patch({ deviceModel: info.model });
+            this.$patch({ devicePlatform: info.platform });
+        },
     },
 });
 
@@ -126,15 +151,15 @@ export const useSecureStore = defineStore("secure", {
         };
     },
 
-    getters: {
-        isAuth: async (state) => {
+    actions: {
+        async isAuth() {
             const api = useApiStore();
             const main = useMainStore();
             let result = false;
-            if (state.apiToken !== "") {
+            if (this.apiToken !== "") {
                 axios.defaults.headers.common[
                     "Authorization"
-                ] = `Bearer ${state.apiToken}`;
+                ] = `Bearer ${this.apiToken}`;
             }
             await main.spaCsrfToken();
             await axios

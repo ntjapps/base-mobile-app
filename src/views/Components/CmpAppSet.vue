@@ -10,6 +10,8 @@ const main = useMainStore();
 onBeforeMount(() => {
     main.spaCsrfToken();
     main.init();
+    main.deviceIdGet();
+    main.deviceNameGet();
 });
 </script>
 

@@ -4,6 +4,8 @@ import { useMainStore } from "@/AppState";
 
 import TieredMenu from "primevue/tieredmenu";
 
+import CmpPusherState from "./CmpPusherState.vue";
+
 const main = useMainStore();
 
 const menu = ref<TieredMenu>();
@@ -34,7 +36,9 @@ onBeforeMount(() => {
                 <div
                     v-if="main.browserSuppport"
                     class="flex flex-row-reverse w-full my-auto"
-                ></div>
+                >
+                    <CmpPusherState />
+                </div>
                 <div
                     v-if="!main.browserSuppport"
                     class="flex flex-row-reverse w-full my-auto"

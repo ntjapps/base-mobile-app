@@ -1,3 +1,14 @@
+:root {
+    --tw-bg-opacity: 1;
+    --ion-background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+}
+
+.p-toast {
+    @media screen and (max-width: 985px) {
+        width: 90% !important;
+    }
+}
+
 .footer-container {
     @apply sticky top-screen right-0 left-0 p-1 w-full;
 }
@@ -7,11 +18,14 @@
 }
 
 .content-container {
-    @apply min-h-screen h-auto;
+    @apply min-h-screen;
 }
 
 .content-child-container {
-    @apply flex flex-col min-h-fit content-start;
+    @apply grid content-center;
+    position: fixed;
+    height: 82.5%;
+    width: 100%;
 }
 
 .btn-ext {

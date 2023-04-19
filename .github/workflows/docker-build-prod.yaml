@@ -67,9 +67,6 @@ jobs:
             # NPM Vite Build
             - name: NPM Vite Build
               run: npx vite build
-            # Capacitor Sync
-            - name: Capacitor Copy
-              run: npx cap copy android
 
             # Android Build
             - name: APK Ionic Build
