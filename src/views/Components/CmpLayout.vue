@@ -7,7 +7,7 @@ import CmpFooter from "./CmpFooter.vue";
 <template>
     <IonPage>
         <IonContent :fullscreen="true">
-            <div class="content-container bg-slate-200">
+            <div class="content-container bg-slate-200 overflow-clip">
                 <CmpHeader />
                 <div class="content-child-container">
                     <slot />
