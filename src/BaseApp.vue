@@ -24,6 +24,7 @@ const exitAppToast = async () => {
     if (exitFlag.value) {
         exitFlag.value = false;
         App.exitApp();
+        return;
     }
 
     await Toast.show({
