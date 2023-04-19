@@ -48,7 +48,7 @@ const postLogindata = async () => {
             }
         })
         .then(() => {
-            router.push(web.dashboardPage);
+            router.replace(web.dashboardPage);
         })
         .catch((error) => {
             loading.value = false;
@@ -100,6 +100,7 @@ const clearData = () => {
                                         <InputText
                                             id="username"
                                             v-model="username"
+                                            class="text-center"
                                             @keyup.enter="postLogindata"
                                         />
                                         <label for="username">Username</label>
@@ -115,6 +116,7 @@ const clearData = () => {
                                             id="password"
                                             v-model="password"
                                             :feedback="false"
+                                            class="text-center"
                                             @keyup.enter="postLogindata"
                                         />
                                         <label for="password">Password</label>

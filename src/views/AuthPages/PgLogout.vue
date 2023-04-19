@@ -16,7 +16,7 @@ const logoutFunction = async () => {
     await axios
         .post(import.meta.env.VITE_API_ENDPOINT + "/api/post-token-revoke")
         .then(() => {
-            router.push(web.landingPage);
+            router.replace(web.landingPage);
             secure.$patch({
                 apiToken: "",
             });

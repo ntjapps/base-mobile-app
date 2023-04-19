@@ -22,6 +22,10 @@
 }
 
 .content-child-container {
+    @apply flex flex-col min-h-fit content-start;
+}
+
+.content-child-container-center {
     @apply grid content-center;
     position: fixed;
     height: 82.5%;

@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import {
-    IonApp,
-    IonRouterOutlet,
-    useBackButton,
-    useIonRouter,
-} from "@ionic/vue";
+import { IonApp, IonRouterOutlet, useIonRouter } from "@ionic/vue";
 import { ref, onBeforeMount, onMounted } from "vue";
 import { Capacitor } from "@capacitor/core";
 import { App } from "@capacitor/app";
+import { Toast } from "@capacitor/toast";
 import { SplashScreen } from "@capacitor/splash-screen";
 
 import CmpAppSet from "./views/Components/CmpAppSet.vue";
 
 const ionRouter = useIonRouter();
 const appShow = ref(false);
+const exitFlag = ref(false);
 
 const showSplashScreen = async () => {
     await SplashScreen.show({
@@ -23,9 +20,27 @@ const showSplashScreen = async () => {
     });
 };
 
-useBackButton(-1, () => {
-    if (!ionRouter.canGoBack()) {
+const exitAppToast = async () => {
+    if (exitFlag.value) {
         App.exitApp();
+    }
+
+    await Toast.show({
+        text: "Tekan sekali lagi untuk keluar",
+        duration: "short",
+    });
+
+    exitFlag.value = true;
+    setTimeout(() => {
+        exitFlag.value = false;
+    }, 2000);
+};
+
+App.addListener("backButton", () => {
+    if (ionRouter.canGoBack()) {
+        ionRouter.back();
+    } else {
+        exitAppToast();
     }
 });
 
