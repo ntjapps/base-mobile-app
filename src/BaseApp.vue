@@ -22,6 +22,7 @@ const showSplashScreen = async () => {
 
 const exitAppToast = async () => {
     if (exitFlag.value) {
+        exitFlag.value = false;
         App.exitApp();
     }
 
@@ -31,6 +32,7 @@ const exitAppToast = async () => {
     });
 
     exitFlag.value = true;
+
     setTimeout(() => {
         exitFlag.value = false;
     }, 2000);
@@ -39,7 +41,7 @@ const exitAppToast = async () => {
 App.addListener("backButton", () => {
     if (ionRouter.canGoBack()) {
         ionRouter.back();
-    } else {
+    } else if (Capacitor.isNativePlatform()) {
         exitAppToast();
     }
 });
