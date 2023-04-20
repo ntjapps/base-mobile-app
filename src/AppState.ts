@@ -93,15 +93,16 @@ export const useMainStore = defineStore("main", {
                 });
         },
 
-        async deviceIdGet() {
+        async deviceIdGet(): Promise<string> {
             /**
              * Get device id
              */
             const info = await Device.getId();
             this.$patch({ deviceId: info.uuid });
+            return info.uuid;
         },
 
-        async deviceNameGet() {
+        async deviceNameGet(): Promise<Array<string>> {
             /**
              * Get device name
              */
@@ -112,6 +113,8 @@ export const useMainStore = defineStore("main", {
             this.$patch({ deviceName: info.name });
             this.$patch({ deviceModel: info.model });
             this.$patch({ devicePlatform: info.platform });
+
+            return [info.name, info.model, info.platform];
         },
     },
 });
