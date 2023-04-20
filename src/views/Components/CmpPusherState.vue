@@ -53,7 +53,7 @@ onBeforeMount(() => {
 <template>
     <div class="flex m-auto">
         <button v-if="connected" class="btn btn-success text-xs">
-            <i class="pi pi-bell mr-1" />
+            <i class="fa fa-satellite-dish mr-1" />
             <span class="m-1">Connected</span>
         </button>
         <button v-if="connecting" class="btn btn-warning loading text-xs">
