@@ -46,7 +46,7 @@ onBeforeMount(() => {
                 showUnavailable();
                 break;
         }
-    }, 1000);
+    }, 500);
 });
 </script>
 
