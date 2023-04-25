@@ -1,4 +1,4 @@
-name: Build App Container Image for Production
+name: Build App Container Image for Production (Web)
 
 on:
     push:

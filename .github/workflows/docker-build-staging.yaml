@@ -1,4 +1,4 @@
-name: Build App Container Image for Staging
+name: Build App Container Image for Staging (Android)
 
 on:
     push:
