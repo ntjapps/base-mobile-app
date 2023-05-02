@@ -2,6 +2,7 @@
 import axios from "axios";
 
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 import { IonContent, IonPage } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { useApiStore, useMainStore, useSecureStore } from "@/AppState";
@@ -17,6 +18,9 @@ import ProgressSpinner from "primevue/progressspinner";
 const web = useWebStore();
 const api = useApiStore();
 const main = useMainStore();
+const { turnstileToken, deviceId, deviceName, deviceModel, devicePlatform } =
+    storeToRefs(main);
+
 const secure = useSecureStore();
 const router = useRouter();
 const toastchild = ref<typeof CmpToast>();
@@ -32,11 +36,11 @@ const postLogindata = async () => {
         .post(api.postTokenLogin, {
             username: username.value,
             password: password.value,
-            token: main.turnstileToken,
-            device_id: main.deviceId,
-            device_name: main.deviceName,
-            device_model: main.deviceModel,
-            device_platform: main.devicePlatform,
+            token: turnstileToken,
+            device_id: deviceId,
+            device_name: deviceName,
+            device_model: deviceModel,
+            device_platform: devicePlatform,
         })
         .then((response) => {
             clearData();
