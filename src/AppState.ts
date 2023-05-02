@@ -163,6 +163,9 @@ export const useSecureStore = defineStore("secure", {
                     "Authorization"
                 ] = `Bearer ${localStorage.getItem("apiToken")}`;
             } else {
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${localStorage.getItem("apiToken")}`;
                 return false;
             }
 
