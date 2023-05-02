@@ -10,7 +10,7 @@ export const useApiStore = defineStore("api", {
     state: () => ({
         /** API request */
         postTokenLogin: import.meta.env.VITE_API_ENDPOINT + "/api/post-token",
-        postTokeonLogout:
+        postTokenLogout:
             import.meta.env.VITE_API_ENDPOINT + "/api/post-token-revoke",
         postProfile:
             import.meta.env.VITE_API_ENDPOINT + "/api/post-update-profile",
