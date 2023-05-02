@@ -36,11 +36,11 @@ const postLogindata = async () => {
         .post(api.postTokenLogin, {
             username: username.value,
             password: password.value,
-            token: turnstileToken,
-            device_id: deviceId,
-            device_name: deviceName,
-            device_model: deviceModel,
-            device_platform: devicePlatform,
+            token: turnstileToken.value,
+            device_id: deviceId.value,
+            device_name: deviceName.value,
+            device_model: deviceModel.value,
+            device_platform: devicePlatform.value,
         })
         .then((response) => {
             clearData();
