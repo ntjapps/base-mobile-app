@@ -157,11 +157,15 @@ export const useSecureStore = defineStore("secure", {
             const api = useApiStore();
             const main = useMainStore();
             let result = false;
-            if (this.apiToken !== "") {
+
+            if (localStorage.getItem("apiToken") !== "") {
                 axios.defaults.headers.common[
                     "Authorization"
-                ] = `Bearer ${this.apiToken}`;
+                ] = `Bearer ${localStorage.getItem("apiToken")}`;
+            } else {
+                return false;
             }
+
             await main.spaCsrfToken();
             await axios
                 .post(api.appConst)
