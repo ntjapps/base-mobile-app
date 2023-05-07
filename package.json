@@ -28,7 +28,6 @@
         "@capacitor/splash-screen": "^5.0.1",
         "@capacitor/status-bar": "^5.0.1",
         "@capacitor/toast": "^5.0.1",
-        "@capawesome/capacitor-app-update": "^5.0.0",
         "@fortawesome/fontawesome-free": "^6.4.0",
         "@ionic/pwa-elements": "^3.1.1",
         "@ionic/vue": "^7.0.5",
