@@ -26,4 +26,4 @@
 -dontwarn com.google.firebase.messaging.TopicOperation$TopicOperations
 
 # Capacitor
--keep class com.getcapacitor.** { *; }
+-keep public class * extends com.getcapacitor.Plugin
