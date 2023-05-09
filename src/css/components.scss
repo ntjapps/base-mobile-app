@@ -26,11 +26,8 @@
 }
 
 .content-child-container-center {
-    @apply grid content-center;
-    position: fixed;
-    height: 82.5%;
-    width: 100%;
-    overflow: auto;
+    @apply fixed grid w-full overflow-auto;
+    min-height: calc(100% - 7.5rem);
 }
 
 .btn-ext {
