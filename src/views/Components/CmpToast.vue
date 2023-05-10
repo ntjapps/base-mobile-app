@@ -39,3 +39,7 @@ defineExpose({
     toastError,
 });
 </script>
+
+<template>
+    <slot />
+</template>
