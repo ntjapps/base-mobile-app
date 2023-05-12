@@ -98,8 +98,10 @@ export const useMainStore = defineStore("main", {
              * Get device id
              */
             const info = await Device.getId();
-            this.$patch({ deviceId: info.uuid });
-            return info.uuid;
+
+            console.log(info);
+            this.$patch({ deviceId: info.identifier });
+            return info.identifier;
         },
 
         async deviceNameGet(): Promise<Array<string>> {
@@ -110,6 +112,8 @@ export const useMainStore = defineStore("main", {
             if (typeof info.name === "undefined") {
                 info.name = "Frontend Base App";
             }
+
+            console.log(info);
             this.$patch({ deviceName: info.name });
             this.$patch({ deviceModel: info.model });
             this.$patch({ devicePlatform: info.platform });
