@@ -25,7 +25,6 @@ base64_env*
 /.sass-cache
 /.sourcemaps
 /.versions
-/.vscode/*
 !/.vscode/extensions.json
 /coverage
 /dist
