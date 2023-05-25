@@ -83,6 +83,10 @@ jobs:
                   ./gradlew assembleRelease
                   ./gradlew signingReport
               env:
+                  DEBUG_STORE_FILE: ${{ github.workspace }}/debug.keystore
+                  DEBUG_STORE_PASSWORD: ${{ secrets.DEBUG_STORE_PASSWORD }}
+                  DEBUG_KEY_ALIAS: ${{ secrets.DEBUG_KEY_ALIAS }}
+                  DEBUG_KEY_PASSWORD: ${{ secrets.DEBUG_KEY_PASSWORD }}
                   SIGNING_STORE_FILE: ${{ github.workspace }}/main.jks
                   SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
                   SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
