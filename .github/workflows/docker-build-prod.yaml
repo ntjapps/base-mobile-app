@@ -41,8 +41,12 @@ jobs:
             # Decode Keystore
             - name: Decode keystore
               env:
+                  DEBUG_ENCODED_STRING: ${{ secrets.DEBUG_KEYSTORE }}
                   ENCODED_STRING: ${{ secrets.KEYSTORE }}
               run: |
+                  echo $DEBUG_ENCODED_STRING | base64 -d > ${{ github.workspace }}/debug.keystore ;
+                  sudo mkdir -p /home/runner/.android ; sudo chmod a+rw -R /home/runner/.android ;
+                  sudo ln -sf ${{ github.workspace }}/debug.keystore /home/runner/.android/debug.keystore ;
                   echo $ENCODED_STRING | base64 -d > ${{ github.workspace }}/main.jks
 
             # NPM Cache
