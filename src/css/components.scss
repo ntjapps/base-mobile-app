@@ -4,7 +4,7 @@
 }
 
 .p-toast {
-    @media screen and (max-width: 985px) {
+    @media screen and (width <= 985px) {
         width: 90% !important;
     }
 }
@@ -27,6 +27,7 @@
 
 .content-child-container-center {
     @apply fixed grid w-full overflow-auto;
+
     height: calc(100% - 7.5rem);
 }
 
