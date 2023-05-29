@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "private": true,
     "scripts": {
+        "dev": "rm -rf public/build && vite",
         "serve": "vite preview",
         "build": "vite build",
         "test": "vitest",
