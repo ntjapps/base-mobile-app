@@ -37,7 +37,11 @@ export const useMainStore = defineStore("main", {
     state: () => ({
         /** Additional data */
         appName: import.meta.env.VITE_APP_NAME,
+        appVersion: import.meta.env.VITE_APP_VERSION,
+        appBypassUpdate:
+            import.meta.env.VITE_APP_BYPASS_UPDATE == true ? true : false,
         userName: "",
+        userId: "",
         browserSuppport: true,
         menuItems: Array<MenuItemExtended>(),
         deviceId: "",
