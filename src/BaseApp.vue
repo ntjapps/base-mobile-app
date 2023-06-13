@@ -51,6 +51,7 @@ onBeforeMount(() => {
     if (Capacitor.isNativePlatform()) {
         showSplashScreen();
     }
+    console.log(window.location.hostname);
 });
 
 onMounted(() => {
