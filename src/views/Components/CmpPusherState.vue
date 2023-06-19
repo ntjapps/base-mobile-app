@@ -15,7 +15,14 @@ const showConnected = () => {
     connected.value = true;
     connecting.value = false;
     unavailable.value = false;
-    echo.private("all");
+    echo.private("all").error((error: any) => {
+        if (error.status >= 400 && error.status < 500) {
+            secure.$patch({
+                apiToken: "",
+            });
+        }
+        window.location.reload();
+    });
 };
 
 const showConnecting = () => {
