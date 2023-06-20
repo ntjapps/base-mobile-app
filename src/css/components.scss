@@ -4,21 +4,11 @@
 }
 
 .p-toast {
-    @media screen and (width <= 985px) {
-        width: 90% !important;
-    }
-}
-
-.footer-container {
-    @apply sticky top-screen right-0 left-0 p-1 w-full;
+    width: 85% !important;
 }
 
 .header-container {
     @apply sticky top-0 w-full z-50 drop-shadow-xl;
-}
-
-.content-container {
-    @apply min-h-screen;
 }
 
 .content-child-container {
@@ -26,9 +16,19 @@
 }
 
 .content-child-container-center {
-    @apply fixed grid w-full overflow-auto;
+    @apply relative grid w-full h-full my-auto;
+}
 
-    height: calc(100% - 7.5rem);
+.center-box-container {
+    @apply flex flex-col justify-center my-3 bg-white drop-shadow-lg box-border;
+
+    border-style: solid none;
+}
+
+.box-container {
+    @apply box-border;
+
+    border-style: solid none;
 }
 
 .btn-ext {
