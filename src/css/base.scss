@@ -36,9 +36,9 @@ body {
 }
 
 ion-content {
-    width: calc(100% + 25px);
+    width: calc(100% + 5px);
 }
 
 ion-content::part(scroll) {
-    padding-right: 25px;
+    padding-right: 5px;
 }
