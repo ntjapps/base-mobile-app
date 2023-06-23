@@ -30,3 +30,24 @@
 .btn-ext {
     @apply btn p-2.5;
 }
+
+body.camera-behind-webview {
+    background: transparent;
+
+    --background: transparent;
+    --ion-background-color: transparent;
+}
+
+html.camera-behind-webview {
+    background: transparent;
+
+    --background: transparent;
+    --ion-background-color: transparent;
+}
+
+:root.camera-behind-webview {
+    background: transparent;
+
+    --background: transparent;
+    --ion-background-color: transparent;
+}
