@@ -5,12 +5,12 @@ import CmpFooter from "./CmpFooter.vue";
 
 <template>
     <IonPage>
-        <IonContent :fullscreen="true" :scroll-y="true" class="hide-scroll-bar">
-            <div class="flex flex-col min-h-full bg-color">
-                <div class="content-child-container-center">
+        <IonContent :fullscreen="true" :scroll-y="true">
+            <div class="flex h-full">
+                <div class="content-child-container-center my-auto">
                     <slot />
+                    <CmpFooter />
                 </div>
-                <CmpFooter />
             </div>
         </IonContent>
     </IonPage>
