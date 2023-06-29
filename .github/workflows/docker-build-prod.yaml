@@ -79,6 +79,8 @@ jobs:
             - name: APK Ionic Build
               run: npx cap sync android
             # Generate Android App Bundle
+            - name: Setup Gradle
+              uses: gradle/gradle-build-action@v2
             - name: Generate APK Bundle
               run: |
                   cd android
