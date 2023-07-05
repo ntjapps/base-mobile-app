@@ -107,11 +107,11 @@ jobs:
               run: |
                   cd android/app/build/outputs
                   zip -r ${{ github.workspace }}/androidDevApps.zip ./
-                  ls -lah ${{ github.workspace }}/androidDevApps.zip
             # Upload Zip Android Build Artifacts to Google Drive
             - name: Upload Artifacts TO Google Drive
-              uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1.1.1
+              uses: adityak74/google-drive-upload-git-action@main
               with:
-                target: androidDevApps.zip
                 credentials: ${{ secrets.GDRIVE_SA_KEY }}
-                parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
+                filename: "androidDevApps.zip"
+                folderId: ${{ secrets.androidDevApps.zip }}
+                overwrite: "true" # optional boolean
