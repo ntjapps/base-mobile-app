@@ -146,7 +146,7 @@ jobs:
               if: env.BUILD_CERTIFICATE_BASE64 != '' && env.BUILD_PROVISION_PROFILE_BASE64 != ''
               uses: actions/upload-artifact@v3.1.2
               with:
-                  name: ipa-release
+                  name: ipa-dev-release
                   path: |
                       ${{ github.workspace }}/ios/App.ipa
                   retention-days: 1

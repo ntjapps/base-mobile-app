@@ -1,0 +1,17 @@
+name: Clean Github Workflow Artifacts
+
+on:
+    workflow_dispatch:
+
+jobs:
+    delete-artifacts-and-cache:
+        name: Delete Artifacts
+        runs-on: ubuntu-latest
+        permissions: write-all
+
+        steps:
+        - id: result 
+          uses: MichaelMelena/list-artifacts@v1
+        - uses: MichaelMelena/remove-artifacts@v1
+          with:
+            artifacts: ${{ steps.result.outputs.artifacts }}
