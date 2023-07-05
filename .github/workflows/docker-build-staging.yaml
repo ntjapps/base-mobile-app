@@ -102,12 +102,15 @@ jobs:
                   SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
                   SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
-            # Upload Android Build Artifacts
-            - name: Upload a Build Artifact
-              uses: actions/upload-artifact@v3.1.2
+            # Zip Android Build Artifacts
+            - name: Zip Android Build Artifacts
+              run: |
+                  cd android/app/build/outputs
+                  zip -r ${{ github.workspace }}/android-apps.zip ./
+            # Upload Zip Android Build Artifacts to Google Drive
+            - name: Upload Artifacts TO Google Drive
+              uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1
               with:
-                  name: apk-dev-release
-                  path: |
-                      ${{ github.workspace }}/android/app/build/outputs/**/**/*.aab
-                      ${{ github.workspace }}/android/app/build/outputs/**/**/*.apk
-                  retention-days: 1
+                target: ${{ github.workspace }}/android-apps.zip
+                credentials: ${{ secrets.GDRIVE_SA_KEY }}
+                parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
