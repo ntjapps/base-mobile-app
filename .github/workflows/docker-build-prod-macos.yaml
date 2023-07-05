@@ -138,12 +138,19 @@ jobs:
                   xcrun xcodebuild -exportArchive -archivePath App.xcarchive -exportPath App.ipa -exportOptionsPlist ../exportOptions.plist
               env:
                   KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-            # Upload iOS Build Artifacts
-            - name: Upload a Build Artifact
+
+            # Zip iOS Build Artifacts
+            - name: Zip iOS Build Artifacts
               if: env.BUILD_CERTIFICATE_BASE64 != '' && env.BUILD_PROVISION_PROFILE_BASE64 != ''
-              uses: actions/upload-artifact@v3.1.2
+              run: |
+                  cd ios/
+                  zip -r ${{ github.workspace }}/ios-apps.zip ./App.xcarchive ./App.ipa
+                  ls -lah ${{ github.workspace }}/ios-apps.zip
+            # Upload Zip iOS Build Artifacts to Google Drive
+            - name: Upload Artifacts TO Google Drive
+              uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1.1.1
               with:
-                  name: ipa-release
-                  path: |
-                      ${{ github.workspace }}/ios/App.ipa
-                  retention-days: 1
+                target: ios-apps.zip
+                credentials: ${{ secrets.GDRIVE_SA_KEY }}
+                parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
+
