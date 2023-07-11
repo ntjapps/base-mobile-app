@@ -144,13 +144,13 @@ jobs:
               if: env.BUILD_CERTIFICATE_BASE64 != '' && env.BUILD_PROVISION_PROFILE_BASE64 != ''
               run: |
                   cd ios/
-                  zip -r ${{ github.workspace }}/ios-apps.zip ./App.xcarchive ./App.ipa
-                  ls -lah ${{ github.workspace }}/ios-apps.zip
+                  zip -r ${{ github.workspace }}/ios-apps-${{ github.run_id }}.zip ./App.xcarchive ./App.ipa
+                  ls -lah ${{ github.workspace }}/ios-apps-${{ github.run_id }}.zip
             # Upload Zip iOS Build Artifacts to Google Drive
             - name: Upload Artifacts TO Google Drive
               uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1.1.1
               with:
-                target: ios-apps.zip
+                target: ios-apps-${{ github.run_id }}.zip
                 credentials: ${{ secrets.GDRIVE_SA_KEY }}
                 parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
 
