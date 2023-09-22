@@ -5,6 +5,7 @@ import { createApp, App } from "vue";
 import { createPinia, Pinia } from "pinia";
 const pinia: Pinia = createPinia();
 import PrimeVue from "primevue/config";
+import Tailwind from "primevue/passthrough/tailwind";
 
 import { IonicVue } from "@ionic/vue";
 
@@ -22,7 +23,7 @@ const MainApp: App<Element> = createApp(BaseApp)
     .use(IonicVue)
     .use(router)
     .use(pinia)
-    .use(PrimeVue)
+    .use(PrimeVue, { unstyled: true, pt: Tailwind })
     .use(DialogService)
     .use(ToastService)
     .directive("tooltip", Tooltip);
