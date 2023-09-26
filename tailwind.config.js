@@ -10,6 +10,7 @@ module.exports = {
         "src/**/**/*.js",
         "src/**/**/*.ts",
         "src/**/**/*.vue",
+        "./node_modules/primevue/**/*.{vue,js,ts,jsx,tsx}",
     ],
     darkMode: "class",
     daisyui: {
