@@ -5,8 +5,6 @@ import { createApp, App } from "vue";
 import { createPinia, Pinia } from "pinia";
 const pinia: Pinia = createPinia();
 import PrimeVue from "primevue/config";
-import { usePassThrough } from "primevue/passthrough";
-import Tailwind from "primevue/passthrough/tailwind";
 
 import { IonicVue } from "@ionic/vue";
 
