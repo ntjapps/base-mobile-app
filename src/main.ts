@@ -5,6 +5,7 @@ import { createApp, App } from "vue";
 import { createPinia, Pinia } from "pinia";
 const pinia: Pinia = createPinia();
 import PrimeVue from "primevue/config";
+import Tailwind from "primevue/passthrough/tailwind";
 
 import { IonicVue } from "@ionic/vue";
 
@@ -17,14 +18,16 @@ import DialogService from "primevue/dialogservice";
 import ToastService from "primevue/toastservice";
 import Tooltip from "primevue/tooltip";
 
-import { AppTheme } from "./AppTheme";
-
 // Mount Application Instances
 const MainApp: App<Element> = createApp(BaseApp)
     .use(IonicVue)
     .use(router)
     .use(pinia)
-    .use(PrimeVue, { unstyled: true, pt: AppTheme })
+    .use(PrimeVue, {
+        unstyled: true,
+        pt: Tailwind,
+        ptOptions: { mergeProps: true },
+    })
     .use(DialogService)
     .use(ToastService)
     .directive("tooltip", Tooltip);
