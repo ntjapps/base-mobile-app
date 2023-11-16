@@ -24,9 +24,12 @@
         "tests/**/*.ts",
         "tests/**/*.tsx"
     ],
-    "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.themes.json" }],
+    "references": [
+        { "path": "./tsconfig.node.json" },
+        { "path": "./tsconfig.themes.json" }
+    ],
     "exclude": ["node_modules"],
     "vueCompilerOptions": {
-		"skipTemplateCodegen": true
-	}
+        "skipTemplateCodegen": true
+    }
 }
