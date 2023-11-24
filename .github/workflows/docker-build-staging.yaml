@@ -76,7 +76,7 @@ jobs:
               run: npm install -g @ionic/cli native-run cordova-res @capacitor/core
             # NPM CI Install
             - name: NPM CI Install
-              run: npm ci
+              run: npm ci --force
             # NPM Vite Build
             - name: NPM Vite Build
               run: npx vite build

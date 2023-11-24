@@ -49,7 +49,7 @@ jobs:
                       ${{ runner.os }}-node-web-
 
             - name: NPM CI Install # Install NPM dependencies (node_modules folder is not cached)
-              run: npm ci
+              run: npm ci --force
             - name: NPM Build # Build NPM assets
               run: npx vite build
 
