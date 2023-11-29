@@ -1,6 +1,4 @@
-/// <reference types="vitest" />
 import { defineConfig, splitVendorChunkPlugin } from "vite";
-import { configDefaults } from "vitest/config";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 
@@ -34,9 +32,5 @@ export default defineConfig({
                 compact: true,
             },
         },
-    },
-    test: {
-        environment: "happy-dom",
-        exclude: [...configDefaults.exclude],
     },
 });
