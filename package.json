@@ -3,10 +3,9 @@
     "version": "0.0.1",
     "private": true,
     "scripts": {
-        "dev": "rm -rf public/build && vite",
-        "serve": "vite preview",
-        "build": "vite build",
-        "test": "vitest",
+        "dev": "rm -rf dist && vite",
+        "serve": "rm -rf dist && vite preview",
+        "build": "rm -rf dist && vite build",
         "browser": "echo \"const supportedBrowsers = $(browserslist-useragent-regexp --allowHigherVersions);\n\nexport { supportedBrowsers };\" > src/browser.ts",
         "presstyle:fix": "npm run prettier:fix && npm run stylelint:fix && npm run eslint:fix",
         "eslint": "eslint --ext .js,.cjs,.ts,.vue src",
