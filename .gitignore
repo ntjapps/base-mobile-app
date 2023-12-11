@@ -17,7 +17,8 @@ $RECYCLE.BIN/
 log.txt
 npm-debug.log*
 .env
-env-dev
+.env.testing
+env-*
 base64_env*
 
 /.idea
