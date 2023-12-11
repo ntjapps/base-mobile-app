@@ -12,8 +12,8 @@
         "eslint:fix": "eslint --ext .js,.cjs,.ts,.vue src --fix",
         "stylelint": "stylelint src/**/*.{css,scss,vue}",
         "stylelint:fix": "stylelint src/**/*.{css,scss,vue} --fix",
-        "prettier": "prettier --check src/**/*.{css,scss,vue,js,cjs,ts,json,md} *.{css,scss,vue,js,cjs,ts,json,md}",
-        "prettier:fix": "prettier --write src/**/*.{css,scss,vue,js,cjs,ts,json,md} *.{css,scss,vue,js,cjs,ts,json,md}",
+        "prettier": "prettier --check src/**/*.{css,scss,vue,js,cjs,ts,json,md} tests/**/*.{css,scss,vue,js,cjs,ts,json,md} *.{css,scss,vue,js,cjs,ts,json,md}",
+        "prettier:fix": "prettier --write src/**/*.{css,scss,vue,js,cjs,ts,json,md} tests/**/*.{css,scss,vue,js,cjs,ts,json,md} *.{css,scss,vue,js,cjs,ts,json,md}",
         "mobile:icon": "npx @capacitor/assets generate"
     },
     "description": "An Ionic project",
