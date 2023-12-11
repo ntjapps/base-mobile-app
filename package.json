@@ -7,11 +7,9 @@
         "serve": "rm -rf dist && vite preview",
         "build": "rm -rf dist && vite build",
         "browser": "echo \"const supportedBrowsers = $(browserslist-useragent-regexp --allowHigherVersions);\n\nexport { supportedBrowsers };\" > src/browser.ts",
-        "presstyle:fix": "npm run prettier:fix && npm run stylelint:fix && npm run eslint:fix",
+        "presstyle:fix": "npm run prettier:fix ; npm run eslint:fix",
         "eslint": "eslint --ext .js,.cjs,.ts,.vue src",
         "eslint:fix": "eslint --ext .js,.cjs,.ts,.vue src --fix",
-        "stylelint": "stylelint src/**/*.{css,scss,vue}",
-        "stylelint:fix": "stylelint src/**/*.{css,scss,vue} --fix",
         "prettier": "prettier --check src/**/*.{css,scss,vue,js,cjs,ts,json,md} tests/**/*.{css,scss,vue,js,cjs,ts,json,md} *.{css,scss,vue,js,cjs,ts,json,md}",
         "prettier:fix": "prettier --write src/**/*.{css,scss,vue,js,cjs,ts,json,md} tests/**/*.{css,scss,vue,js,cjs,ts,json,md} *.{css,scss,vue,js,cjs,ts,json,md}",
         "mobile:icon": "npx @capacitor/assets generate"
@@ -71,10 +69,6 @@
         "postcss-convert-values": "^6.0.0",
         "prettier": "^3.1.0",
         "sass": "^1.69.5",
-        "stylelint": "^15.11.0",
-        "stylelint-config-recommended-vue": "^1.5.0",
-        "stylelint-config-standard": "^34.0.0",
-        "stylelint-config-standard-scss": "^11.1.0",
         "tailwindcss": "^3.3.5",
         "vite": "^5.0.2",
         "vite-plugin-static-copy": "^0.17.1"
