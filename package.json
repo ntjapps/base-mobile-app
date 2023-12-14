@@ -31,6 +31,8 @@
         "@ionic/pwa-elements": "^3.2.2",
         "@ionic/vue": "^7.5.6",
         "@ionic/vue-router": "^7.5.6",
+        "@sentry/capacitor": "^0.15.0",
+        "@sentry/vue": "7.81.1",
         "@vueuse/core": "^10.6.1",
         "axios": "^1.6.2",
         "core-js": "^3.33.3",
