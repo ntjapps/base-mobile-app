@@ -5,7 +5,8 @@ import { createApp, App } from "vue";
 import { createPinia, Pinia } from "pinia";
 const pinia: Pinia = createPinia();
 import PrimeVue from "primevue/config";
-import Tailwind from "primevue/passthrough/tailwind";
+
+import Lara from './presets/lara';
 import * as Sentry from "@sentry/capacitor";
 import * as SentrySibling from "@sentry/vue";
 
@@ -45,7 +46,7 @@ const MainApp: App<Element> = createApp(BaseApp)
     .use(pinia)
     .use(PrimeVue, {
         unstyled: true,
-        pt: Tailwind,
+        pt: Lara,
         ptOptions: { mergeProps: true },
     })
     .use(DialogService)
