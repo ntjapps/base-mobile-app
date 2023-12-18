@@ -22,19 +22,25 @@ import ToastService from "primevue/toastservice";
 import Tooltip from "primevue/tooltip";
 
 /** Sentry iniitialization */
-Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DSN,
-    release: process.env.npm_package_version,
-    dist: "1",
-    integrations: [
-        new SentrySibling.BrowserTracing({
-            // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
-            tracePropagationTargets: ["localhost", import.meta.env.VITE_APP_HOST, import.meta.env.VITE_API_ENDPOINT],
-            routingInstrumentation: SentrySibling.vueRouterInstrumentation(router),
-        }),
-    ],
-    // Performance Monitoring
-    tracesSampleRate: 0.1, //  Capture 10% of the transactions
+Sentry.init(
+    {
+        dsn: import.meta.env.VITE_SENTRY_DSN,
+        release: process.env.npm_package_version,
+        dist: "1",
+        integrations: [
+            new SentrySibling.BrowserTracing({
+                // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+                tracePropagationTargets: [
+                    "localhost",
+                    import.meta.env.VITE_APP_HOST,
+                    import.meta.env.VITE_API_ENDPOINT,
+                ],
+                routingInstrumentation:
+                    SentrySibling.vueRouterInstrumentation(router),
+            }),
+        ],
+        // Performance Monitoring
+        tracesSampleRate: 0.1, //  Capture 10% of the transactions
     },
     SentrySibling.init,
 );
