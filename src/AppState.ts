@@ -44,6 +44,7 @@ export const useMainStore = defineStore("main", {
         userId: "",
         browserSuppport: true,
         menuItems: Array<MenuItemExtended>(),
+        expandedKeysMenu: {},
         deviceId: "",
         deviceName: "",
         deviceModel: "",
@@ -119,6 +120,12 @@ export const useMainStore = defineStore("main", {
             this.$patch({ devicePlatform: info.platform });
 
             return [info.name, info.model, info.platform];
+        },
+
+        updateExpandedKeysMenu(expandedKeys: string) {
+            this.$patch({ expandedKeysMenu: {
+                [expandedKeys]: true,
+            } });
         },
     },
 });
