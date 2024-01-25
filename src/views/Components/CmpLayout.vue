@@ -8,7 +8,6 @@ import CmpFooter from "./CmpFooter.vue";
     <IonPage>
         <IonContent :fullscreen="true" :scroll-y="true">
             <div class="flex flex-col h-full">
-                <CmpToast ref="toastchild" />
                 <CmpHeader />
 
                 <div class="content-child-container-center my-auto">

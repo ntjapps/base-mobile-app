@@ -71,6 +71,7 @@ const clearData = () => {
 
 <template>
     <CmpLayoutNoHeader>
+        <CmpToast ref="toastchild" />
         <div class="grid content-center w-full">
             <div class="flex justify-center">
                 <div
