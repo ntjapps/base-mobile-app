@@ -40,7 +40,7 @@ Sentry.init(
             }),
         ],
         // Performance Monitoring
-        tracesSampleRate: 0.1, //  Capture 10% of the transactions
+        tracesSampleRate: 0.01, //  Capture 10% of the transactions
     },
     SentrySibling.init,
 );
