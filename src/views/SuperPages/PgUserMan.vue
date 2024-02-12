@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { timeGreetings } from "@/AppCommon";
+import { timeGreetings, UserDataInterface } from "@/AppCommon";
 import { useApiStore, useMainStore } from "@/AppState";
 
 import axios from "axios";
@@ -20,18 +20,9 @@ const { userName } = storeToRefs(main);
 const toastchild = ref<typeof CmpToast>();
 
 type BreadCrumbType = Array<{ label: string }>;
-type UserListDataType = Array<{
-    id: number;
-    username: string;
-    name: string;
-    email: string;
-    role: string;
-    created_at: string;
-    updated_at: string;
-}>;
 
 const breadCrumb = ref<BreadCrumbType>([{ label: "User Role Management" }]);
-const userListData = ref<Array<UserListDataType>>(Array<UserListDataType>());
+const userListData = ref<Array<UserDataInterface>>(Array<UserDataInterface>());
 const loading = ref<boolean>(false);
 const usernameData = ref<string>("");
 const nameData = ref<string>("");
