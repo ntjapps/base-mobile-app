@@ -137,9 +137,3 @@ const showViewButton = (data: string): boolean => {
         </div>
     </CmpLayout>
 </template>
-
-<style lang="scss" scoped>
-:deep(.p-column-header-content) {
-    @apply justify-center;
-}
-</style>
