@@ -6,7 +6,6 @@ import { createPinia, Pinia } from "pinia";
 const pinia: Pinia = createPinia();
 import PrimeVue from "primevue/config";
 
-import PrimeTailwind from "./presets/custom";
 import * as Sentry from "@sentry/capacitor";
 import * as SentrySibling from "@sentry/vue";
 
@@ -52,7 +51,6 @@ const MainApp: App<Element> = createApp(BaseApp)
     .use(pinia)
     .use(PrimeVue, {
         unstyled: true,
-        pt: PrimeTailwind,
         ptOptions: { mergeProps: true },
     })
     .use(DialogService)
