@@ -34,16 +34,16 @@ onBeforeMount(() => {
                 <TieredMenu ref="menu" :model="menuItems" :popup="true" />
             </div>
 
-            <div class="flex flex-row-reverse w-full">
+            <div class="flex justify-end w-full">
                 <div
                     v-if="browserSuppport"
-                    class="flex flex-row-reverse w-full my-auto"
+                    class="flex justify-end w-full my-auto"
                 >
                     <CmpPusherState />
                 </div>
                 <div
                     v-if="!browserSuppport"
-                    class="flex flex-row-reverse w-full my-auto"
+                    class="flex justify-end w-full my-auto"
                 >
                     <button class="btn btn-sm btn-error">
                         <i class="pi pi-times m-1" />
