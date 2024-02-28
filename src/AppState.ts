@@ -66,7 +66,7 @@ export const useMainStore = defineStore("main", {
                         userName: response.data.userName,
                     });
                     this.$patch({
-                        menuItems: JSON.parse(response.data.menuItems),
+                        menuItems: Object.values(response.data.menuItems),
                     });
                 })
                 .catch((error) => {
