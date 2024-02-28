@@ -8,7 +8,7 @@
         "build": "rm -rf dist && vite build",
         "test": "cypress run",
         "browser": "echo \"const supportedBrowsers = $(browserslist-useragent-regexp --allowHigherVersions);\n\nexport { supportedBrowsers };\" > src/browser.ts",
-        "presstyle:fix": "npm run prettier:fix ; npm run eslint:fix",
+        "all:fix": "npm run prettier:fix ; npm run eslint:fix",
         "eslint": "eslint --ext .js,.cjs,.ts,.vue src",
         "eslint:fix": "eslint --ext .js,.cjs,.ts,.vue src --fix",
         "prettier": "prettier --check src/**/*.{css,scss,vue,js,cjs,ts,json,md} tests/**/*.{css,scss,vue,js,cjs,ts,json,md} *.{css,scss,vue,js,cjs,ts,json,md}",

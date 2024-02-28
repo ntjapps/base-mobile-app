@@ -123,9 +123,11 @@ export const useMainStore = defineStore("main", {
         },
 
         updateExpandedKeysMenu(expandedKeys: string) {
-            this.$patch({ expandedKeysMenu: {
-                [expandedKeys]: true,
-            } });
+            this.$patch({
+                expandedKeysMenu: {
+                    [expandedKeys]: true,
+                },
+            });
         },
     },
 });

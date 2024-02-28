@@ -65,24 +65,39 @@ function fileDownload(response: AxiosResponse<any, any>) {
 function formatBytesNumber(bytes: number) {
     /** If size less than 1 KB return Bytes */
     if (bytes < 1024) {
-        return bytes.toLocaleString("en-UK", { maximumFractionDigits: 2 }) + " Bytes";
+        return (
+            bytes.toLocaleString("en-UK", { maximumFractionDigits: 2 }) +
+            " Bytes"
+        );
     }
 
     /** If size less than 1 MB return KB */
     if (bytes < 1048576) {
-        return (bytes / 1024).toLocaleString("en-UK", { maximumFractionDigits: 2 }) + " KB";
+        return (
+            (bytes / 1024).toLocaleString("en-UK", {
+                maximumFractionDigits: 2,
+            }) + " KB"
+        );
     }
 
     /** If size less than 1 GB return MB */
     if (bytes < 1073741824) {
-        return (bytes / 1048576).toLocaleString("en-UK", { maximumFractionDigits: 2 }) + " MB";
+        return (
+            (bytes / 1048576).toLocaleString("en-UK", {
+                maximumFractionDigits: 2,
+            }) + " MB"
+        );
     }
 
     /** If size less than 1 TB return GB */
     if (bytes < 1099511627776) {
-        return (bytes / 1073741824).toLocaleString("en-UK", { maximumFractionDigits: 2 }) + " GB";
+        return (
+            (bytes / 1073741824).toLocaleString("en-UK", {
+                maximumFractionDigits: 2,
+            }) + " GB"
+        );
     }
-};
+}
 
 export type UserDataInterface = {
     id: string;
@@ -96,4 +111,11 @@ export type UserDataInterface = {
     roles: Array<any>;
 };
 
-export { timeGreetings, timeView, dateView, syncPromise, fileDownload, formatBytesNumber };
+export {
+    timeGreetings,
+    timeView,
+    dateView,
+    syncPromise,
+    fileDownload,
+    formatBytesNumber,
+};
