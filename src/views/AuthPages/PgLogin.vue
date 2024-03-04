@@ -47,7 +47,7 @@ const postLogindata = async () => {
                 secure.$patch({
                     apiToken: response.data.access_token,
                 });
-                toastchild.value?.toastSuccess("Login Successful");
+                toastchild.value?.toastSuccess(response.data.message);
             }
         })
         .then(() => {
