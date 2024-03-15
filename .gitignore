@@ -18,6 +18,8 @@ log.txt
 npm-debug.log*
 .env
 .env.testing
+.env.dev
+.env.prod
 env-*
 base64_env*
 
