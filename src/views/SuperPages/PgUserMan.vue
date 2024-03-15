@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { timeGreetings } from "@/AppCommon";
+import { storeToRefs } from "pinia";
+import { timeGreetings, UserDataInterface } from "@/AppCommon";
 import { useApiStore, useMainStore } from "@/AppState";
 
 import axios from "axios";
@@ -14,21 +15,14 @@ import InputText from "primevue/inputtext";
 const timeGreet = timeGreetings();
 const api = useApiStore();
 const main = useMainStore();
+const { userName } = storeToRefs(main);
+
 const toastchild = ref<typeof CmpToast>();
 
 type BreadCrumbType = Array<{ label: string }>;
-type UserListDataType = Array<{
-    id: number;
-    username: string;
-    name: string;
-    email: string;
-    role: string;
-    created_at: string;
-    updated_at: string;
-}>;
 
 const breadCrumb = ref<BreadCrumbType>([{ label: "User Role Management" }]);
-const userListData = ref<Array<UserListDataType>>(Array<UserListDataType>());
+const userListData = ref<Array<UserDataInterface>>(Array<UserDataInterface>());
 const loading = ref<boolean>(false);
 const usernameData = ref<string>("");
 const nameData = ref<string>("");
@@ -62,9 +56,9 @@ const showViewButton = (data: string): boolean => {
 <template>
     <CmpLayout :bread-crumb="breadCrumb">
         <CmpToast ref="toastchild" />
-        <div class="my-3 mx-5 p-5 bg-white rounded-lg drop-shadow-lg">
+        <div class="my-3 mx-5 p-5 bg-base-200 rounded-lg drop-shadow-lg">
             <h2 class="title-font font-bold">
-                {{ timeGreet + main.userName }}
+                {{ timeGreet + userName }}
             </h2>
             <h3 class="title-font">User Role Management</h3>
             <div class="grid grid-flow-row text-sm">
@@ -93,7 +87,7 @@ const showViewButton = (data: string): boolean => {
                 <span class="m-1">Find</span>
             </button>
         </div>
-        <div class="my-3 mx-5 p-5 bg-white rounded-lg drop-shadow-lg">
+        <div class="my-3 mx-5 p-5 bg-base-200 rounded-lg drop-shadow-lg">
             <DataTable
                 class="p-datatable-sm editable-cells-table"
                 :value="userListData"
@@ -143,9 +137,3 @@ const showViewButton = (data: string): boolean => {
         </div>
     </CmpLayout>
 </template>
-
-<style lang="scss" scoped>
-:deep(.p-column-header-content) {
-    @apply justify-center;
-}
-</style>

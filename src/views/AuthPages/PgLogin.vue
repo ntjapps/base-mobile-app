@@ -2,21 +2,24 @@
 import axios from "axios";
 
 import { ref } from "vue";
-import { IonContent, IonPage } from "@ionic/vue";
+import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useApiStore, useMainStore, useSecureStore } from "@/AppState";
 import { useWebStore } from "@/AppRouter";
 
 import CmpTurnstile from "../Components/CmpTurnstile.vue";
 import CmpToast from "../Components/CmpToast.vue";
+import CmpLayoutNoHeader from "../Components/CmpLayoutNoHeader.vue";
 
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
-import ProgressSpinner from "primevue/progressspinner";
 
 const web = useWebStore();
 const api = useApiStore();
 const main = useMainStore();
+const { turnstileToken, deviceId, deviceName, deviceModel, devicePlatform } =
+    storeToRefs(main);
+
 const secure = useSecureStore();
 const router = useRouter();
 const toastchild = ref<typeof CmpToast>();
@@ -32,11 +35,11 @@ const postLogindata = async () => {
         .post(api.postTokenLogin, {
             username: username.value,
             password: password.value,
-            token: main.turnstileToken,
-            device_id: main.deviceId,
-            device_name: main.deviceName,
-            device_model: main.deviceModel,
-            device_platform: main.devicePlatform,
+            token: turnstileToken.value,
+            device_id: deviceId.value,
+            device_name: deviceName.value,
+            device_model: deviceModel.value,
+            device_platform: devicePlatform.value,
         })
         .then((response) => {
             clearData();
@@ -44,7 +47,7 @@ const postLogindata = async () => {
                 secure.$patch({
                     apiToken: response.data.access_token,
                 });
-                toastchild.value?.toastSuccess("Login Successful");
+                toastchild.value?.toastSuccess(response.data.message);
             }
         })
         .then(() => {
@@ -67,90 +70,89 @@ const clearData = () => {
 </script>
 
 <template>
-    <IonPage>
-        <IonContent :fullscreen="true">
-            <CmpToast ref="toastchild" />
-            <div class="grid content-center w-full min-h-full max-h-full">
-                <div class="flex justify-center">
-                    <div
-                        v-show="!loading"
-                        class="bg-white rounded-lg drop-shadow-lg"
-                    >
-                        <div class="m-auto p-5">
-                            <div class="text-center font-bold my-2.5">
-                                {{ main.appName }}
-                            </div>
-                            <div
-                                v-if="!main.browserSuppport"
-                                class="text-center font-bold my-2.5"
-                            >
-                                <button class="btn btn-sm btn-error">
-                                    <i class="pi pi-times m-1" />
-                                    <span class="m-1">Browser Unsupported</span>
-                                </button>
-                            </div>
-                            <div class="text-center font-bold my-2.5">
-                                Login to your account
-                            </div>
-                            <div
-                                class="flex justify-center flex-col mt-8 my-2.5 p-float-label"
-                            >
-                                <div class="w-full">
-                                    <span class="p-float-label w-full">
-                                        <InputText
-                                            id="username"
-                                            v-model="username"
-                                            class="text-center"
-                                            @keyup.enter="postLogindata"
-                                        />
-                                        <label for="username">Username</label>
-                                    </span>
-                                </div>
-                            </div>
-                            <div
-                                class="flex justify-center flex-col mt-8 my-2.5 p-float-label"
-                            >
-                                <div class="w-full">
-                                    <span class="p-float-label w-full">
-                                        <Password
-                                            id="password"
-                                            v-model="password"
-                                            :feedback="false"
-                                            class="text-center"
-                                            @keyup.enter="postLogindata"
-                                        />
-                                        <label for="password">Password</label>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="flex justify-center py-2.5">
-                                <CmpTurnstile ref="turnchild" />
-                            </div>
-                            <div class="flex justify-center py-2.5">
-                                <button
-                                    class="btn btn-primary"
-                                    @click="postLogindata"
-                                >
-                                    <span class="m-1">Login</span>
-                                </button>
+    <CmpLayoutNoHeader>
+        <CmpToast ref="toastchild" />
+        <div class="grid content-center w-full">
+            <div class="flex justify-center">
+                <div
+                    v-show="!loading"
+                    class="bg-white rounded-lg drop-shadow-lg"
+                >
+                    <div class="m-auto p-5">
+                        <div class="text-center font-bold my-2.5">
+                            {{ main.appName }}
+                        </div>
+                        <div
+                            v-if="!main.browserSuppport"
+                            class="text-center font-bold my-2.5"
+                        >
+                            <button class="btn btn-sm btn-error">
+                                <i class="pi pi-times m-1" />
+                                <span class="m-1">Browser Unsupported</span>
+                            </button>
+                        </div>
+                        <div class="text-center font-bold my-2.5">
+                            Login to your account
+                        </div>
+                        <div
+                            class="flex justify-center flex-col mt-8 my-2.5 p-float-label"
+                        >
+                            <div class="w-full">
+                                <span class="p-float-label w-full">
+                                    <InputText
+                                        id="username"
+                                        v-model="username"
+                                        class="text-center"
+                                        @keyup.enter="postLogindata"
+                                    />
+                                    <label for="username">Username</label>
+                                </span>
                             </div>
                         </div>
-                    </div>
-                    <div
-                        v-show="loading"
-                        class="bg-white rounded-lg drop-shadow-lg"
-                    >
-                        <div class="m-auto p-5">
-                            <div class="text-center font-bold my-2.5">
-                                <ProgressSpinner />
+                        <div
+                            class="flex justify-center flex-col mt-8 my-2.5 p-float-label"
+                        >
+                            <div class="w-full">
+                                <span class="p-float-label w-full">
+                                    <Password
+                                        id="password"
+                                        v-model="password"
+                                        :feedback="false"
+                                        class="text-center"
+                                        @keyup.enter="postLogindata"
+                                    />
+                                    <label for="password">Password</label>
+                                </span>
                             </div>
-                            <div class="text-center font-bold my-2.5">
-                                Loading
-                            </div>
+                        </div>
+                        <div class="flex justify-center py-2.5">
+                            <CmpTurnstile ref="turnchild" />
+                        </div>
+                        <div class="flex justify-center py-2.5">
+                            <button
+                                class="btn btn-primary"
+                                @click="postLogindata"
+                            >
+                                <span class="m-1">Login</span>
+                            </button>
                         </div>
                     </div>
                 </div>
+                <div
+                    v-show="loading"
+                    class="bg-white rounded-lg drop-shadow-lg"
+                >
+                    <div class="m-auto p-5">
+                        <div class="text-center font-bold my-2.5">
+                            <i
+                                class="pi pi-spin pi-spinner"
+                                style="font-size: 3rem"
+                            ></i>
+                        </div>
+                        <div class="text-center font-bold my-2.5">Loading</div>
+                    </div>
+                </div>
             </div>
-        </IonContent>
-    </IonPage>
+        </div>
+    </CmpLayoutNoHeader>
 </template>

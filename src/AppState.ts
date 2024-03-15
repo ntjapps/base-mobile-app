@@ -10,7 +10,7 @@ export const useApiStore = defineStore("api", {
     state: () => ({
         /** API request */
         postTokenLogin: import.meta.env.VITE_API_ENDPOINT + "/api/post-token",
-        postTokeonLogout:
+        postTokenLogout:
             import.meta.env.VITE_API_ENDPOINT + "/api/post-token-revoke",
         postProfile:
             import.meta.env.VITE_API_ENDPOINT + "/api/post-update-profile",
@@ -37,9 +37,14 @@ export const useMainStore = defineStore("main", {
     state: () => ({
         /** Additional data */
         appName: import.meta.env.VITE_APP_NAME,
+        appVersion: import.meta.env.VITE_APP_VERSION,
+        appBypassUpdate:
+            import.meta.env.VITE_APP_BYPASS_UPDATE == true ? true : false,
         userName: "",
+        userId: "",
         browserSuppport: true,
         menuItems: Array<MenuItemExtended>(),
+        expandedKeysMenu: {},
         deviceId: "",
         deviceName: "",
         deviceModel: "",
@@ -61,7 +66,7 @@ export const useMainStore = defineStore("main", {
                         userName: response.data.userName,
                     });
                     this.$patch({
-                        menuItems: JSON.parse(response.data.menuItems),
+                        menuItems: Object.values(response.data.menuItems),
                     });
                 })
                 .catch((error) => {
@@ -93,15 +98,16 @@ export const useMainStore = defineStore("main", {
                 });
         },
 
-        async deviceIdGet() {
+        async deviceIdGet(): Promise<string> {
             /**
              * Get device id
              */
             const info = await Device.getId();
-            this.$patch({ deviceId: info.uuid });
+            this.$patch({ deviceId: info.identifier });
+            return info.identifier;
         },
 
-        async deviceNameGet() {
+        async deviceNameGet(): Promise<Array<string>> {
             /**
              * Get device name
              */
@@ -112,36 +118,44 @@ export const useMainStore = defineStore("main", {
             this.$patch({ deviceName: info.name });
             this.$patch({ deviceModel: info.model });
             this.$patch({ devicePlatform: info.platform });
+
+            return [info.name, info.model, info.platform];
+        },
+
+        updateExpandedKeysMenu(expandedKeys: string) {
+            this.$patch({
+                expandedKeysMenu: {
+                    [expandedKeys]: true,
+                },
+            });
         },
     },
 });
 
 export const useEchoStore = defineStore("echo", {
-    getters: {
-        laravelEcho: () => {
-            return new Echo({
-                broadcaster: "pusher",
-                key: import.meta.env.VITE_PUSHER_APP_KEY,
-                cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? "mt1",
-                wsHost: import.meta.env.VITE_PUSHER_HOST
-                    ? import.meta.env.VITE_PUSHER_HOST
-                    : `ws-${
-                          import.meta.env.VITE_PUSHER_APP_CLUSTER
-                      }.pusher.com`,
-                wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
-                wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
-                forceTLS:
-                    (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
-                enabledTransports: ["ws", "wss"],
-                //authEndpoint: import.meta.env.VITE_API_ENDPOINT + "/api/broadcasting/auth",
-                //auth: {
-                //headers: {
-                //Accept: "application/json",
-                //},
-                //},
-            });
-        },
-    },
+    state: () => ({
+        laravelEcho: new Echo({
+            broadcaster: "pusher",
+            key: import.meta.env.VITE_PUSHER_APP_KEY,
+            cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? "mt1",
+            wsHost: import.meta.env.VITE_PUSHER_HOST
+                ? import.meta.env.VITE_PUSHER_HOST
+                : `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
+            wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
+            wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
+            forceTLS:
+                (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
+            enabledTransports: ["ws", "wss"],
+            authEndpoint:
+                import.meta.env.VITE_API_ENDPOINT + "/api/broadcasting/auth",
+            auth: {
+                headers: {
+                    Accept: "application/json",
+                    Authorization: `Bearer ${useSecureStore().apiToken}`,
+                },
+            },
+        }),
+    }),
 });
 
 export const useSecureStore = defineStore("secure", {
@@ -156,19 +170,31 @@ export const useSecureStore = defineStore("secure", {
             const api = useApiStore();
             const main = useMainStore();
             let result = false;
-            if (this.apiToken !== "") {
-                axios.defaults.headers.common[
-                    "Authorization"
-                ] = `Bearer ${this.apiToken}`;
+
+            if (localStorage.getItem("apiToken") !== "") {
+                axios.defaults.headers.common["Authorization"] =
+                    `Bearer ${localStorage.getItem("apiToken")}`;
+            } else {
+                axios.defaults.headers.common["Authorization"] = `Bearer`;
+                return false;
             }
+
             await main.spaCsrfToken();
             await axios
                 .post(api.appConst)
                 .then((response) => {
                     result = response.data.isAuth;
+                    if (!result) {
+                        this.$patch({
+                            apiToken: "",
+                        });
+                    }
                 })
                 .catch(() => {
                     result = false;
+                    this.$patch({
+                        apiToken: "",
+                    });
                 });
             return result;
         },

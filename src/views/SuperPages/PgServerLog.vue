@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
+import { storeToRefs } from "pinia";
 import { timeGreetings } from "@/AppCommon";
 import { useApiStore, useMainStore } from "@/AppState";
 
@@ -15,6 +16,7 @@ import InputText from "primevue/inputtext";
 const timeGreet = timeGreetings();
 const api = useApiStore();
 const main = useMainStore();
+const { userName, appName } = storeToRefs(main);
 
 type BreadCrumbType = Array<{ label: string }>;
 type ServerLogDataType = Array<{
@@ -76,17 +78,17 @@ onBeforeMount(() => {
 
 <template>
     <CmpLayout :bread-crumb="breadCrumb">
-        <div class="my-3 mx-5 p-5 bg-white rounded-lg drop-shadow-lg">
+        <div class="my-3 mx-5 p-5 bg-base-200 rounded-lg drop-shadow-lg">
             <div class="flex justify-between">
                 <div>
                     <h2 class="title-font font-bold">
-                        {{ timeGreet + main.userName }}
+                        {{ timeGreet + userName }}
                     </h2>
-                    <h3 class="title-font">Server Log in {{ main.appName }}</h3>
+                    <h3 class="title-font">Server Log in {{ appName }}</h3>
                 </div>
             </div>
         </div>
-        <div class="my-3 mx-5 p-5 bg-white rounded-lg drop-shadow-lg">
+        <div class="my-3 mx-5 p-5 bg-base-200 rounded-lg drop-shadow-lg">
             <div class="flex flex-row my-2">
                 <div class="flex w-full px-1">
                     <div class="w-28 my-auto text-sm m-auto">Date Start</div>
@@ -161,7 +163,7 @@ onBeforeMount(() => {
                 </div>
             </div>
         </div>
-        <div class="my-3 mx-5 p-5 bg-white rounded-lg drop-shadow-lg">
+        <div class="my-3 mx-5 p-5 bg-base-200 rounded-lg drop-shadow-lg">
             <DataTable
                 class="p-datatable-sm text-sm"
                 :value="serverLogData"
@@ -188,7 +190,7 @@ onBeforeMount(() => {
                     <template #body="slotProps">
                         {{
                             new Date(slotProps.data.created_at).toLocaleString(
-                                "en-UK"
+                                "en-UK",
                             )
                         }}
                     </template>

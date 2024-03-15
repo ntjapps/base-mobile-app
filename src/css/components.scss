@@ -4,34 +4,50 @@
 }
 
 .p-toast {
-    @media screen and (max-width: 985px) {
-        width: 90% !important;
-    }
-}
-
-.footer-container {
-    @apply sticky top-screen right-0 left-0 p-1 w-full;
+    width: 85% !important;
 }
 
 .header-container {
-    @apply sticky top-0 w-full z-50 drop-shadow-xl;
-}
-
-.content-container {
-    @apply min-h-screen;
-}
-
-.content-child-container {
-    @apply flex flex-col min-h-fit content-start;
+    @apply sticky top-0 w-full z-40;
 }
 
 .content-child-container-center {
-    @apply grid content-center;
-    position: fixed;
-    height: 82.5%;
-    width: 100%;
+    @apply relative flex flex-col w-full h-fit;
+}
+
+.center-box-container {
+    @apply flex flex-col justify-center my-3 bg-white drop-shadow-lg box-border;
+
+    border-style: solid none;
+}
+
+.box-container {
+    @apply box-border;
+
+    border-style: solid none;
 }
 
 .btn-ext {
     @apply btn p-2.5;
+}
+
+body.camera-behind-webview {
+    background: transparent;
+
+    --background: transparent;
+    --ion-background-color: transparent;
+}
+
+html.camera-behind-webview {
+    background: transparent;
+
+    --background: transparent;
+    --ion-background-color: transparent;
+}
+
+:root.camera-behind-webview {
+    background: transparent;
+
+    --background: transparent;
+    --ion-background-color: transparent;
 }

@@ -1,18 +1,28 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
+import { storeToRefs } from "pinia";
 import { useSecureStore, useEchoStore } from "@/AppState";
 
 const pusherState = ref<string>("connecting");
 const connected = ref<boolean>(false);
 const connecting = ref<boolean>(true);
 const unavailable = ref<boolean>(false);
-const echo = useEchoStore().laravelEcho;
+const echoStore = useEchoStore();
+const { laravelEcho } = storeToRefs(echoStore);
+const echo = laravelEcho.value;
 
 const showConnected = () => {
     connected.value = true;
     connecting.value = false;
     unavailable.value = false;
-    echo.private("all");
+    echo.private("all").error((error: any) => {
+        if (error.status >= 400 && error.status < 500) {
+            secure.$patch({
+                apiToken: "",
+            });
+        }
+        window.location.reload();
+    });
 };
 
 const showConnecting = () => {
@@ -46,20 +56,22 @@ onBeforeMount(() => {
                 showUnavailable();
                 break;
         }
-    }, 1000);
+    }, 500);
 });
 </script>
 
 <template>
-    <button v-if="connected" class="btn btn-success text-xs">
-        <i class="pi pi-bell mr-1" />
-        <span class="m-1">Connected</span>
-    </button>
-    <button v-if="connecting" class="btn btn-warning loading text-xs">
-        <span class="m-1">Connecting</span>
-    </button>
-    <button v-if="unavailable" class="btn btn-error text-xs">
-        <i class="pi pi-times mr-1" />
-        <span class="m-1">Unavailable</span>
-    </button>
+    <div class="flex m-auto">
+        <button v-if="connected" class="btn btn-success text-xs">
+            <i class="ico ico-chart-bar w-5 h-5" />
+            <span class="m-1">Connected</span>
+        </button>
+        <button v-if="connecting" class="btn btn-warning loading text-xs">
+            <span class="m-1">Connecting</span>
+        </button>
+        <button v-if="unavailable" class="btn btn-error text-xs">
+            <i class="pi pi-times mr-1" />
+            <span class="m-1">Unavailable</span>
+        </button>
+    </div>
 </template>

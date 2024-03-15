@@ -24,3 +24,6 @@
 -keep class com.google.firebase.** { *; }
 -keep class com.google.android.gms.** { *; }
 -dontwarn com.google.firebase.messaging.TopicOperation$TopicOperations
+
+# Capacitor
+-keep public class * extends com.getcapacitor.Plugin
