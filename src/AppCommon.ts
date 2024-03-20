@@ -104,6 +104,22 @@ function formatBytesNumber(bytes: number) {
     }
 }
 
+export type RoleDataInterface = {
+    id: string;
+    name: string;
+};
+
+export type PermissionDataInterface = {
+    id: string;
+    name: string;
+};
+
+export type RoleListDataInterface = {
+    id: string;
+    name: string;
+    permissions: Array<PermissionDataInterface>;
+};
+
 export type UserDataInterface = {
     id: string;
     name: string;
@@ -111,9 +127,9 @@ export type UserDataInterface = {
     created_at: string;
     updated_at: string;
     deleted_at: string;
-    user_permission: Array<any>;
-    permissions: Array<any>;
-    roles: Array<any>;
+    user_permission: Array<PermissionDataInterface>;
+    permissions: Array<PermissionDataInterface>;
+    roles: Array<RoleDataInterface>;
 };
 
 export {
