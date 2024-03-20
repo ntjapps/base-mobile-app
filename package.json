@@ -1,6 +1,6 @@
 {
     "name": "base-mobile-app",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "dev": "rm -rf dist && vite",
@@ -32,7 +32,7 @@
         "@ionic/vue": "^7.7.2",
         "@ionic/vue-router": "^7.7.2",
         "@sentry/capacitor": "^0.16.0",
-        "@sentry/vue": "7.93.0",
+        "@sentry/vue": "7.107.0",
         "@vueuse/core": "^10.7.2",
         "axios": "^1.6.7",
         "core-js": "^3.36.0",
@@ -50,12 +50,12 @@
     "devDependencies": {
         "@capacitor/cli": "^5.7.2",
         "@pinia/testing": "^0.1.3",
-        "@types/chai": "^4.3.11",
+        "@types/chai": "^4.3.13",
         "@types/jest": "^29.5.12",
         "@types/mocha": "^10.0.6",
-        "@types/node": "^20.11.19",
-        "@typescript-eslint/eslint-plugin": "^7.0.1",
-        "@typescript-eslint/parser": "^7.2.0",
+        "@types/node": "^20.11.29",
+        "@typescript-eslint/eslint-plugin": "^7.3.1",
+        "@typescript-eslint/parser": "^7.3.1",
         "@vitejs/plugin-vue": "^5.0.4",
         "@vue/eslint-config-typescript": "^13.0.0",
         "@vue/test-utils": "^2.4.4",
