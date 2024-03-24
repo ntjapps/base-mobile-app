@@ -2,7 +2,7 @@ import { CapacitorConfig } from "@capacitor/cli";
 import { KeyboardResize } from "@capacitor/keyboard";
 
 const config: CapacitorConfig = {
-    appId: "com.ntj125app.base-mobile",
+    appId: "com.ntj125app.base_mobile",
     appName: "base-mobile-app",
     server: {
         hostname: "base-mobile-app.localhost",
