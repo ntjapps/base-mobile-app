@@ -51,28 +51,10 @@ jobs:
           sudo ln -sf ${{ github.workspace }}/debug.keystore /home/runner/.android/debug.keystore ;
           echo $ENCODED_STRING | base64 -d > ${{ github.workspace }}/main.jks
 
-      - name: Set NodeJS Version
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: |
-          echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v4
-        id: npm-cache
-        with:
-          path: |
-            ${{ steps.npm-cache-dir.outputs.dir }}
-            ${{ runner.temp }}/cache/Cypress
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      - name: NPM Setup
+        uses: bahmutov/npm-install@v1
 
-      - name: NPM CI Install
-        run: npm ci --force
-
-      - name: NPM Vite Build
+      - name: NPM Build
         run: npx vite build
 
       - name: APK Ionic Build
