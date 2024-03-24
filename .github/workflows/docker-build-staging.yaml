@@ -43,8 +43,8 @@ jobs:
 
       - name: Decode keystore
         env:
-          DEBUG_ENCODED_STRING: ${{ secrets.DEBUG_KEYSTORE }}
-          ENCODED_STRING: ${{ secrets.KEYSTORE }}
+          DEBUG_ENCODED_STRING: ${{ vars.DEBUG_KEYSTORE }}
+          ENCODED_STRING: ${{ vars.KEYSTORE }}
         run: |
           echo $DEBUG_ENCODED_STRING | base64 -d > ${{ github.workspace }}/debug.keystore ;
           sudo mkdir -p /home/runner/.android ; sudo chmod a+rw -R /home/runner/.android ;
@@ -69,12 +69,12 @@ jobs:
           ./gradlew signingReport
         env:
           DEBUG_STORE_FILE: ${{ github.workspace }}/debug.keystore
-          DEBUG_STORE_PASSWORD: ${{ secrets.DEBUG_STORE_PASSWORD }}
-          DEBUG_KEY_ALIAS: ${{ secrets.DEBUG_KEY_ALIAS }}
-          DEBUG_KEY_PASSWORD: ${{ secrets.DEBUG_KEY_PASSWORD }}
+          DEBUG_STORE_PASSWORD: ${{ vars.DEBUG_STORE_PASSWORD }}
+          DEBUG_KEY_ALIAS: ${{ vars.DEBUG_KEY_ALIAS }}
+          DEBUG_KEY_PASSWORD: ${{ vars.DEBUG_KEY_PASSWORD }}
           SIGNING_STORE_FILE: ${{ github.workspace }}/main.jks
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_ALIAS: ${{ vars.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
       - name: Zip Android Build Artifacts
