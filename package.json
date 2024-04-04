@@ -42,7 +42,7 @@
         "lodash": "^4.17.21",
         "pinia": "^2.1.7",
         "primeicons": "^7.0.0",
-        "primevue": "^3.48.1",
+        "primevue": "^3.51.0",
         "pusher-js": "^8.4.0-rc2",
         "vue": "^3.4.19",
         "vue-router": "^4.2.5"
