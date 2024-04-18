@@ -45,7 +45,7 @@
         "primevue": "^3.51.0",
         "pusher-js": "^8.4.0-rc2",
         "vue": "^3.4.19",
-        "vue-router": "^4.2.5"
+        "vue-router": "^4.3.1"
     },
     "devDependencies": {
         "@capacitor/cli": "^6.0.0",
