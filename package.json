@@ -32,7 +32,7 @@
         "@ionic/vue": "^8.0.0",
         "@ionic/vue-router": "^8.0.0",
         "@sentry/capacitor": "^0.17.0",
-        "@sentry/vue": "7.93.0",
+        "@sentry/vue": "7.111.0",
         "@vueuse/core": "^10.7.2",
         "axios": "^1.6.7",
         "core-js": "^3.36.0",
