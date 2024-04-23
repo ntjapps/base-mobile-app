@@ -7,7 +7,7 @@
         "serve": "rm -rf dist && vite preview",
         "build": "rm -rf dist && vite build",
         "test": "cypress run",
-        "browser": "echo \"const supportedBrowsers = $(browserslist-useragent-regexp --allowHigherVersions);\n\nexport { supportedBrowsers };\" > src/browser.ts",
+        "browser": "echo \"const supportedBrowsers = $(browserslist-useragent-regexp --allowHigherVersions);\n\nexport { supportedBrowsers };\" > src/ts/browser.ts",
         "all:fix": "npm run prettier:fix ; npm run eslint:fix",
         "eslint": "eslint --ext .js,.cjs,.ts,.vue src",
         "eslint:fix": "eslint --ext .js,.cjs,.ts,.vue src --fix",
