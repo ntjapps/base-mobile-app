@@ -74,6 +74,7 @@
         "sass": "^1.74.1",
         "tailwindcss": "^3.4.1",
         "vite": "^5.2.8",
-        "vite-plugin-static-copy": "^1.0.1"
+        "vite-plugin-static-copy": "^1.0.1",
+        "vue-screen": "^2.4.0"
     }
 }
