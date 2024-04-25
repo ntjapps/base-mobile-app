@@ -2,6 +2,7 @@
     "name": "base-mobile-app",
     "version": "1.0.0",
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "rm -rf dist && vite",
         "serve": "rm -rf dist && vite preview",
