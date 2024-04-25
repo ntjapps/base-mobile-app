@@ -87,7 +87,7 @@ jobs:
         run: pnpm dlx vite build
 
       - name: IPA Ionic Build
-        run: pnpm dlx cap sync ios
+        run: npx cap sync ios
 
       - name: Generate exportOptions.plist
         if: env.BUILD_CERTIFICATE_BASE64 != '' && env.BUILD_PROVISION_PROFILE_BASE64 != ''

@@ -81,7 +81,7 @@ jobs:
         run: pnpm dlx vite build
 
       - name: APK Ionic Build
-        run: pnpm dlx cap sync android
+        run: npx cap sync android
 
       - name: Generate APK Bundle
         run: |
