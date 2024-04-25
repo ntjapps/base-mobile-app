@@ -1,5 +1,5 @@
 module.exports = {
-    plugins: [require("daisyui")],
+    plugins: [require("daisyui"), require("flowbite/plugin")],
     content: [
         "src/*.js",
         "src/*.ts",
@@ -11,6 +11,7 @@ module.exports = {
         "src/**/**/*.ts",
         "src/**/**/*.vue",
         "./node_modules/primevue/**/*.{vue,js,ts,jsx,tsx}",
+        "./node_modules/flowbite/**/*.js",
     ],
     darkMode: "class",
     theme: {
