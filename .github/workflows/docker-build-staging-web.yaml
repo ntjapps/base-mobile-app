@@ -18,9 +18,6 @@ jobs:
       contents: read
       packages: write
 
-    outputs:
-      npm-cache: ${{ steps.npm-cache-dir.outputs.dir }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
