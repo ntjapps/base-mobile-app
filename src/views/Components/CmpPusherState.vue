@@ -21,7 +21,6 @@ const showConnected = () => {
                 apiToken: "",
             });
         }
-        window.location.reload();
     });
 };
 
