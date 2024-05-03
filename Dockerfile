@@ -5,14 +5,10 @@ RUN rm -rf /var/www/vhosts/localhost && \
     mkdir -p /var/www/vhosts
 
 #This COPY is important. The Run Command cannot access GCP Build dir or volumes
-COPY . /var/www/vhosts/temp
+COPY --chown=65534:65534 . /var/www/vhosts/localhost
 
-RUN mkdir -p /var/www/vhosts/localhost && \
-    mv /var/www/vhosts/temp/dist /var/www/vhosts/localhost/html && \
-    rm -rf /var/www/vhosts/temp && \
-    chown nobody:nogroup -R /var/www/vhosts/localhost
+RUN rm -rf /var/www/vhosts/localhost/Dockerfile && \
+    ln -sf /var/www/vhosts/localhost/public /var/www/vhosts/localhost/html && \
+    ls -lah /var/www/vhosts/localhost
 
 VOLUME ["/var/www/vhosts/localhost/storage"]
-
-ENTRYPOINT ["/sbin/tini", "-g", "--"]
-CMD ["/entrypoint.sh"]
