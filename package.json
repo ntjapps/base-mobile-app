@@ -30,7 +30,7 @@
         "@capacitor/status-bar": "^6.0.0",
         "@capacitor/toast": "^6.0.0",
         "@ionic/pwa-elements": "^3.2.2",
-        "@ionic/vue": "^8.1.0",
+        "@ionic/vue": "^8.1.1",
         "@ionic/vue-router": "^8.1.0",
         "@sentry/capacitor": "^0.17.0",
         "@sentry/vue": "7.93.0",
