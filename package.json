@@ -32,7 +32,7 @@
         "@ionic/pwa-elements": "^3.3.0",
         "@ionic/vue": "^8.2.1",
         "@ionic/vue-router": "^8.2.1",
-        "@vueuse/core": "^10.10.1",
+        "@vueuse/core": "^10.11.0",
         "axios": "^1.7.2",
         "core-js": "^3.37.1",
         "dotenv": "^16.4.5",
