@@ -30,7 +30,7 @@
         "@capacitor/status-bar": "^6.0.0",
         "@capacitor/toast": "^6.0.0",
         "@ionic/pwa-elements": "^3.3.0",
-        "@ionic/vue": "^8.2.1",
+        "@ionic/vue": "^8.2.2",
         "@ionic/vue-router": "^8.2.1",
         "@vueuse/core": "^10.10.1",
         "axios": "^1.7.2",
