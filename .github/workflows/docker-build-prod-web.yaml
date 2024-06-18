@@ -80,7 +80,7 @@ jobs:
       - name: Clean Build App
         run: rm -rf node_modules public src tests android ios cypress .git .github .gitlab .gitattributes .gitignore .vscode .editorconfig .env .env.example .styleci.yml .eslintignore .eslintrc.js .stylelintrc.json package.json package-lock.json tsconfig.json tsconfig.node.json *.yaml *.md *.lock *.xml *.yml *.ts *.js *.html *.json
       - name: Build & Push Container
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         if: env.REGISTRY != '' && env.IMAGE_NAME != ''
         with:
           context: .
