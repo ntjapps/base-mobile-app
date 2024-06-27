@@ -62,7 +62,7 @@
         "browserslist-useragent-regexp": "^4.1.3",
         "cypress": "^13.12.0",
         "cypress-vite": "^1.5.0",
-        "daisyui": "^4.12.8",
+        "daisyui": "^4.12.10",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.1.3",
