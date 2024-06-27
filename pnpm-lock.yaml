@@ -48,8 +48,8 @@ importers:
         specifier: ^8.2.2
         version: 8.2.2
       '@ionic/vue-router':
-        specifier: ^8.2.2
-        version: 8.2.2
+        specifier: ^8.2.3
+        version: 8.2.3
       '@vueuse/core':
         specifier: ^10.11.0
         version: 10.11.0(vue@3.4.30(typescript@5.4.5))
@@ -454,6 +454,9 @@ packages:
   '@ionic/core@8.2.2':
     resolution: {integrity: sha512-gpWemL5IJjGDJPz6dltHnFyqioRl0sugs2PUXrwPaYwMnTDoRZ6iojYFovCIr5YJN99rHZprOthdcsYR/viGyQ==}
 
+  '@ionic/core@8.2.3':
+    resolution: {integrity: sha512-BK50xvYNJgv1v3dRhmZBvNTpXKYzBALKMta5UoFPx7mspRWXqW1VqBCVULDGsZGliLc1+cgyulydRoh90/Ea0A==}
+
   '@ionic/pwa-elements@3.3.0':
     resolution: {integrity: sha512-vbykpxd2nGRlA67AnqDwsiVf8PUmInLyi6lQdnPDjeiML1WZa0CPe6r632nGDV9PTi+sWNde9Xexg9SD6Pwyqw==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
@@ -502,11 +505,14 @@ packages:
     resolution: {integrity: sha512-3cKScz9Jx2/Pr9ijj1OzGlBDfcmx7OMVBt4+P1uRR0SSW4cm1/y3Mo4OY3lfkuaYifMNBW8Wz6lQHbs1bihr7A==}
     engines: {node: '>=16.0.0'}
 
-  '@ionic/vue-router@8.2.2':
-    resolution: {integrity: sha512-HskymeeW/65pQftCLD4hXW4fbKFil9D1Zu5JRHMRKmt7IOzm4PjNK4yxFjw5jXHlNYoidXeC+Qz9uJDGkOHUOQ==}
+  '@ionic/vue-router@8.2.3':
+    resolution: {integrity: sha512-Tsbqy9xjajKGTjRcceQOUSW14DX4NAcCpImvbdZOnY+A1ZJdrKwCPNwvzUFTe8pLOF9MzespG+fvcNsIYj5RSQ==}
 
   '@ionic/vue@8.2.2':
     resolution: {integrity: sha512-5xIkEX4UHs4Bm15wqG/xBSxUtWdnHv+eFD3dfYGEVhK+M5hp4Vv+YOhHx6xVLKtdQOC3p+ROCXK+7GmCrAv6KQ==}
+
+  '@ionic/vue@8.2.3':
+    resolution: {integrity: sha512-6JvY4S4vWRjUbId0ExeJusFAzV1RQWem2ZwGLiUgmk1fDaP3v988VBE5imtAz9hEtgX299OkXIPhhcwhqJy8vA==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -658,6 +664,11 @@ packages:
 
   '@stencil/core@4.18.3':
     resolution: {integrity: sha512-8yoG5AFQYEPocVtuoc5kvRS0Hku0MoDWDUpADRaXPVHsOFLmxR16LJENj25ucCz5GEfeTGQ/tCE8JAypPmr/fQ==}
+    engines: {node: '>=16.0.0', npm: '>=7.10.0'}
+    hasBin: true
+
+  '@stencil/core@4.19.0':
+    resolution: {integrity: sha512-Lky99+K9guu5fFMi3ows9q6p0/gjuZmfmVHxcPMQa5QZKSwG+D19u7G1xcd3p6I+xIfwk71gFxrmcKU1gaOCdg==}
     engines: {node: '>=16.0.0', npm: '>=7.10.0'}
     hasBin: true
 
@@ -2856,6 +2867,12 @@ snapshots:
       ionicons: 7.4.0
       tslib: 2.6.3
 
+  '@ionic/core@8.2.3':
+    dependencies:
+      '@stencil/core': 4.19.0
+      ionicons: 7.4.0
+      tslib: 2.6.3
+
   '@ionic/pwa-elements@3.3.0': {}
 
   '@ionic/utils-array@2.1.5':
@@ -2967,13 +2984,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@ionic/vue-router@8.2.2':
+  '@ionic/vue-router@8.2.3':
     dependencies:
-      '@ionic/vue': 8.2.2
+      '@ionic/vue': 8.2.3
 
   '@ionic/vue@8.2.2':
     dependencies:
       '@ionic/core': 8.2.2
+      ionicons: 7.4.0
+
+  '@ionic/vue@8.2.3':
+    dependencies:
+      '@ionic/core': 8.2.3
       ionicons: 7.4.0
 
   '@isaacs/cliui@8.0.2':
@@ -3099,6 +3121,8 @@ snapshots:
   '@sinclair/typebox@0.27.8': {}
 
   '@stencil/core@4.18.3': {}
+
+  '@stencil/core@4.19.0': {}
 
   '@types/chai@4.3.16': {}
 
