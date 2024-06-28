@@ -43,7 +43,7 @@
         "primeicons": "^7.0.0",
         "primevue": "^3.53.0",
         "pusher-js": "8.4.0-rc2",
-        "vue": "^3.4.30",
+        "vue": "^3.4.31",
         "vue-router": "^4.4.0"
     },
     "devDependencies": {
