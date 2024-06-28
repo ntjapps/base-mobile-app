@@ -1,11 +1,6 @@
 import "@/ts/bootstrap";
 import "@/ts/scss";
 
-/**
- * Load flowbite assets
- */
-import "flowbite";
-
 import { createApp, App } from "vue";
 import { createPinia, Pinia } from "pinia";
 const pinia: Pinia = createPinia();
