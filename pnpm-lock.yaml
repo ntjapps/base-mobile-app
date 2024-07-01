@@ -48,8 +48,8 @@ importers:
         specifier: ^8.2.3
         version: 8.2.3
       '@ionic/vue-router':
-        specifier: ^8.2.3
-        version: 8.2.3
+        specifier: ^8.2.4
+        version: 8.2.4
       '@vueuse/core':
         specifier: ^10.11.0
         version: 10.11.0(vue@3.4.30(typescript@5.4.5))
@@ -451,6 +451,9 @@ packages:
   '@ionic/core@8.2.3':
     resolution: {integrity: sha512-BK50xvYNJgv1v3dRhmZBvNTpXKYzBALKMta5UoFPx7mspRWXqW1VqBCVULDGsZGliLc1+cgyulydRoh90/Ea0A==}
 
+  '@ionic/core@8.2.4':
+    resolution: {integrity: sha512-lCsPzSEVs/XQMF25/phHlwhDNUlz4gqotzY/fEbhq2PT6Z5w81NndRAPsLQ4JM2k4N2gjJNeUFZJi+W78z2qtA==}
+
   '@ionic/pwa-elements@3.3.0':
     resolution: {integrity: sha512-vbykpxd2nGRlA67AnqDwsiVf8PUmInLyi6lQdnPDjeiML1WZa0CPe6r632nGDV9PTi+sWNde9Xexg9SD6Pwyqw==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
@@ -499,11 +502,14 @@ packages:
     resolution: {integrity: sha512-3cKScz9Jx2/Pr9ijj1OzGlBDfcmx7OMVBt4+P1uRR0SSW4cm1/y3Mo4OY3lfkuaYifMNBW8Wz6lQHbs1bihr7A==}
     engines: {node: '>=16.0.0'}
 
-  '@ionic/vue-router@8.2.3':
-    resolution: {integrity: sha512-Tsbqy9xjajKGTjRcceQOUSW14DX4NAcCpImvbdZOnY+A1ZJdrKwCPNwvzUFTe8pLOF9MzespG+fvcNsIYj5RSQ==}
+  '@ionic/vue-router@8.2.4':
+    resolution: {integrity: sha512-WEfVMrR3WAp7hb61S4cWbu4fUqRk2Qovs2Gx4HoOBWrNvZAWzLhaJjsmGx11eW+y0S0lZ6rp/Z/WOl9YpgeepQ==}
 
   '@ionic/vue@8.2.3':
     resolution: {integrity: sha512-6JvY4S4vWRjUbId0ExeJusFAzV1RQWem2ZwGLiUgmk1fDaP3v988VBE5imtAz9hEtgX299OkXIPhhcwhqJy8vA==}
+
+  '@ionic/vue@8.2.4':
+    resolution: {integrity: sha512-0HVaV0temhEsxnaZTx2DibFEGe7QTy7COaL3dquT2/KapPpEcDkKXB/eyYjPbbxDbNmv5jFfmaV7YGJ7Ad2mmg==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -2843,6 +2849,12 @@ snapshots:
       ionicons: 7.4.0
       tslib: 2.6.3
 
+  '@ionic/core@8.2.4':
+    dependencies:
+      '@stencil/core': 4.19.1
+      ionicons: 7.4.0
+      tslib: 2.6.3
+
   '@ionic/pwa-elements@3.3.0': {}
 
   '@ionic/utils-array@2.1.5':
@@ -2954,13 +2966,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@ionic/vue-router@8.2.3':
+  '@ionic/vue-router@8.2.4':
     dependencies:
-      '@ionic/vue': 8.2.3
+      '@ionic/vue': 8.2.4
 
   '@ionic/vue@8.2.3':
     dependencies:
       '@ionic/core': 8.2.3
+      ionicons: 7.4.0
+
+  '@ionic/vue@8.2.4':
+    dependencies:
+      '@ionic/core': 8.2.4
       ionicons: 7.4.0
 
   '@isaacs/cliui@8.0.2':
