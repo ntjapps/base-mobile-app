@@ -1,7 +1,0 @@
-{
-    "name": "base-mobile-app",
-    "integrations": {
-        "capacitor": {}
-    },
-    "type": "vue"
-}
