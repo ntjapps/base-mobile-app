@@ -23,7 +23,7 @@ importers:
         version: 8.7.0
       '@nativescript/webpack':
         specifier: ~5.0.22
-        version: 5.0.22(@vue/compiler-sfc@3.5.11)(lodash@4.17.21)(typescript@5.6.2)(utf-8-validate@5.0.10)
+        version: 5.0.22(@vue/compiler-sfc@3.5.11)(lodash@4.17.21)(typescript@5.6.3)(utf-8-validate@5.0.10)
       '@types/node':
         specifier: ~22.7.5
         version: 22.7.5
@@ -31,8 +31,8 @@ importers:
         specifier: ^3.4.13
         version: 3.4.13
       typescript:
-        specifier: ^5.6.2
-        version: 5.6.2
+        specifier: ^5.6.3
+        version: 5.6.3
 
 packages:
 
@@ -2269,8 +2269,8 @@ packages:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
     engines: {node: '>= 0.6'}
 
-  typescript@5.6.2:
-    resolution: {integrity: sha512-NW8ByodCSNCwZeghjN3o+JX5OFH0Ojg6sadjEKY4huZ52TqbJTJnDo5+Tw98lSy63NZvi4n+ez5m2u5d4PkZyw==}
+  typescript@5.6.3:
+    resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -2696,7 +2696,7 @@ snapshots:
       '@nativescript/types-android': 8.7.0
       '@nativescript/types-ios': 8.7.0
 
-  '@nativescript/webpack@5.0.22(@vue/compiler-sfc@3.5.11)(lodash@4.17.21)(typescript@5.6.2)(utf-8-validate@5.0.10)':
+  '@nativescript/webpack@5.0.22(@vue/compiler-sfc@3.5.11)(lodash@4.17.21)(typescript@5.6.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@babel/core': 7.25.7
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.14.2)(webpack@5.95.0(webpack-cli@4.10.0))
@@ -2710,13 +2710,13 @@ snapshots:
       css: 3.0.0
       css-loader: 6.11.0(webpack@5.95.0(webpack-cli@4.10.0))
       dotenv-webpack: 7.1.1(webpack@5.95.0(webpack-cli@4.10.0))
-      fork-ts-checker-webpack-plugin: 7.3.0(typescript@5.6.2)(webpack@5.95.0(webpack-cli@4.10.0))
+      fork-ts-checker-webpack-plugin: 7.3.0(typescript@5.6.3)(webpack@5.95.0(webpack-cli@4.10.0))
       loader-utils: 3.3.1
       lodash.get: 4.4.2
       micromatch: 4.0.8
       postcss: 8.4.47
       postcss-import: 14.1.0(postcss@8.4.47)
-      postcss-loader: 7.3.4(postcss@8.4.47)(typescript@5.6.2)(webpack@5.95.0(webpack-cli@4.10.0))
+      postcss-loader: 7.3.4(postcss@8.4.47)(typescript@5.6.3)(webpack@5.95.0(webpack-cli@4.10.0))
       raw-loader: 4.0.2(webpack@5.95.0(webpack-cli@4.10.0))
       react-refresh: 0.14.2
       sass: 1.79.4
@@ -2726,7 +2726,7 @@ snapshots:
       source-map: 0.7.4
       terser-webpack-plugin: 5.3.10(webpack@5.95.0(webpack-cli@4.10.0))
       ts-dedent: 2.2.0
-      ts-loader: 9.5.1(typescript@5.6.2)(webpack@5.95.0(webpack-cli@4.10.0))
+      ts-loader: 9.5.1(typescript@5.6.3)(webpack@5.95.0(webpack-cli@4.10.0))
       vue-loader: 15.9.8(@vue/compiler-sfc@3.5.11)(css-loader@6.11.0(webpack@5.95.0(webpack-cli@4.10.0)))(lodash@4.17.21)(webpack@5.95.0(webpack-cli@4.10.0))
       webpack: 5.95.0(webpack-cli@4.10.0)
       webpack-bundle-analyzer: 4.10.2(utf-8-validate@5.0.10)
@@ -3419,14 +3419,14 @@ snapshots:
       path-type: 4.0.0
       yaml: 1.10.2
 
-  cosmiconfig@8.3.6(typescript@5.6.2):
+  cosmiconfig@8.3.6(typescript@5.6.3):
     dependencies:
       import-fresh: 3.3.0
       js-yaml: 4.1.0
       parse-json: 5.2.0
       path-type: 4.0.0
     optionalDependencies:
-      typescript: 5.6.2
+      typescript: 5.6.3
 
   cross-spawn@7.0.3:
     dependencies:
@@ -3749,7 +3749,7 @@ snapshots:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
 
-  fork-ts-checker-webpack-plugin@7.3.0(typescript@5.6.2)(webpack@5.95.0(webpack-cli@4.10.0)):
+  fork-ts-checker-webpack-plugin@7.3.0(typescript@5.6.3)(webpack@5.95.0(webpack-cli@4.10.0)):
     dependencies:
       '@babel/code-frame': 7.25.7
       chalk: 4.1.2
@@ -3763,7 +3763,7 @@ snapshots:
       schema-utils: 3.3.0
       semver: 7.6.3
       tapable: 2.2.1
-      typescript: 5.6.2
+      typescript: 5.6.3
       webpack: 5.95.0(webpack-cli@4.10.0)
 
   forwarded@0.2.0: {}
@@ -4334,9 +4334,9 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.47
 
-  postcss-loader@7.3.4(postcss@8.4.47)(typescript@5.6.2)(webpack@5.95.0(webpack-cli@4.10.0)):
+  postcss-loader@7.3.4(postcss@8.4.47)(typescript@5.6.3)(webpack@5.95.0(webpack-cli@4.10.0)):
     dependencies:
-      cosmiconfig: 8.3.6(typescript@5.6.2)
+      cosmiconfig: 8.3.6(typescript@5.6.3)
       jiti: 1.21.6
       postcss: 8.4.47
       semver: 7.6.3
@@ -4805,14 +4805,14 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-loader@9.5.1(typescript@5.6.2)(webpack@5.95.0(webpack-cli@4.10.0)):
+  ts-loader@9.5.1(typescript@5.6.3)(webpack@5.95.0(webpack-cli@4.10.0)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.17.1
       micromatch: 4.0.8
       semver: 7.6.3
       source-map: 0.7.4
-      typescript: 5.6.2
+      typescript: 5.6.3
       webpack: 5.95.0(webpack-cli@4.10.0)
 
   tslib@2.7.0: {}
@@ -4828,7 +4828,7 @@ snapshots:
       media-typer: 0.3.0
       mime-types: 2.1.35
 
-  typescript@5.6.2: {}
+  typescript@5.6.3: {}
 
   undici-types@6.19.8: {}
 
