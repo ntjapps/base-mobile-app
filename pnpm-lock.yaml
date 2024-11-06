@@ -13,14 +13,14 @@ importers:
         version: 8.7.4
       nativescript-vue:
         specifier: 3.0.0-rc.2
-        version: 3.0.0-rc.2(webpack@5.96.1)
+        version: 3.0.0-rc.2(webpack@5.96.1(webpack-cli@4.10.0))
     devDependencies:
       '@nativescript/tailwind':
         specifier: ~2.1.0
         version: 2.1.0(postcss@8.4.47)
       '@nativescript/types':
-        specifier: ~8.7.0
-        version: 8.7.0
+        specifier: ~8.8.0
+        version: 8.8.0
       '@nativescript/webpack':
         specifier: ~5.0.22
         version: 5.0.22(@vue/compiler-sfc@3.5.12)(lodash@4.17.21)(typescript@5.6.3)(utf-8-validate@5.0.10)
@@ -166,14 +166,14 @@ packages:
     peerDependencies:
       postcss: ^8.0.0
 
-  '@nativescript/types-android@8.7.0':
-    resolution: {integrity: sha512-ykrhxjEf0/ECyI6dtUEkQZhHLCkKeVZRwPuw658zTGgfXZ4ocaQ5EaCCCLLXy92/VepT0ynLo+MDaXEwAfm7Qg==}
+  '@nativescript/types-android@8.8.0':
+    resolution: {integrity: sha512-U8ZOT+dtfYbfMj2OY1l6h9RQB+0weBQu6sG/2hKYyqmFnyT69XLmWbjE26LkqCceAukVk2Vg15bpk6haZVLI/Q==}
 
-  '@nativescript/types-ios@8.7.0':
-    resolution: {integrity: sha512-g/tQY67SvIvPex35+Pi5OsNBLmevdYGMJKtCdPRMVcRDJOCNdSMVPkuQ7v8B6IQG7oHEJ6njACAY+jaFw1d58w==}
+  '@nativescript/types-ios@8.8.0':
+    resolution: {integrity: sha512-kifctOi4OR/7zLV/G5DxrK2Ws45lbsZROje+fGn7osnMXYs641zsrBIgm2OQuADcuMvNTk9ynHxI76NtPLPLYA==}
 
-  '@nativescript/types@8.7.0':
-    resolution: {integrity: sha512-ipC/sQz6Bic3dvgx1Z4Ec18Mn0dXB1WvZ9fxdtJmwjTtOPr1poRLy6TVwWw9EPasPVmwiZTzFD5dp09PpT02AQ==}
+  '@nativescript/types@8.8.0':
+    resolution: {integrity: sha512-cXzKaHdS9HXPga7G+jCMjhDgvZGGEYUJ4Uq+DpevPMz8aRVL1s4UPe7q75xi2DsgRSQzb6UM8FZNbpFsrtiPLg==}
 
   '@nativescript/webpack@5.0.22':
     resolution: {integrity: sha512-ISWZC5oDnnMLfgorn+VcihOkSbkZCGIvBB6+mSlqCUOzQnpdKjX5kj+IUgQcEqzAm7dm/kV+JGmf6Der2UY7Eg==}
@@ -2724,47 +2724,47 @@ snapshots:
       '@hookun/parse-animation-shorthand': 0.1.5
       postcss: 8.4.47
 
-  '@nativescript/types-android@8.7.0': {}
+  '@nativescript/types-android@8.8.0': {}
 
-  '@nativescript/types-ios@8.7.0': {}
+  '@nativescript/types-ios@8.8.0': {}
 
-  '@nativescript/types@8.7.0':
+  '@nativescript/types@8.8.0':
     dependencies:
-      '@nativescript/types-android': 8.7.0
-      '@nativescript/types-ios': 8.7.0
+      '@nativescript/types-android': 8.8.0
+      '@nativescript/types-ios': 8.8.0
 
   '@nativescript/webpack@5.0.22(@vue/compiler-sfc@3.5.12)(lodash@4.17.21)(typescript@5.6.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@babel/core': 7.26.0
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.14.2)(webpack@5.96.1)
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.14.2)(webpack@5.96.1(webpack-cli@4.10.0))
       acorn: 8.14.0
       acorn-stage3: 4.0.0(acorn@8.14.0)
       ansi-colors: 4.1.3
-      babel-loader: 8.4.1(@babel/core@7.26.0)(webpack@5.96.1)
+      babel-loader: 8.4.1(@babel/core@7.26.0)(webpack@5.96.1(webpack-cli@4.10.0))
       cli-highlight: 2.1.11
       commander: 8.3.0
-      copy-webpack-plugin: 9.1.0(webpack@5.96.1)
+      copy-webpack-plugin: 9.1.0(webpack@5.96.1(webpack-cli@4.10.0))
       css: 3.0.0
-      css-loader: 6.11.0(webpack@5.96.1)
-      dotenv-webpack: 7.1.1(webpack@5.96.1)
-      fork-ts-checker-webpack-plugin: 7.3.0(typescript@5.6.3)(webpack@5.96.1)
+      css-loader: 6.11.0(webpack@5.96.1(webpack-cli@4.10.0))
+      dotenv-webpack: 7.1.1(webpack@5.96.1(webpack-cli@4.10.0))
+      fork-ts-checker-webpack-plugin: 7.3.0(typescript@5.6.3)(webpack@5.96.1(webpack-cli@4.10.0))
       loader-utils: 3.3.1
       lodash.get: 4.4.2
       micromatch: 4.0.8
       postcss: 8.4.47
       postcss-import: 14.1.0(postcss@8.4.47)
-      postcss-loader: 7.3.4(postcss@8.4.47)(typescript@5.6.3)(webpack@5.96.1)
-      raw-loader: 4.0.2(webpack@5.96.1)
+      postcss-loader: 7.3.4(postcss@8.4.47)(typescript@5.6.3)(webpack@5.96.1(webpack-cli@4.10.0))
+      raw-loader: 4.0.2(webpack@5.96.1(webpack-cli@4.10.0))
       react-refresh: 0.14.2
       sass: 1.80.6
-      sass-loader: 13.3.3(sass@1.80.6)(webpack@5.96.1)
+      sass-loader: 13.3.3(sass@1.80.6)(webpack@5.96.1(webpack-cli@4.10.0))
       sax: 1.4.1
       semver: 7.6.3
       source-map: 0.7.4
-      terser-webpack-plugin: 5.3.10(webpack@5.96.1)
+      terser-webpack-plugin: 5.3.10(webpack@5.96.1(webpack-cli@4.10.0))
       ts-dedent: 2.2.0
-      ts-loader: 9.5.1(typescript@5.6.3)(webpack@5.96.1)
-      vue-loader: 15.9.8(@vue/compiler-sfc@3.5.12)(css-loader@6.11.0(webpack@5.96.1))(lodash@4.17.21)(webpack@5.96.1)
+      ts-loader: 9.5.1(typescript@5.6.3)(webpack@5.96.1(webpack-cli@4.10.0))
+      vue-loader: 15.9.8(@vue/compiler-sfc@3.5.12)(css-loader@6.11.0(webpack@5.96.1(webpack-cli@4.10.0)))(lodash@4.17.21)(webpack@5.96.1(webpack-cli@4.10.0))
       webpack: 5.96.1(webpack-cli@4.10.0)
       webpack-bundle-analyzer: 4.10.2(utf-8-validate@5.0.10)
       webpack-chain: 6.5.1
@@ -2924,7 +2924,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(react-refresh@0.14.2)(webpack@5.96.1)':
+  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(react-refresh@0.14.2)(webpack@5.96.1(webpack-cli@4.10.0))':
     dependencies:
       ansi-html: 0.0.9
       core-js-pure: 3.39.0
@@ -3184,7 +3184,7 @@ snapshots:
       '@webassemblyjs/ast': 1.12.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@1.2.0(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2(utf-8-validate@5.0.10))(webpack@5.96.1))(webpack@5.96.1)':
+  '@webpack-cli/configtest@1.2.0(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2(utf-8-validate@5.0.10))(webpack@5.96.1))(webpack@5.96.1(webpack-cli@4.10.0))':
     dependencies:
       webpack: 5.96.1(webpack-cli@4.10.0)
       webpack-cli: 4.10.0(webpack-bundle-analyzer@4.10.2(utf-8-validate@5.0.10))(webpack@5.96.1)
@@ -3297,7 +3297,7 @@ snapshots:
 
   atob@2.1.2: {}
 
-  babel-loader@8.4.1(@babel/core@7.26.0)(webpack@5.96.1):
+  babel-loader@8.4.1(@babel/core@7.26.0)(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       '@babel/core': 7.26.0
       find-cache-dir: 3.3.2
@@ -3480,7 +3480,7 @@ snapshots:
 
   cookie@0.7.2: {}
 
-  copy-webpack-plugin@9.1.0(webpack@5.96.1):
+  copy-webpack-plugin@9.1.0(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       fast-glob: 3.3.2
       glob-parent: 6.0.2
@@ -3520,7 +3520,7 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  css-loader@6.11.0(webpack@5.96.1):
+  css-loader@6.11.0(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.47)
       postcss: 8.4.47
@@ -3605,7 +3605,7 @@ snapshots:
     dependencies:
       dotenv: 8.6.0
 
-  dotenv-webpack@7.1.1(webpack@5.96.1):
+  dotenv-webpack@7.1.1(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       dotenv-defaults: 2.0.2
       webpack: 5.96.1(webpack-cli@4.10.0)
@@ -3836,7 +3836,7 @@ snapshots:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
 
-  fork-ts-checker-webpack-plugin@7.3.0(typescript@5.6.3)(webpack@5.96.1):
+  fork-ts-checker-webpack-plugin@7.3.0(typescript@5.6.3)(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       '@babel/code-frame': 7.26.2
       chalk: 4.1.2
@@ -4268,7 +4268,7 @@ snapshots:
 
   nanoid@3.3.7: {}
 
-  nativescript-vue@3.0.0-rc.2(webpack@5.96.1):
+  nativescript-vue@3.0.0-rc.2(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       '@vue/compiler-sfc': 3.5.12
       '@vue/devtools': 6.6.4
@@ -4276,7 +4276,7 @@ snapshots:
       '@vue/shared': 3.5.12
       cross-spawn: 7.0.3
       set-value: 4.1.0
-      vue-loader: 17.4.2(@vue/compiler-sfc@3.5.12)(webpack@5.96.1)
+      vue-loader: 17.4.2(@vue/compiler-sfc@3.5.12)(webpack@5.96.1(webpack-cli@4.10.0))
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -4422,7 +4422,7 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.47
 
-  postcss-loader@7.3.4(postcss@8.4.47)(typescript@5.6.3)(webpack@5.96.1):
+  postcss-loader@7.3.4(postcss@8.4.47)(typescript@5.6.3)(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       cosmiconfig: 8.3.6(typescript@5.6.3)
       jiti: 1.21.6
@@ -4521,7 +4521,7 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  raw-loader@4.0.2(webpack@5.96.1):
+  raw-loader@4.0.2(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.3.0
@@ -4590,7 +4590,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@13.3.3(sass@1.80.6)(webpack@5.96.1):
+  sass-loader@13.3.3(sass@1.80.6)(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       neo-async: 2.6.2
       webpack: 5.96.1(webpack-cli@4.10.0)
@@ -4851,7 +4851,7 @@ snapshots:
 
   tapable@2.2.1: {}
 
-  terser-webpack-plugin@5.3.10(webpack@5.96.1):
+  terser-webpack-plugin@5.3.10(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -4889,7 +4889,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-loader@9.5.1(typescript@5.6.3)(webpack@5.96.1):
+  ts-loader@9.5.1(typescript@5.6.3)(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.17.1
@@ -4948,10 +4948,10 @@ snapshots:
 
   vue-hot-reload-api@2.3.4: {}
 
-  vue-loader@15.9.8(@vue/compiler-sfc@3.5.12)(css-loader@6.11.0(webpack@5.96.1))(lodash@4.17.21)(webpack@5.96.1):
+  vue-loader@15.9.8(@vue/compiler-sfc@3.5.12)(css-loader@6.11.0(webpack@5.96.1(webpack-cli@4.10.0)))(lodash@4.17.21)(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(lodash@4.17.21)
-      css-loader: 6.11.0(webpack@5.96.1)
+      css-loader: 6.11.0(webpack@5.96.1(webpack-cli@4.10.0))
       hash-sum: 1.0.2
       loader-utils: 1.4.2
       vue-hot-reload-api: 2.3.4
@@ -5014,7 +5014,7 @@ snapshots:
       - walrus
       - whiskers
 
-  vue-loader@17.4.2(@vue/compiler-sfc@3.5.12)(webpack@5.96.1):
+  vue-loader@17.4.2(@vue/compiler-sfc@3.5.12)(webpack@5.96.1(webpack-cli@4.10.0)):
     dependencies:
       chalk: 4.1.2
       hash-sum: 2.0.0
@@ -5061,7 +5061,7 @@ snapshots:
   webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2(utf-8-validate@5.0.10))(webpack@5.96.1):
     dependencies:
       '@discoveryjs/json-ext': 0.5.7
-      '@webpack-cli/configtest': 1.2.0(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2(utf-8-validate@5.0.10))(webpack@5.96.1))(webpack@5.96.1)
+      '@webpack-cli/configtest': 1.2.0(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2(utf-8-validate@5.0.10))(webpack@5.96.1))(webpack@5.96.1(webpack-cli@4.10.0))
       '@webpack-cli/info': 1.5.0(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2(utf-8-validate@5.0.10))(webpack@5.96.1))
       '@webpack-cli/serve': 1.7.0(webpack-cli@4.10.0(webpack-bundle-analyzer@4.10.2(utf-8-validate@5.0.10))(webpack@5.96.1))
       colorette: 2.0.20
@@ -5108,7 +5108,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(webpack@5.96.1)
+      terser-webpack-plugin: 5.3.10(webpack@5.96.1(webpack-cli@4.10.0))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
