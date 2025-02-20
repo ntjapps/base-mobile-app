@@ -12,8 +12,8 @@ importers:
         specifier: ^8.8.6
         version: 8.8.6
       nativescript-vue:
-        specifier: 3.0.0-rc.2
-        version: 3.0.0-rc.2(webpack@5.98.0)
+        specifier: 3.0.0-rc.3
+        version: 3.0.0-rc.3(webpack@5.98.0)
     devDependencies:
       '@nativescript/tailwind':
         specifier: ^2.1.0
@@ -1714,8 +1714,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nativescript-vue@3.0.0-rc.2:
-    resolution: {integrity: sha512-SsExZ7zEsamcmuEmLxdvDEdqebzcapLUmZGMPO6iqbappoP5a3sRcP6uKwJvFls/54OI29jO8oaUJB45wapB8A==}
+  nativescript-vue@3.0.0-rc.3:
+    resolution: {integrity: sha512-eX2HAGBkbXWFTyK3EBjNlRGHQu1kvSIBrKH1LFbfEOS2IzHLqVVcHw03pBpGj46w0TTyEAIc9z30NC3QUey5pw==}
 
   negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
@@ -4327,7 +4327,7 @@ snapshots:
 
   nanoid@3.3.8: {}
 
-  nativescript-vue@3.0.0-rc.2(webpack@5.98.0):
+  nativescript-vue@3.0.0-rc.3(webpack@5.98.0):
     dependencies:
       '@vue/compiler-sfc': 3.5.13
       '@vue/devtools': 6.6.4
