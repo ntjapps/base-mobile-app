@@ -16,8 +16,8 @@ importers:
         version: 3.0.0-rc.3(webpack@5.98.0)
     devDependencies:
       '@nativescript/tailwind':
-        specifier: ^4.0.0
-        version: 4.0.0(postcss@8.5.3)
+        specifier: ^4.0.1
+        version: 4.0.1(postcss@8.5.3)
       '@nativescript/types':
         specifier: ^8.9.0
         version: 8.9.0
@@ -397,8 +397,8 @@ packages:
   '@nativescript/hook@2.0.0':
     resolution: {integrity: sha512-v3Hj3Zpd69sQJfFpDNXonV0EjO1a2OL4l48wlo1Ycsqk4r7RY822d/irFTjt0LllRG0OcdEGgfG6wKb0YgPyHw==}
 
-  '@nativescript/tailwind@4.0.0':
-    resolution: {integrity: sha512-HO19wpdqfUTYhxGKdZzNopsluJThyqR24nd2O5hZrNrydeelOm/bmc+tzYeoByV/s2j1zSoIQg7d1ppXPKSpuQ==}
+  '@nativescript/tailwind@4.0.1':
+    resolution: {integrity: sha512-tCk7znYgWghgsr3cXZxZTtEL7+kp8oQPa6tFDP+Zj12jBfvfi4vwwTqLKwwIY6CH2AAZmX1/So3n+3FKabU2gA==}
     peerDependencies:
       postcss: ^8.0.0
 
@@ -3421,7 +3421,7 @@ snapshots:
       glob: 7.2.3
       mkdirp: 1.0.4
 
-  '@nativescript/tailwind@4.0.0(postcss@8.5.3)':
+  '@nativescript/tailwind@4.0.1(postcss@8.5.3)':
     dependencies:
       '@csstools/postcss-is-pseudo-class': 5.0.1(postcss@8.5.3)
       '@hookun/parse-animation-shorthand': 0.1.5
