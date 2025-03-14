@@ -8,7 +8,7 @@
     "nativescript-vue": "3.0.0-rc.3"
   },
   "devDependencies": {
-    "@nativescript/tailwind": "^4.0.1",
+    "@nativescript/tailwind": "^4.0.2",
     "@nativescript/types": "^8.9.0",
     "@nativescript/webpack": "^5.0.23",
     "@types/node": "^22.13.10",
