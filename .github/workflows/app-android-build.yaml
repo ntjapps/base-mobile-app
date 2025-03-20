@@ -1,0 +1,75 @@
+name: Apps Android Build
+
+on:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+jobs:
+  build-apps:
+    name: Build apps
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Setup FLutter SDK
+        uses: flutter-actions/setup-flutter@v4
+        with:
+          channel: 'stable'
+          version: '3.7.2'
+          cache: true
+          cache-sdk: true
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Decode Keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          PLAY_UPLOAD_KEY: ${{ secrets.PLAY_UPLOAD_KEY }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > android/keystore.jks
+          echo "$PLAY_UPLOAD_KEY" | base64 -d > android/upload_cert.der
+          keytool -importcert -trustcacerts -file android/upload_cert.der -keystore android/keystore.jks -storepass $KEYSTORE_PASSWORD -alias $KEY_ALIAS -noprompt
+          echo "storePassword=$KEYSTORE_PASSWORD" > android/key.properties
+          echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
+          echo "keyAlias=$KEY_ALIAS" >> android/key.properties
+          echo "storeFile=$(realpath android/keystore.jks)" >> android/key.properties
+      - name: Updated build number
+        run: |
+          pubspec=$(cat pubspec.yaml)
+          version=$(echo "$pubspec" | grep version: | cut -d: -f2 | tr -d '[:space:]')
+          buildNumber=$(echo "$pubspec" | grep buildNumber: | cut -d: -f2 | tr -d '[:space:]')
+          newBuildNumber=$(date +%s)
+          echo "$pubspec" | sed -e "s/buildNumber: .*/buildNumber: $newBuildNumber/" > pubspec.yaml
+      - name: Build appbundle
+        run: flutter build appbundle
+      - name: Build apk
+        run: flutter build apk --split-per-abi
+
+      - name: Upload appbundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: appbundle
+          path: |
+            build/app/outputs/bundle/release/*.aab
+          retention-days: 1
+      - name: Upload apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: |
+            build/app/outputs/apk/release/*.apk
+          retention-days: 1
