@@ -1,6 +1,9 @@
 name: Apps Android Publish
 
 on:
+  push:
+    tags:
+      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -24,7 +27,7 @@ jobs:
         uses: flutter-actions/setup-flutter@v4
         with:
           channel: 'stable'
-          version: '3.7.2'
+          version: 'latest'
           cache: true
           cache-sdk: true
       - name: Install dependencies
@@ -38,19 +41,10 @@ jobs:
           PLAY_UPLOAD_KEY: ${{ secrets.PLAY_UPLOAD_KEY }}
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > android/keystore.jks
-          echo "$PLAY_UPLOAD_KEY" | base64 -d > android/upload_cert.der
-          keytool -importcert -trustcacerts -file android/upload_cert.der -keystore android/keystore.jks -storepass $KEYSTORE_PASSWORD -alias $KEY_ALIAS -noprompt
           echo "storePassword=$KEYSTORE_PASSWORD" > android/key.properties
           echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
           echo "keyAlias=$KEY_ALIAS" >> android/key.properties
           echo "storeFile=$(realpath android/keystore.jks)" >> android/key.properties
-      - name: Updated build number
-        run: |
-          pubspec=$(cat pubspec.yaml)
-          version=$(echo "$pubspec" | grep version: | cut -d: -f2 | tr -d '[:space:]')
-          buildNumber=$(echo "$pubspec" | grep buildNumber: | cut -d: -f2 | tr -d '[:space:]')
-          newBuildNumber=$(date +%s)
-          echo "$pubspec" | sed -e "s/buildNumber: .*/buildNumber: $newBuildNumber/" > pubspec.yaml
       - name: Build appbundle
         run: flutter build appbundle
       
@@ -64,6 +58,6 @@ jobs:
         with:
           service_account_json: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           package_name: ${{ env.APP_NAMESPACE }}
-          aab_file_path: build/app/outputs/bundle/release/app.aab
+          aab_file_path: build/app/outputs/bundle/release/app-release.aab
           track: internal
           release_status: draft
