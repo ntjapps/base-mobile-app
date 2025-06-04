@@ -62,7 +62,7 @@ jobs:
           STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
           echo "--- Debugging Environment ---"
-          export $KEYSTORE_PATH=$(realpath keystore.p12)
+          export KEYSTORE_PATH=$(realpath keystore.p12)
           echo "KEYSTORE_PATH: $KEYSTORE_PATH"
           echo "--- Java Version (JAVA_HOME) ---"
           echo "JAVA_HOME: $JAVA_HOME"
