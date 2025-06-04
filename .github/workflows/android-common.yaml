@@ -12,6 +12,15 @@ on:
         required: false
         type: boolean
         default: true
+    secrets:
+      KEYSTORE_BASE64:
+        required: true
+      KEYSTORE_PASSWORD:
+        required: true
+      KEY_ALIAS:
+        required: true
+      KEY_PASSWORD:
+        required: true
 
 jobs:
   build:
