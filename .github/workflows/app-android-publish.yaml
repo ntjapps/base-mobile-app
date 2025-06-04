@@ -6,6 +6,9 @@ on:
       - "v*.*.*"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-apps:
     uses: ./.github/workflows/android-common.yaml
@@ -18,22 +21,26 @@ jobs:
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-  publish:
+  publish-and-bump:
     needs: build-apps
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Download appbundle artifact
         uses: actions/download-artifact@v4
         with:
           name: appbundle
+
       - name: Get App ID from build.gradle.kts
         id: app_id
         run: |
           app_id=$(cat android/app/build.gradle.kts | grep "applicationId" | cut -d'"' -f2)
           echo "APP_NAMESPACE=$app_id" >> $GITHUB_ENV
+
       - name: Publish appbundle to Play Store
+        id: publish
         uses: KevinRohn/github-action-upload-play-store@v1.0.1
         with:
           service_account_json: ${{ secrets.SERVICE_ACCOUNT_JSON }}
@@ -41,3 +48,26 @@ jobs:
           aab_file_path: build/app/outputs/bundle/release/app-release.aab
           track: internal
           release_status: draft
+
+      - name: Bump version in pubspec.yaml
+        if: success()
+        shell: bash
+        run: |
+          current_version=$(grep '^version:' pubspec.yaml | cut -d' ' -f2)
+          base_version=$(echo $current_version | cut -d'+' -f1)
+          build_number=$(echo $current_version | cut -d'+' -f2)
+          if [ -z "$build_number" ]; then build_number=0; fi
+          new_build_number=$((build_number + 5))
+          new_version="${base_version}+${new_build_number}"
+          sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
+          echo "Bumped version to $new_version"
+          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+
+      - name: Commit and push version bump
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pubspec.yaml
+          git commit -m "chore: bump version to $NEW_VERSION for Play Store"
+          git push
