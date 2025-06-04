@@ -59,19 +59,18 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 -d > android/keystore.p12
+          echo "$KEYSTORE_BASE64" | base64 -d > android/keystore.jks
           echo "storePassword=$KEYSTORE_PASSWORD" > android/key.properties
           echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
           echo "keyAlias=$KEY_ALIAS" >> android/key.properties
-          echo "storeFile=$(realpath android/keystore.p12)" >> android/key.properties
-          echo "storeType=PKCS12" >> android/key.properties
+          echo "storeFile=$(realpath android/keystore.jks)" >> android/key.properties
       - name: Debug Active JDK and Keystore Access
         working-directory: android
         env:
           STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
           echo "--- Debugging Environment ---"
-          export KEYSTORE_PATH=$(realpath keystore.p12)
+          export KEYSTORE_PATH=$(realpath keystore.jks)
           echo "KEYSTORE_PATH: $KEYSTORE_PATH"
           echo "--- Java Version (JAVA_HOME) ---"
           echo "JAVA_HOME: $JAVA_HOME"
@@ -82,16 +81,15 @@ jobs:
           java -version
 
           echo "--- Gradle's Java Home (if set in gradle.properties) ---"
-          # Check if a specific Java Home is set in gradle.properties
           grep 'org.gradle.java.home' gradle.properties || echo "org.gradle.java.home not found in gradle.properties"
 
           echo "--- Attempting to list keystore with current JAVA_HOME's keytool ---"
-          $JAVA_HOME/bin/keytool -list -v -keystore "$KEYSTORE_PATH" -storepass "$STORE_PASSWORD"
+          $JAVA_HOME/bin/keytool -list -v -keystore "$KEYSTORE_PATH" -storepass "$STORE_PASSWORD" -storetype JKS
           if [ $? -ne 0 ]; then
-            echo "ERROR: keytool command failed with the Java version at \$JAVA_HOME"
+            echo "ERROR: keytool command failed with the Java version at $JAVA_HOME"
             exit 1 # Fail the workflow if keytool fails here
           else
-            echo "SUCCESS: keytool command executed successfully with the Java version at \$JAVA_HOME"
+            echo "SUCCESS: keytool command executed successfully with the Java version at $JAVA_HOME"
           fi
       - name: Build appbundle
         if: ${{ inputs.build_aab }}
