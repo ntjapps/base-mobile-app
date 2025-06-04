@@ -50,11 +50,12 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 -d > android/keystore.jks
+          echo "$KEYSTORE_BASE64" | base64 -d > android/keystore.p12
           echo "storePassword=$KEYSTORE_PASSWORD" > android/key.properties
           echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
           echo "keyAlias=$KEY_ALIAS" >> android/key.properties
-          echo "storeFile=$(realpath android/keystore.jks)" >> android/key.properties
+          echo "storeFile=$(realpath android/keystore.p12)" >> android/key.properties
+          echo "storeType=PKCS12" >> android/key.properties
       - name: Build appbundle
         if: ${{ inputs.build_aab }}
         run: flutter build appbundle
