@@ -5,13 +5,56 @@
 
 version: 2
 updates:
-  - package-ecosystem: "dart" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "dart"
+    directory: "/"
     schedule:
       interval: "daily"
       timezone: "Asia/Jakarta"
-  - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    allow:
+      - dependency-type: "direct"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    versioning-strategy: increase
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    ignore:
+      - dependency-name: "flutter"
+        versions: ["*beta*", "*dev*"]
+  - package-ecosystem: "github-actions"
+    directory: "/.github/workflows"
     schedule:
       interval: "daily"
       timezone: "Asia/Jakarta"
+    open-pull-requests-limit: 5
+    labels:
+      - "github-actions"
+    commit-message:
+      prefix: "chore(actions)"
+      include: "scope"
+    allow:
+      - dependency-type: "all"
+    ignore:
+      - dependency-name: "actions/checkout"
+        versions: ["*beta*", "*rc*"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      timezone: "Asia/Jakarta"
+    open-pull-requests-limit: 2
+    labels:
+      - "github-actions"
+    commit-message:
+      prefix: "chore(actions)"
+      include: "scope"
+    allow:
+      - dependency-type: "all"
+    ignore:
+      - dependency-name: "actions/checkout"
+        versions: ["*beta*", "*rc*"]
+
+# Enable security updates
+security-updates:
+  enable: true
