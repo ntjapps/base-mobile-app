@@ -88,6 +88,8 @@ jobs:
           else
             echo "SUCCESS: keytool command executed successfully with the Java version at $JAVA_HOME"
           fi
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
       - name: Build appbundle
         if: ${{ inputs.build_aab }}
         run: flutter build appbundle
