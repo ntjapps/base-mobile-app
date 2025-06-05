@@ -33,6 +33,17 @@ jobs:
         with:
           name: appbundle
 
+      - name: List files after artifact download
+        run: |
+          pwd
+          ls -R
+
+      - name: Move .aab to expected location
+        run: |
+          mkdir -p build/app/outputs/bundle/release
+          find . -name "*.aab" -exec cp {} build/app/outputs/bundle/release/app-release.aab \;
+          ls -l build/app/outputs/bundle/release
+
       - name: Get App ID from build.gradle.kts
         id: app_id
         run: |
