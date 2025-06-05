@@ -82,11 +82,25 @@ jobs:
           echo "Bumped version to $new_version"
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
 
-      - name: Commit and push version bump
+      - name: Create version bump branch, commit, and push
         if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH_NAME=version-bump/${NEW_VERSION}-$(date +%s)
+          git checkout -b $BRANCH_NAME
           git add pubspec.yaml
           git commit -m "chore: bump version to $NEW_VERSION for Play Store"
-          git push
+          git push origin $BRANCH_NAME
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Create Pull Request for version bump
+        if: success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: bump version to ${{ env.NEW_VERSION }} for Play Store"
+          branch: ${{ env.BRANCH_NAME }}
+          title: "chore: bump version to ${{ env.NEW_VERSION }} for Play Store"
+          body: "Automated version bump PR triggered by Play Store publish workflow."
+          base: ${{ steps.checkout.outputs.default_branch || 'main' }}
