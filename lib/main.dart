@@ -61,6 +61,17 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  throw Exception('Test Sentry Exception');
+                } catch (exception, stackTrace) {
+                  await Sentry.captureException(exception, stackTrace: stackTrace);
+                }
+              },
+              child: const Text('Test Sentry Exception'),
+            ),
           ],
         ),
       ),
