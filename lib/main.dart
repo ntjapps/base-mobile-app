@@ -6,7 +6,6 @@ Future<void> main() async {
     (options) {
       options.dsn = 'https://daa01b977f384fb38919b280758385bf@log-alpha.ntjapps.com/4';
       options.tracesSampleRate = 0.0;
-      options.profilesSampleRate = 0.0;
     },
     appRunner: () => runApp(const MyApp()),
   );
