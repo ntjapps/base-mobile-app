@@ -1,83 +1,38 @@
 # base_mobile_app — Agent Instructions
 
-## Project Overview
+A **Flutter mobile app template** — the starting point for new mobile projects. Pre-wires error tracking (Sentry), analytics + crash reporting (Firebase), real-time events (Pusher), biometric auth, and Android Play Store CI/CD. Keep changes generic — no domain-specific logic.
 
-This is a **Flutter mobile app template** used as the starting point for all new mobile projects. It provides pre-wired infrastructure: error tracking (Sentry), analytics (Firebase), real-time messaging (Pusher), biometric auth, and CI/CD to the Play Store. When adding features to this template, keep changes generic — avoid domain-specific logic.
+> Shell commands and CI details live in `.github/skills/flutter.md` and `.github/skills/android.md` (auto-loaded via `CLAUDE.md`). `pubspec.yaml` is the source of truth for dependencies.
 
 ## Architecture
 
-### State Management
-Use **BLoC + Provider** together:
-- `flutter_bloc` for complex business logic and event-driven flows (screens with user interactions, async data loading)
-- `provider` for lightweight dependency injection and simple shared state
+- **State management**: `flutter_bloc` for event-driven screen logic; `provider` for lightweight DI and shared state.
+- **Folder layout** under `lib/`:
+  - `blocs/` events/states/blocs · `models/` plain data · `repositories/` HTTP + local storage
+  - `screens/` full pages · `widgets/` reusable UI · `services/` side effects (auth, push, analytics) · `utils/` pure helpers
 
-### Folder Structure (enforce when adding lib/ code)
-```
-lib/
-├── blocs/          # BLoC classes (events, states, blocs)
-├── models/         # Plain Dart data models
-├── repositories/   # Data access — HTTP, local storage
-├── screens/        # Full-page UI widgets
-├── widgets/        # Reusable sub-widgets
-├── services/       # Side-effect services (auth, push, analytics)
-└── utils/          # Pure helpers, extensions, constants
-```
+## Conventions
 
-### Key Dependencies
-| Package | Purpose |
-|---|---|
-| `sentry_flutter` | Runtime error tracking — wrap app init in `SentryFlutter.init` |
-| `firebase_analytics` | User event tracking |
-| `firebase_crashlytics` | Native crash reporting |
-| `flutter_bloc` | BLoC state management |
-| `provider` | DI and simple state |
-| `http` | REST API calls |
-| `local_auth` | Biometric / device credential auth |
-| `pusher_channels_flutter` | Real-time WebSocket events |
-| `permission_handler` | Runtime permissions |
-| `image_picker` | Camera / gallery access |
-| `flutter_native_splash` | Splash screen generation |
-
-## Code Conventions
-
-- **Dart SDK**: null-safe, target `^3.9.2`
-- **Quotes**: always single quotes (enforced by linter — `prefer_single_quotes: true`)
-- **Naming**: `PascalCase` for classes, `camelCase` for variables/functions, `snake_case` for files
-- **Private members**: underscore prefix (`_MyClass`, `_value`)
-- **Const**: use `const` and `final` wherever possible
-- **Async**: prefer `async/await` over raw `.then()` chains
-- **Linting**: `flutter_lints` — run `flutter analyze` before committing
+- Dart SDK `^3.9.2`, null-safe.
+- **Single quotes** (`prefer_single_quotes`); `PascalCase` classes, `camelCase` members, `snake_case` files, `_` prefix for private.
+- Prefer `const` / `final`; prefer `async`/`await` over `.then()`.
+- BLoC events and states as sealed classes.
+- Initialize Sentry in `main()` around `runApp`.
+- `flutter analyze` must be clean before every commit.
 
 ## Testing
 
-- Tests live in `test/` named `*_test.dart`
-- Use `flutter_test` package for widget tests
-- Run: `flutter test`
-- Keep at minimum a smoke test per screen
+`test/*_test.dart` with `flutter_test`. At minimum a smoke test per screen.
 
-## Versioning
+## Versioning & CI
 
-Format: `major.minor.patch+buildNumber` (e.g. `0.0.3+13`)  
-The CI workflow auto-bumps the build number and opens a PR after a successful Play Store publish.
+- `version: major.minor.patch+buildNumber` in `pubspec.yaml`. The `+buildNumber` is what Play Store uses and must be monotonically increasing.
+- Push to any branch → `app-android-build.yaml` builds debug/release APK.
+- Tag `v*.*.*` → `app-android-publish.yaml` ships an AAB to the Play Store internal track and opens a PR to bump the build number.
 
-## CI/CD
+## Don't
 
-- Workflows in `.github/workflows/`
-- `app-android-build.yaml` — triggered on push/PR, builds debug/release APK
-- `app-android-publish.yaml` — triggered on `v*.*.*` tags, publishes AAB to Play Store internal track
-- Signing via JKS keystore stored as GitHub secret (`KEYSTORE_BASE64`, `KEY_ALIAS`, `KEY_PASSWORD`, `KEYSTORE_PASSWORD`)
-- Java 21, Flutter stable channel, Gradle caching enabled
-
-## Do / Don't
-
-**Do:**
-- Initialize Sentry in `main()` wrapping `runApp`
-- Use `const` constructors in widget trees
-- Follow the folder structure above when adding new code
-- Write BLoC events/states as sealed classes
-
-**Don't:**
-- Put business logic directly in widgets
-- Use `dynamic` types — always be explicit
-- Skip `flutter analyze` — fix all warnings before committing
-- Add domain-specific features to this template (keep it generic)
+- Put business logic in widgets.
+- Use `dynamic` — be explicit.
+- Add domain-specific features to this template.
+- Skip `flutter analyze` warnings.
