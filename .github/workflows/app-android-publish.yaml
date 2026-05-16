@@ -11,19 +11,36 @@ permissions:
   pull-requests: write
 
 jobs:
-  build-apps:
+  build-production:
     uses: ./.github/workflows/android-common.yaml
     with:
       build_apk: false
       build_aab: true
+      env_name: 'production'
+      # Optional repo Variables (Settings → Variables → Actions).
+      # Leave unset to use the in-app preset baked into ApiConfig.
+      api_host: ${{ vars.API_HOST_PRODUCTION }}
     secrets:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-  publish-and-bump:
-    needs: build-apps
+  build-staging:
+    uses: ./.github/workflows/android-common.yaml
+    with:
+      build_apk: false
+      build_aab: true
+      env_name: 'staging'
+      api_host: ${{ vars.API_HOST_STAGING }}
+    secrets:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+  publish-production:
+    needs: build-production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,7 +49,7 @@ jobs:
       - name: Download appbundle artifact
         uses: actions/download-artifact@v4
         with:
-          name: appbundle
+          name: appbundle-production
 
       - name: List files after artifact download
         run: |
@@ -51,7 +68,20 @@ jobs:
           app_id=$(cat android/app/build.gradle.kts | grep "applicationId" | cut -d'"' -f2)
           echo "APP_NAMESPACE=$app_id" >> $GITHUB_ENV
 
+      - name: Check service account secret
+        id: check_sa
+        env:
+          SA_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$SA_JSON" ]; then
+            echo "has_sa=false" >> $GITHUB_OUTPUT
+            echo "::notice::SERVICE_ACCOUNT_JSON not set — skipping production publish"
+          else
+            echo "has_sa=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Publish appbundle to Play Store
+        if: steps.check_sa.outputs.has_sa == 'true'
         id: publish
         uses: KevinRohn/github-action-upload-play-store@v1.0.1
         with:
@@ -62,6 +92,7 @@ jobs:
           release_status: draft
 
       - name: Reset and checkout default branch
+        if: steps.check_sa.outputs.has_sa == 'true'
         shell: bash
         run: |
           git fetch origin
@@ -70,7 +101,7 @@ jobs:
           git checkout $DEFAULT_BRANCH
 
       - name: Bump version in pubspec.yaml
-        if: success()
+        if: steps.check_sa.outputs.has_sa == 'true' && success()
         shell: bash
         run: |
           current_version=$(grep '^version:' pubspec.yaml | cut -d' ' -f2)
@@ -84,7 +115,7 @@ jobs:
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
 
       - name: Create version bump branch, commit, and push
-        if: success()
+        if: steps.check_sa.outputs.has_sa == 'true' && success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -94,3 +125,54 @@ jobs:
           git commit -m "chore: bump version to $NEW_VERSION for Play Store"
           git push origin $BRANCH_NAME
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+  publish-staging:
+    needs: build-staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download appbundle artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: appbundle-staging
+
+      - name: List files after artifact download
+        run: |
+          pwd
+          ls -R
+
+      - name: Move .aab to expected location
+        run: |
+          mkdir -p build/app/outputs/bundle/release
+          find . -name "*.aab" -exec cp {} build/app/outputs/bundle/release/app-release.aab \;
+          ls -l build/app/outputs/bundle/release
+
+      - name: Get App ID from build.gradle.kts
+        id: app_id
+        run: |
+          app_id=$(cat android/app/build.gradle.kts | grep "applicationId" | cut -d'"' -f2)
+          echo "APP_NAMESPACE=${app_id}.staging" >> $GITHUB_ENV
+
+      - name: Check service account secret
+        id: check_sa
+        env:
+          SA_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON_STAGING }}
+        run: |
+          if [ -z "$SA_JSON" ]; then
+            echo "has_sa=false" >> $GITHUB_OUTPUT
+            echo "::notice::SERVICE_ACCOUNT_JSON_STAGING not set — skipping staging publish"
+          else
+            echo "has_sa=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish appbundle to Play Store
+        if: steps.check_sa.outputs.has_sa == 'true'
+        uses: KevinRohn/github-action-upload-play-store@v1.0.1
+        with:
+          service_account_json: ${{ secrets.SERVICE_ACCOUNT_JSON_STAGING }}
+          package_name: ${{ env.APP_NAMESPACE }}
+          aab_file_path: build/app/outputs/bundle/release/app-release.aab
+          track: internal
+          release_status: draft

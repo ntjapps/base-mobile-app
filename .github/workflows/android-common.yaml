@@ -12,15 +12,26 @@ on:
         required: false
         type: boolean
         default: true
+      env_name:
+        required: false
+        type: string
+        default: 'production'
+      # Optional per-flavor endpoint override. Pass via repo Variables
+      # (Settings → Variables → Actions) so URLs can be rotated without
+      # touching code. When blank, the in-app preset for the env is used.
+      api_host:
+        required: false
+        type: string
+        default: ''
     secrets:
       KEYSTORE_BASE64:
-        required: true
+        required: false
       KEYSTORE_PASSWORD:
-        required: true
+        required: false
       KEY_ALIAS:
-        required: true
+        required: false
       KEY_PASSWORD:
-        required: true
+        required: false
 
 jobs:
   build:
@@ -51,8 +62,24 @@ jobs:
             ${{ runner.os }}-pub-
       - name: Install dependencies
         run: flutter pub get
+      - name: Extract pubspec version
+        id: pubspec
+        run: |
+          version=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Check keystore
+        id: check_keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "has_keystore=false" >> $GITHUB_OUTPUT
+            echo "::notice::KEYSTORE_BASE64 not set — skipping ${{ inputs.env_name }} build"
+          else
+            echo "has_keystore=true" >> $GITHUB_OUTPUT
+          fi
       - name: Decode Keystore
-        if: ${{ inputs.build_apk || inputs.build_aab }}
+        if: steps.check_keystore.outputs.has_keystore == 'true' && (inputs.build_apk || inputs.build_aab)
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -65,6 +92,7 @@ jobs:
           echo "keyAlias=$KEY_ALIAS" >> android/key.properties
           echo "storeFile=$(realpath android/keystore.jks)" >> android/key.properties
       - name: Debug Active JDK and Keystore Access
+        if: steps.check_keystore.outputs.has_keystore == 'true'
         working-directory: android
         env:
           STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -84,29 +112,48 @@ jobs:
           $JAVA_HOME/bin/keytool -list -v -keystore "$KEYSTORE_PATH" -storepass "$STORE_PASSWORD" -storetype JKS
           if [ $? -ne 0 ]; then
             echo "ERROR: keytool command failed with the Java version at $JAVA_HOME"
-            exit 1 # Fail the workflow if keytool fails here
+            exit 1
           else
             echo "SUCCESS: keytool command executed successfully with the Java version at $JAVA_HOME"
           fi
       - name: Setup CMake
         uses: lukka/get-cmake@latest
+      - name: Compose optional dart-define overrides
+        id: overrides
+        run: |
+          extra=""
+          if [ -n "${{ inputs.api_host }}" ]; then
+            extra="$extra --dart-define=APP_API_HOST=${{ inputs.api_host }}"
+          fi
+          echo "extra=$extra" >> "$GITHUB_OUTPUT"
+          if [ -n "$extra" ]; then
+            echo "::notice::Applying endpoint overrides for ${{ inputs.env_name }}:$extra"
+          fi
       - name: Build appbundle
-        if: ${{ inputs.build_aab }}
-        run: flutter build appbundle
+        if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_aab
+        run: |
+          flutter build appbundle --flavor ${{ inputs.env_name }} \
+            --dart-define=APP_ENV=${{ inputs.env_name }} \
+            --dart-define=APP_VERSION=${{ steps.pubspec.outputs.version }} \
+            ${{ steps.overrides.outputs.extra }}
       - name: Build apk
-        if: ${{ inputs.build_apk }}
-        run: flutter build apk --split-per-abi
+        if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_apk
+        run: |
+          flutter build apk --flavor ${{ inputs.env_name }} --split-per-abi \
+            --dart-define=APP_ENV=${{ inputs.env_name }} \
+            --dart-define=APP_VERSION=${{ steps.pubspec.outputs.version }} \
+            ${{ steps.overrides.outputs.extra }}
       - name: Upload appbundle
-        if: ${{ inputs.build_aab }}
+        if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_aab
         uses: actions/upload-artifact@v4
         with:
-          name: appbundle
-          path: build/app/outputs/bundle/release/*.aab
+          name: appbundle-${{ inputs.env_name }}
+          path: build/app/outputs/bundle/${{ inputs.env_name }}Release/*.aab
           retention-days: 1
       - name: Upload apk
-        if: ${{ inputs.build_apk }}
+        if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_apk
         uses: actions/upload-artifact@v4
         with:
-          name: apk
-          path: build/app/outputs/apk/release/*.apk
+          name: apk-${{ inputs.env_name }}
+          path: build/app/outputs/apk/${{ inputs.env_name }}/release/*.apk
           retention-days: 1

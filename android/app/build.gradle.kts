@@ -60,8 +60,54 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Build flavors — production vs staging.
+    //
+    // Build with:
+    //   flutter build apk --release --flavor production -t lib/main.dart
+    //   flutter build apk --release --flavor staging    -t lib/main.dart
+    //   flutter run --flavor staging
+    //
+    // Each flavor applies a distinct applicationId so prod + staging APKs
+    // can be installed side-by-side on a tester's device.
+    //
+    // Per-key overrides (APP_API_HOST, APP_API_VERSION, etc.) can be supplied
+    // at the command line and override the env preset in ApiConfig.
+    // -------------------------------------------------------------------------
+    flavorDimensions += "env"
+    productFlavors {
+        create("production") {
+            dimension = "env"
+            // Same applicationId as defaultConfig — production is canonical.
+        }
+        create("staging") {
+            dimension = "env"
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
+        }
+    }
 }
 
 flutter {
     source = "../.."
 }
+
+// NOTE: per-flavor --dart-define is injected by the Flutter CLI, not Gradle.
+// Always pair --flavor with the matching --dart-define:
+//
+//   flutter build apk --release --flavor production \
+//       --dart-define=APP_ENV=production
+//
+//   flutter build apk --release --flavor staging \
+//       --dart-define=APP_ENV=staging
+//
+// To override the API host at build time (optional — falls back to preset):
+//
+//   flutter build apk --release --flavor staging \
+//       --dart-define=APP_ENV=staging \
+//       --dart-define=APP_API_HOST=https://custom-staging.example.com
+//
+// CI workflows under .github/workflows/ pair --flavor and --dart-define
+// automatically. The --flavor switch picks the applicationId; --dart-define
+// picks the API host.

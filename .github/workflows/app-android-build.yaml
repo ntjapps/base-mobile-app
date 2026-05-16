@@ -7,11 +7,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-apps:
+  build-production:
     uses: ./.github/workflows/android-common.yaml
     with:
       build_apk: true
       build_aab: true
+      env_name: 'production'
+      # Optional repo Variables (Settings → Variables → Actions).
+      # Leave unset to use the in-app preset baked into ApiConfig.
+      api_host: ${{ vars.API_HOST_PRODUCTION }}
+    secrets:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+  build-staging:
+    uses: ./.github/workflows/android-common.yaml
+    with:
+      build_apk: true
+      build_aab: true
+      env_name: 'staging'
+      api_host: ${{ vars.API_HOST_STAGING }}
     secrets:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
