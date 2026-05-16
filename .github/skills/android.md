@@ -47,8 +47,7 @@ storeFile=../keystore.jks
 - Create and push a version tag: `git tag v1.2.3 && git push origin v1.2.3`
 - Workflow: `.github/workflows/app-android-publish.yaml`
 - Publishes both flavors to **internal track** as draft releases (when secrets are present)
-- After production publish success, a PR is auto-opened to bump the build number in `pubspec.yaml`
-- Staging publish does NOT trigger a version bump
+- No version-bump PR is opened after publish; the build number comes from CI, not pubspec
 
 ## Skip-on-missing-secret behavior
 - If `KEYSTORE_BASE64` is absent, the build steps are skipped (job still runs, reports a notice).
@@ -59,10 +58,11 @@ storeFile=../keystore.jks
 ## Version Management
 Version is in `pubspec.yaml`:
 ```yaml
-version: 0.0.3+13   # semver+buildNumber
+version: 0.0.3   # semver only — no +buildNumber suffix
 ```
-- The `+buildNumber` is what the Play Store uses (must be monotonically increasing)
-- CI auto-increments the build number during production publish
+- `pubspec.yaml` holds only the semver (`major.minor.patch`); no `+buildNumber` suffix.
+- CI injects the Play Store build number via `--build-number=$BUILD_NUMBER`, where `BUILD_NUMBER` equals `github.run_number` (no offset for this repo).
+- Monotonically increasing build numbers are guaranteed by the ever-incrementing `github.run_number`.
 
 ## Required GitHub Secrets
 | Secret | Description | Required |

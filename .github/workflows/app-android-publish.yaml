@@ -91,41 +91,6 @@ jobs:
           track: internal
           release_status: draft
 
-      - name: Reset and checkout default branch
-        if: steps.check_sa.outputs.has_sa == 'true'
-        shell: bash
-        run: |
-          git fetch origin
-          DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
-          git reset --hard
-          git checkout $DEFAULT_BRANCH
-
-      - name: Bump version in pubspec.yaml
-        if: steps.check_sa.outputs.has_sa == 'true' && success()
-        shell: bash
-        run: |
-          current_version=$(grep '^version:' pubspec.yaml | cut -d' ' -f2)
-          base_version=$(echo $current_version | cut -d'+' -f1)
-          build_number=$(echo $current_version | cut -d'+' -f2)
-          if [ -z "$build_number" ]; then build_number=0; fi
-          new_build_number=$((build_number + 1))
-          new_version="${base_version}+${new_build_number}"
-          sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
-          echo "Bumped version to $new_version"
-          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
-
-      - name: Create version bump branch, commit, and push
-        if: steps.check_sa.outputs.has_sa == 'true' && success()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          BRANCH_NAME=version-bump/${NEW_VERSION}-$(date +%s)
-          git checkout -b $BRANCH_NAME
-          git add pubspec.yaml
-          git commit -m "chore: bump version to $NEW_VERSION for Play Store"
-          git push origin $BRANCH_NAME
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-
   publish-staging:
     needs: build-staging
     runs-on: ubuntu-latest

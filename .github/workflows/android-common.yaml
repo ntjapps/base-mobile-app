@@ -67,6 +67,14 @@ jobs:
         run: |
           version=$(grep '^version:' pubspec.yaml | awk '{print $2}')
           echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Compose build number
+        id: build_number
+        run: |
+          # Offset: 0 for base_mobile_app (no prior manual build numbers to honour)
+          BUILD_NUMBER=$(( ${{ github.run_number }} + 0 ))
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
+          echo "build_number=$BUILD_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "::notice::Android build number: $BUILD_NUMBER (run_number=${{ github.run_number }}, offset=0)"
       - name: Check keystore
         id: check_keystore
         env:
@@ -133,6 +141,7 @@ jobs:
         if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_aab
         run: |
           flutter build appbundle --flavor ${{ inputs.env_name }} \
+            --build-number=$BUILD_NUMBER \
             --dart-define=APP_ENV=${{ inputs.env_name }} \
             --dart-define=APP_VERSION=${{ steps.pubspec.outputs.version }} \
             ${{ steps.overrides.outputs.extra }}
@@ -140,6 +149,7 @@ jobs:
         if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_apk
         run: |
           flutter build apk --flavor ${{ inputs.env_name }} --split-per-abi \
+            --build-number=$BUILD_NUMBER \
             --dart-define=APP_ENV=${{ inputs.env_name }} \
             --dart-define=APP_VERSION=${{ steps.pubspec.outputs.version }} \
             ${{ steps.overrides.outputs.extra }}
