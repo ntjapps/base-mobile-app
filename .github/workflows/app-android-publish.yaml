@@ -65,7 +65,7 @@ jobs:
       - name: Get App ID from build.gradle.kts
         id: app_id
         run: |
-          app_id=$(cat android/app/build.gradle.kts | grep "applicationId" | cut -d'"' -f2)
+          app_id=$(grep -E '^\s*applicationId\s*=\s*"' android/app/build.gradle.kts | head -n1 | cut -d'"' -f2)
           echo "APP_NAMESPACE=$app_id" >> $GITHUB_ENV
 
       - name: Check service account secret
@@ -117,7 +117,7 @@ jobs:
       - name: Get App ID from build.gradle.kts
         id: app_id
         run: |
-          app_id=$(cat android/app/build.gradle.kts | grep "applicationId" | cut -d'"' -f2)
+          app_id=$(grep -E '^\s*applicationId\s*=\s*"' android/app/build.gradle.kts | head -n1 | cut -d'"' -f2)
           echo "APP_NAMESPACE=${app_id}.staging" >> $GITHUB_ENV
 
       - name: Check service account secret
