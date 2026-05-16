@@ -39,7 +39,7 @@ storeFile=../keystore.jks
 ## CI Workflow Triggers
 
 ### Build only (no publish)
-- Push to `main` branch or manual dispatch
+- Manual dispatch only (`workflow_dispatch` from the Actions tab)
 - Workflow: `.github/workflows/app-android-build.yaml`
 - Runs `build-production` and `build-staging` jobs in parallel
 

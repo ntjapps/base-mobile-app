@@ -28,7 +28,7 @@ A **Flutter mobile app template** — the starting point for new mobile projects
 
 - `version: major.minor.patch` in `pubspec.yaml` — semver only, no `+buildNumber` suffix. The Play Store build number is injected by CI from `github.run_number` (no offset for this repo).
 - Two Android flavors: **production** (`com.ntj125app.base_mobile`) and **staging** (`com.ntj125app.base_mobile.staging`).
-- Push to `main` → `app-android-build.yaml` builds both `production` and `staging` flavors in parallel.
+- `app-android-build.yaml` is manual-only (`workflow_dispatch`) — run it from the Actions tab to build both `production` and `staging` flavors in parallel.
 - Tag `v*.*.*` → `app-android-publish.yaml` builds and publishes both flavors to the Play Store internal track. No version-bump PR is opened after publish.
 - When keystore secrets or per-flavor service-account secrets are missing, that flavor's build/publish is skipped (not failed). Set `SERVICE_ACCOUNT_JSON_STAGING` to enable staging publish.
 - Always pair `--flavor <env>` with `--dart-define=APP_ENV=<env>` in all build commands. The API host is configured in `lib/config/api_config.dart` and falls back to a per-env preset; override at build time with `--dart-define=APP_API_HOST=<url>`.
