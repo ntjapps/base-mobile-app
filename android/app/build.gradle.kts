@@ -16,7 +16,10 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.ntj125app.base_mobile"
-    compileSdk = flutter.compileSdkVersion
+    // permission_handler_android 14.x (pulled in via permission_handler ^13.0.2)
+    // requires compileSdk 37; Flutter 3.47.5's default (flutter.compileSdkVersion)
+    // is still 36, so it must be pinned explicitly here.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
