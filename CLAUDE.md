@@ -5,6 +5,11 @@
 
 A **Flutter mobile app template** — the starting point for new mobile projects. Pre-wires error tracking (Sentry), analytics + crash reporting (Firebase), real-time events (Pusher), biometric auth, and Android Play Store CI/CD. Keep changes generic — no domain-specific logic.
 
+## App identifier
+
+- **New apps** created from this template use the org prefix **`com.ntjapps.`** — e.g. Android `applicationId`/`namespace` `com.ntjapps.<app_name>`, iOS bundle ID `com.ntjapps.<appName>`; move `MainActivity.kt` to the matching package path.
+- **Already-published apps keep their existing id** (store listings can't change it). This template itself is published as `com.ntj125app.base_mobile` — never rename it. Only change an existing app's id when the user confirms it is unpublished.
+
 > Shell commands and CI details live in `.github/skills/flutter.md` and `.github/skills/android.md` (auto-loaded via the imports at the top of this file). `pubspec.yaml` is the source of truth for dependencies.
 
 ## Architecture
