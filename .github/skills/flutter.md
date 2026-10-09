@@ -15,6 +15,11 @@ flutter build appbundle --release    # AAB for Play Store
 flutter build ios --release          # iOS release
 ```
 
+## Store floors
+- Android: `targetSdk` 36 (Google Play requirement for new apps and updates since 2026-08-31); `compileSdk` stays pinned to 37 for plugins.
+- iOS: deployment target 15.0; builds must use Xcode 26 / the iOS 26 SDK (App Store Connect requirement), see `app-ios-build.yaml`.
+- iOS uses the UIScene lifecycle (`FlutterSceneDelegate` in `Info.plist`, plugins registered in `didInitializeImplicitFlutterEngine`), which SDKs after iOS 26 require. `ITSAppUsesNonExemptEncryption` is `false` (HTTPS/Keychain only).
+
 ## Testing
 ```bash
 flutter test                         # all tests
