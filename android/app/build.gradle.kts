@@ -16,19 +16,15 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.ntj125app.base_mobile"
-    // permission_handler_android 14.x (pulled in via permission_handler ^13.0.2)
-    // requires compileSdk 37; Flutter 3.47.5's default (flutter.compileSdkVersion)
-    // is still 36, so it must be pinned explicitly here.
+    // 37 rather than Flutter's default (36): permission_handler_android 13
+    // (and flutter_secure_storage 11, where used) compile against android-37.0,
+    // which only AGP 9.2+ resolves. targetSdk stays 36.
     compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     defaultConfig {
@@ -115,3 +111,9 @@ flutter {
 // CI workflows under .github/workflows/ pair --flavor and --dart-define
 // automatically. The --flavor switch picks the applicationId; --dart-define
 // picks the API host.
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
