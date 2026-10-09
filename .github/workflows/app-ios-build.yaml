@@ -2,10 +2,8 @@ name: App iOS Build
 
 # Unsigned build to check the app compiles with the Xcode 26 / iOS 26 SDK
 # that App Store Connect requires. No signing or upload.
+# Manual-only: macOS runner minutes are expensive, so never trigger on push.
 on:
-  push:
-    branches:
-      - "main"
   workflow_dispatch:
 
 jobs:
