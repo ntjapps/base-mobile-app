@@ -43,16 +43,14 @@ storeFile=../keystore.jks
 - Workflow: `.github/workflows/app-android-build.yaml`
 - Runs `build-production` and `build-staging` jobs in parallel
 
-### Publish to Play Store
+### Release bundle (manual Play Console upload)
 - Create and push a version tag: `git tag v1.2.3 && git push origin v1.2.3`
 - Workflow: `.github/workflows/app-android-publish.yaml`
-- Publishes both flavors to **internal track** as draft releases (when secrets are present)
-- No version-bump PR is opened after publish; the build number comes from CI, not pubspec
+- Builds signed AABs for both flavors as run artifacts; upload them by hand in the Play Console web UI (there is no service-account publish)
+- No version-bump PR is opened; the build number comes from CI, not pubspec
 
 ## Skip-on-missing-secret behavior
 - If `KEYSTORE_BASE64` is absent, the build steps are skipped (job still runs, reports a notice).
-- If `SERVICE_ACCOUNT_JSON` is absent, production publish is skipped.
-- If `SERVICE_ACCOUNT_JSON_STAGING` is absent, staging publish is skipped.
 - Missing secrets never cause the workflow to fail — they are silently skipped with a `::notice::` log line.
 
 ## Version Management
@@ -71,8 +69,6 @@ version: 0.0.3   # semver only — no +buildNumber suffix
 | `KEY_ALIAS` | Keystore key alias | Recommended |
 | `KEY_PASSWORD` | Key password | Recommended |
 | `KEYSTORE_PASSWORD` | Keystore password | Recommended |
-| `SERVICE_ACCOUNT_JSON` | GCP service account JSON for production Play Store | Optional |
-| `SERVICE_ACCOUNT_JSON_STAGING` | GCP service account JSON for staging Play Store | Optional |
 
 ## Optional GitHub Variables (per-flavor endpoint overrides)
 

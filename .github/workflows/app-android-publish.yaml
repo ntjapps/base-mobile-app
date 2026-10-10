@@ -1,4 +1,8 @@
-name: Apps Android Publish
+name: Apps Android Release
+
+# Builds the signed release appbundle.
+# Play Console uploads are manual via the web (the service-account publish was retired):
+# download the appbundle artifact from this run and upload it in Play Console.
 
 on:
   push:
@@ -38,106 +42,3 @@ jobs:
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-
-  publish-production:
-    needs: build-production
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download appbundle artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: appbundle-production
-
-      - name: List files after artifact download
-        run: |
-          pwd
-          ls -R
-
-      - name: Move .aab to expected location
-        run: |
-          mkdir -p build/app/outputs/bundle/release
-          find . -name "*.aab" -exec cp {} build/app/outputs/bundle/release/app-release.aab \;
-          ls -l build/app/outputs/bundle/release
-
-      - name: Get App ID from build.gradle.kts
-        id: app_id
-        run: |
-          app_id=$(grep -E '^\s*applicationId\s*=\s*"' android/app/build.gradle.kts | head -n1 | cut -d'"' -f2)
-          echo "APP_NAMESPACE=$app_id" >> $GITHUB_ENV
-
-      - name: Check service account secret
-        id: check_sa
-        env:
-          SA_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-        run: |
-          if [ -z "$SA_JSON" ]; then
-            echo "has_sa=false" >> $GITHUB_OUTPUT
-            echo "::notice::SERVICE_ACCOUNT_JSON not set — skipping production publish"
-          else
-            echo "has_sa=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Publish appbundle to Play Store
-        if: steps.check_sa.outputs.has_sa == 'true'
-        id: publish
-        uses: KevinRohn/github-action-upload-play-store@v1.0.1
-        with:
-          service_account_json: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          package_name: ${{ env.APP_NAMESPACE }}
-          aab_file_path: build/app/outputs/bundle/release/app-release.aab
-          track: internal
-          release_status: draft
-
-  publish-staging:
-    needs: build-staging
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download appbundle artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: appbundle-staging
-
-      - name: List files after artifact download
-        run: |
-          pwd
-          ls -R
-
-      - name: Move .aab to expected location
-        run: |
-          mkdir -p build/app/outputs/bundle/release
-          find . -name "*.aab" -exec cp {} build/app/outputs/bundle/release/app-release.aab \;
-          ls -l build/app/outputs/bundle/release
-
-      - name: Get App ID from build.gradle.kts
-        id: app_id
-        run: |
-          app_id=$(grep -E '^\s*applicationId\s*=\s*"' android/app/build.gradle.kts | head -n1 | cut -d'"' -f2)
-          echo "APP_NAMESPACE=${app_id}.staging" >> $GITHUB_ENV
-
-      - name: Check service account secret
-        id: check_sa
-        env:
-          SA_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON_STAGING }}
-        run: |
-          if [ -z "$SA_JSON" ]; then
-            echo "has_sa=false" >> $GITHUB_OUTPUT
-            echo "::notice::SERVICE_ACCOUNT_JSON_STAGING not set — skipping staging publish"
-          else
-            echo "has_sa=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Publish appbundle to Play Store
-        if: steps.check_sa.outputs.has_sa == 'true'
-        uses: KevinRohn/github-action-upload-play-store@v1.0.1
-        with:
-          service_account_json: ${{ secrets.SERVICE_ACCOUNT_JSON_STAGING }}
-          package_name: ${{ env.APP_NAMESPACE }}
-          aab_file_path: build/app/outputs/bundle/release/app-release.aab
-          track: internal
-          release_status: draft
