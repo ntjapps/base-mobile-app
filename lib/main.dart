@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import 'config/api_config.dart';
+
 Future<void> main() async {
+  ApiConfig.ensureConfigured();
   await SentryFlutter.init(
     (options) {
       options.dsn = 'https://daa01b977f384fb38919b280758385bf@log-alpha.ntjapps.com/4';
