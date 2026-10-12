@@ -1,0 +1,4 @@
+{
+  "APP_ENV": "local",
+  "APP_API_HOST": "https://base-app.docker.localhost"
+}

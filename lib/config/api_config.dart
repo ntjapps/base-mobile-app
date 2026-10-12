@@ -2,83 +2,85 @@
 ///
 /// ## Build-time configuration
 ///
-/// Pick the whole environment with one switch:
+/// Every setting is a `--dart-define`, kept per environment in a committed
+/// `config/<env>.json` file. Env names match the backend's Laravel env files:
+/// `local` (`.env`), `dev` (`.env.dev`), `prod` (`.env.prod`).
 ///
-///     flutter run --dart-define=APP_ENV=staging
-///     flutter build apk --release --dart-define=APP_ENV=production
+///     flutter run --flavor local --dart-define-from-file=config/local.json
+///     flutter build apk --release --flavor prod \
+///         --dart-define-from-file=config/prod.json
 ///
-/// Or override the host directly (wins over the env preset):
+/// There are no compiled-in backend defaults: `main()` calls
+/// [ApiConfig.ensureConfigured] and the app refuses to start (in every build
+/// mode) when a required define is missing or invalid. The files hold public
+/// values only (hosts, public client ids) because everything ships in the
+/// binary; never put a secret in them.
 ///
-///     --dart-define=APP_API_HOST=https://staging.example.com
-///
-/// The Android Gradle config (`android/app/build.gradle.kts`) wires
-/// `productionDebug/Release` and `stagingDebug/Release` flavors. Always pair
-/// `--flavor <env>` with `--dart-define=APP_ENV=<env>` in all build commands.
+/// The Android flavor name matches the env name (`local`, `dev`, `prod`); see
+/// `android/app/build.gradle.kts`.
 enum AppEnvironment {
-  production,
-  staging;
+  local,
+  dev,
+  prod;
 
+  /// Strict parse: anything other than `local`, `dev` or `prod` is a
+  /// configuration error, never silently treated as production.
   static AppEnvironment fromString(String raw) {
-    switch (raw.toLowerCase()) {
-      case 'staging':
-      case 'stage':
-      case 'dev':
-      case 'development':
-        return AppEnvironment.staging;
-      case 'production':
-      case 'prod':
-      default:
-        return AppEnvironment.production;
+    for (final env in AppEnvironment.values) {
+      if (env.name == raw) return env;
     }
+    throw FormatException(
+      'Unknown APP_ENV "$raw" (expected local, dev or prod)',
+    );
   }
-}
-
-class _EnvPreset {
-  const _EnvPreset({required this.host});
-
-  final String host;
 }
 
 class ApiConfig {
   const ApiConfig._();
 
-  // ---------------------------------------------------------------------------
-  // Environment switch
-  // ---------------------------------------------------------------------------
+  static const String _envRaw = String.fromEnvironment('APP_ENV');
+  static const String _hostRaw = String.fromEnvironment('APP_API_HOST');
 
-  static const String _envRaw = String.fromEnvironment(
-    'APP_ENV',
-    defaultValue: 'production',
-  );
+  /// The required defines this build was compiled without.
+  static List<String> missingDefines() => [
+        if (const String.fromEnvironment('APP_ENV').isEmpty) 'APP_ENV',
+        if (const String.fromEnvironment('APP_API_HOST').isEmpty)
+          'APP_API_HOST',
+      ];
+
+  /// Fail at startup, in every build mode, when a required define is missing
+  /// or `APP_ENV` is not a known environment. (A real check, not an `assert`,
+  /// because asserts are stripped from release builds.)
+  static void ensureConfigured() {
+    final missing = missingDefines();
+    if (missing.isNotEmpty) {
+      throw StateError(
+        'Missing ${missing.join(', ')}. Build with '
+        '--dart-define-from-file=config/<env>.json '
+        '(config/prod.json, config/dev.json or config/local.json).',
+      );
+    }
+    try {
+      AppEnvironment.fromString(_envRaw);
+    } on FormatException catch (e) {
+      throw StateError(
+        '${e.message}. Build with --dart-define-from-file=config/<env>.json.',
+      );
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Environment
+  // ---------------------------------------------------------------------------
 
   static AppEnvironment get environment => AppEnvironment.fromString(_envRaw);
 
-  static bool get isProduction => environment == AppEnvironment.production;
-  static bool get isStaging => environment == AppEnvironment.staging;
+  static bool get isLocal => environment == AppEnvironment.local;
+  static bool get isDev => environment == AppEnvironment.dev;
+  static bool get isProd => environment == AppEnvironment.prod;
 
-  /// Per-environment defaults. Keep in sync with your backend deploys.
-  /// Individual `--dart-define=APP_API_HOST=...` overrides take precedence.
-  static const Map<AppEnvironment, _EnvPreset> _presets = {
-    AppEnvironment.production: _EnvPreset(
-      host: 'https://api.example.com',
-    ),
-    AppEnvironment.staging: _EnvPreset(
-      host: 'https://staging-api.example.com',
-    ),
-  };
-
-  static _EnvPreset get _preset => _presets[environment]!;
-
-  // ---------------------------------------------------------------------------
-  // Per-key override — optional. Empty string means "fall back to preset".
-  // ---------------------------------------------------------------------------
-
-  static const String _hostOverride = String.fromEnvironment('APP_API_HOST');
-
-  /// Origin only — no path. Defaults to the env preset; override with
-  /// `--dart-define=APP_API_HOST=...`.
-  static String get host =>
-      _hostOverride.isNotEmpty ? _hostOverride : _preset.host;
+  /// Origin only, no path. From `APP_API_HOST` in `config/<env>.json`.
+  static String get host => _hostRaw;
 
   /// API version segment. Bump when the backend ships a new major version.
   static const String apiVersion = String.fromEnvironment(

@@ -44,3 +44,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 *app-release.aab
+
+# Local dart-define overrides (flutter-device / flutter-build)
+.flutter-run.env
+.flutter-build.env

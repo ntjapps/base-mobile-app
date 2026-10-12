@@ -15,28 +15,24 @@ permissions:
   pull-requests: write
 
 jobs:
-  build-production:
+  build-prod:
     uses: ./.github/workflows/android-common.yaml
     with:
       build_apk: false
       build_aab: true
-      env_name: 'production'
-      # Optional repo Variables (Settings → Variables → Actions).
-      # Leave unset to use the in-app preset baked into ApiConfig.
-      api_host: ${{ vars.API_HOST_PRODUCTION }}
+      config: 'prod'
     secrets:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-  build-staging:
+  build-dev:
     uses: ./.github/workflows/android-common.yaml
     with:
       build_apk: false
       build_aab: true
-      env_name: 'staging'
-      api_host: ${{ vars.API_HOST_STAGING }}
+      config: 'dev'
     secrets:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}

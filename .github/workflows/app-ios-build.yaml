@@ -30,4 +30,4 @@ jobs:
           xcodebuild -version
           flutter --version
       - name: Build iOS (no codesign)
-        run: flutter build ios --release --no-codesign
+        run: flutter build ios --release --no-codesign --dart-define-from-file=config/prod.json

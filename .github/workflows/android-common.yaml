@@ -12,17 +12,12 @@ on:
         required: false
         type: boolean
         default: true
-      env_name:
+      # Environment: used as the Gradle flavor and as the dart-define file
+      # (config/<config>.json). One of prod, dev, local.
+      config:
         required: false
         type: string
-        default: 'production'
-      # Optional per-flavor endpoint override. Pass via repo Variables
-      # (Settings → Variables → Actions) so URLs can be rotated without
-      # touching code. When blank, the in-app preset for the env is used.
-      api_host:
-        required: false
-        type: string
-        default: ''
+        default: 'prod'
     secrets:
       KEYSTORE_BASE64:
         required: false
@@ -82,7 +77,7 @@ jobs:
         run: |
           if [ -z "$KEYSTORE_BASE64" ]; then
             echo "has_keystore=false" >> $GITHUB_OUTPUT
-            echo "::notice::KEYSTORE_BASE64 not set — skipping ${{ inputs.env_name }} build"
+            echo "::notice::KEYSTORE_BASE64 not set — skipping ${{ inputs.config }} build"
           else
             echo "has_keystore=true" >> $GITHUB_OUTPUT
           fi
@@ -126,44 +121,31 @@ jobs:
           fi
       - name: Setup CMake
         uses: lukka/get-cmake@latest
-      - name: Compose optional dart-define overrides
-        id: overrides
-        run: |
-          extra=""
-          if [ -n "${{ inputs.api_host }}" ]; then
-            extra="$extra --dart-define=APP_API_HOST=${{ inputs.api_host }}"
-          fi
-          echo "extra=$extra" >> "$GITHUB_OUTPUT"
-          if [ -n "$extra" ]; then
-            echo "::notice::Applying endpoint overrides for ${{ inputs.env_name }}:$extra"
-          fi
       - name: Build appbundle
         if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_aab
         run: |
-          flutter build appbundle --flavor ${{ inputs.env_name }} \
+          flutter build appbundle --flavor ${{ inputs.config }} \
+            --dart-define-from-file=config/${{ inputs.config }}.json \
             --build-number=$BUILD_NUMBER \
-            --dart-define=APP_ENV=${{ inputs.env_name }} \
-            --dart-define=APP_VERSION=${{ steps.pubspec.outputs.version }} \
-            ${{ steps.overrides.outputs.extra }}
+            --dart-define=APP_VERSION=${{ steps.pubspec.outputs.version }}
       - name: Build apk
         if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_apk
         run: |
-          flutter build apk --flavor ${{ inputs.env_name }} --split-per-abi \
+          flutter build apk --flavor ${{ inputs.config }} --split-per-abi \
+            --dart-define-from-file=config/${{ inputs.config }}.json \
             --build-number=$BUILD_NUMBER \
-            --dart-define=APP_ENV=${{ inputs.env_name }} \
-            --dart-define=APP_VERSION=${{ steps.pubspec.outputs.version }} \
-            ${{ steps.overrides.outputs.extra }}
+            --dart-define=APP_VERSION=${{ steps.pubspec.outputs.version }}
       - name: Upload appbundle
         if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_aab
         uses: actions/upload-artifact@v4
         with:
-          name: appbundle-${{ inputs.env_name }}
-          path: build/app/outputs/bundle/${{ inputs.env_name }}Release/*.aab
+          name: appbundle-${{ inputs.config }}
+          path: build/app/outputs/bundle/${{ inputs.config }}Release/*.aab
           retention-days: 1
       - name: Upload apk
         if: steps.check_keystore.outputs.has_keystore == 'true' && inputs.build_apk
         uses: actions/upload-artifact@v4
         with:
-          name: apk-${{ inputs.env_name }}
-          path: build/app/outputs/apk/${{ inputs.env_name }}/release/*.apk
+          name: apk-${{ inputs.config }}
+          path: build/app/outputs/apk/${{ inputs.config }}/release/*.apk
           retention-days: 1
