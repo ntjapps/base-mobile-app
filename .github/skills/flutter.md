@@ -1,19 +1,20 @@
 # Flutter Development Skills
 
 ## Running the App
+Every run and build needs the env's dart-define file (no compiled-in defaults; `config/{local,dev,prod}.json`). On Android the flavor name equals the env name.
 ```bash
-flutter run                          # debug on connected device
-flutter run --release                # release mode
-flutter run -d <device-id>           # specific device
+flutter run --flavor local --dart-define-from-file=config/local.json   # debug on connected device
+flutter run -d <device-id> --flavor dev --dart-define-from-file=config/dev.json
+flutter run --release --flavor prod --dart-define-from-file=config/prod.json
 ```
 
 ## Building
 ```bash
-flutter build apk                    # debug APK
-flutter build apk --release          # release APK
-flutter build appbundle --release    # AAB for Play Store
-flutter build ios --release          # iOS release
+flutter build apk --release --flavor prod --dart-define-from-file=config/prod.json
+flutter build appbundle --release --flavor prod --dart-define-from-file=config/prod.json   # AAB for Play Store
+flutter build ios --release --dart-define-from-file=config/prod.json   # iOS (no flavors)
 ```
+Local overrides for `stack-config` tooling: gitignored `.flutter-run.env` / `.flutter-build.env`.
 
 ## Store floors
 - Android: `targetSdk` 36 (Google Play requirement for new apps and updates since 2026-08-31); `compileSdk` stays pinned to 37 for plugins.

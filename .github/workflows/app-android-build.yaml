@@ -1,31 +1,23 @@
 name: Apps Android Build
 
+# Manual only: start it from the Actions tab or `gh workflow run`.
+# Not triggered on push/PR because CI minutes cost money.
 on:
   workflow_dispatch:
+    inputs:
+      config:
+        description: Environment (flavor and config/<config>.json)
+        type: choice
+        options: [prod, dev]
+        default: prod
 
 jobs:
-  build-production:
+  build-apps:
     uses: ./.github/workflows/android-common.yaml
     with:
       build_apk: true
       build_aab: true
-      env_name: 'production'
-      # Optional repo Variables (Settings → Variables → Actions).
-      # Leave unset to use the in-app preset baked into ApiConfig.
-      api_host: ${{ vars.API_HOST_PRODUCTION }}
-    secrets:
-      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-
-  build-staging:
-    uses: ./.github/workflows/android-common.yaml
-    with:
-      build_apk: true
-      build_aab: true
-      env_name: 'staging'
-      api_host: ${{ vars.API_HOST_STAGING }}
+      config: ${{ inputs.config }}
     secrets:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}

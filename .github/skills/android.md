@@ -2,14 +2,15 @@
 
 ## Flavors
 
-Two build flavors are configured:
+Flavor name == env name == `config/<flavor>.json`:
 
 | Flavor | applicationId | versionNameSuffix |
 |---|---|---|
-| `production` | `com.ntj125app.base_mobile` | _(none)_ |
-| `staging` | `com.ntj125app.base_mobile.staging` | `-staging` |
+| `prod` | `com.ntj125app.base_mobile` | _(none)_ |
+| `dev` | `com.ntj125app.base_mobile.staging` (id kept from the former `staging` flavor for already-installed builds) | `-staging` |
+| `local` | `com.ntj125app.base_mobile.local` | `-local` |
 
-Build with `--flavor production` or `--flavor staging`. Always pair `--flavor` with the matching `--dart-define=APP_ENV=<flavor>`. Both flavors run in CI on every tag push.
+Always pair `--flavor <env>` with `--dart-define-from-file=config/<env>.json`; the app refuses to start without the defines. The tag publish builds `prod` and `dev`.
 
 ## Local Debug Build
 ```bash
@@ -20,10 +21,10 @@ cd android
 
 ## Local Release Build (requires keystore)
 ```bash
-flutter build apk --release --flavor production --dart-define=APP_ENV=production
-flutter build apk --release --flavor staging    --dart-define=APP_ENV=staging
-flutter build appbundle --release --flavor production --dart-define=APP_ENV=production
-flutter build appbundle --release --flavor staging    --dart-define=APP_ENV=staging
+flutter build apk --release --flavor prod --dart-define-from-file=config/prod.json
+flutter build apk --release --flavor dev  --dart-define-from-file=config/dev.json
+flutter build appbundle --release --flavor prod --dart-define-from-file=config/prod.json
+flutter build appbundle --release --flavor dev  --dart-define-from-file=config/dev.json
 # AAB output: build/app/outputs/bundle/<flavor>Release/app-<flavor>-release.aab
 ```
 
@@ -41,12 +42,12 @@ storeFile=../keystore.jks
 ### Build only (no publish)
 - Manual dispatch only (`workflow_dispatch` from the Actions tab)
 - Workflow: `.github/workflows/app-android-build.yaml`
-- Runs `build-production` and `build-staging` jobs in parallel
+- Takes a `config` input (`prod` default, or `dev`): used as the flavor and as `config/<config>.json`
 
 ### Release bundle (manual Play Console upload)
 - Create and push a version tag: `git tag v1.2.3 && git push origin v1.2.3`
 - Workflow: `.github/workflows/app-android-publish.yaml`
-- Builds signed AABs for both flavors as run artifacts; upload them by hand in the Play Console web UI (there is no service-account publish)
+- Builds signed AABs for `prod` and `dev` (`build-prod` and `build-dev` jobs) as run artifacts; upload them by hand in the Play Console web UI (there is no service-account publish)
 - No version-bump PR is opened; the build number comes from CI, not pubspec
 
 ## Skip-on-missing-secret behavior
@@ -69,19 +70,6 @@ version: 0.0.3   # semver only — no +buildNumber suffix
 | `KEY_ALIAS` | Keystore key alias | Recommended |
 | `KEY_PASSWORD` | Key password | Recommended |
 | `KEYSTORE_PASSWORD` | Keystore password | Recommended |
-
-## Optional GitHub Variables (per-flavor endpoint overrides)
-
-Set under repo Settings → Variables → Actions. Empty/unset means "use the
-preset baked into `lib/config/api_config.dart`". URLs are non-sensitive so
-Variables (not Secrets) are the right home.
-
-| Variable | `--dart-define` injected | Flavor |
-|---|---|---|
-| `API_HOST_PRODUCTION` | `APP_API_HOST` | production |
-| `API_HOST_STAGING` | `APP_API_HOST` | staging |
-
-Honoured by `app-android-build.yaml` and `app-android-publish.yaml`.
 
 ## Checking Workflow Status
 ```bash
