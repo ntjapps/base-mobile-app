@@ -121,7 +121,7 @@ jobs:
           echo "--- Gradle's Java Home (if set in gradle.properties) ---"
           grep 'org.gradle.java.home' gradle.properties || echo "org.gradle.java.home not found in gradle.properties"
           echo "--- Attempting to list keystore with current JAVA_HOME's keytool ---"
-          $JAVA_HOME/bin/keytool -list -v -keystore "$KEYSTORE_PATH" -storepass "$STORE_PASSWORD" -storetype JKS
+          $JAVA_HOME/bin/keytool -list -keystore "$KEYSTORE_PATH" -storepass:env STORE_PASSWORD -storetype JKS
           if [ $? -ne 0 ]; then
             echo "ERROR: keytool command failed with the Java version at $JAVA_HOME"
             exit 1
