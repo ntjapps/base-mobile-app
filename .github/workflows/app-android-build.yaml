@@ -11,8 +11,13 @@ on:
         options: [prod, dev]
         default: prod
 
+permissions:
+  contents: read
+
 jobs:
   build-apps:
+    permissions:
+      contents: read
     uses: ./.github/workflows/android-common.yaml
     with:
       build_apk: true
