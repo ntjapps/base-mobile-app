@@ -10,12 +10,14 @@ on:
       - "v*.*.*"
   workflow_dispatch:
 
+# Least privilege: the build jobs only read the repo (the version-bump job was retired, so nothing here writes).
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   build-prod:
+    permissions:
+      contents: read
     uses: ./.github/workflows/android-common.yaml
     with:
       build_apk: false
@@ -28,6 +30,8 @@ jobs:
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
   build-dev:
+    permissions:
+      contents: read
     uses: ./.github/workflows/android-common.yaml
     with:
       build_apk: false
